@@ -1,4 +1,8 @@
 # ninja log v5
 0	265	1665690167911395144	CMakeFiles/FarmingGame.dir/src/game.cpp.o	ef01d00a1bf64596
-0	276	1665690167923395042	CMakeFiles/FarmingGame.dir/main.cpp.o	2a4685663f9c88
-276	352	1665690167999394394	FarmingGame	a8bed73b9e10217e
+1	345	1665692057055803473	CMakeFiles/FarmingGame.dir/main.cpp.o	2a4685663f9c88
+363	440	1665692319377169094	FarmingGame	ababc38caa506371
+1	363	1665692319301171636	CMakeFiles/FarmingGame.dir/EngineCore/input.cpp.o	bce9215aad315872
+1	355	1665693299932921528	CMakeFiles/FarmingGame.dir/main.cpp.o	2a4685663f9c88
+1	379	1665693299956921197	CMakeFiles/FarmingGame.dir/EngineCore/input.cpp.o	bce9215aad315872
+379	464	1665693300040920041	FarmingGame	ababc38caa506371

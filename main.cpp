@@ -25,7 +25,7 @@
 #include "game.h"
 #include <iostream>
 #include "input.h"
-
+#include <string>
 
 //------------------------------------------------------------------------------------
 // Program main entry point
@@ -39,6 +39,7 @@ int main()
 
     // Get reference to input instance
     InputManager input = InputManager::instance();
+    input.IsActionPressed("test");
 
     InitWindow(screenWidth, screenHeight, "Agriculture");
 
