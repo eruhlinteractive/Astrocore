@@ -1,0 +1,12 @@
+[
+{
+  "directory": "/mnt/ChungusL/GitHubRepos/minifarmer/build",
+  "command": "/usr/bin/g++ -I/mnt/ChungusL/GitHubRepos/minifarmer/include -I/mnt/ChungusL/GitHubRepos/minifarmer/EngineCore -I/mnt/ChungusL/GitHubRepos/minifarmer/header -g -o CMakeFiles/FarmingGame.dir/main.cpp.o -c /mnt/ChungusL/GitHubRepos/minifarmer/main.cpp",
+  "file": "/mnt/ChungusL/GitHubRepos/minifarmer/main.cpp"
+},
+{
+  "directory": "/mnt/ChungusL/GitHubRepos/minifarmer/build",
+  "command": "/usr/bin/g++ -I/mnt/ChungusL/GitHubRepos/minifarmer/include -I/mnt/ChungusL/GitHubRepos/minifarmer/EngineCore -I/mnt/ChungusL/GitHubRepos/minifarmer/header -g -o CMakeFiles/FarmingGame.dir/src/game.cpp.o -c /mnt/ChungusL/GitHubRepos/minifarmer/src/game.cpp",
+  "file": "/mnt/ChungusL/GitHubRepos/minifarmer/src/game.cpp"
+}
+]
