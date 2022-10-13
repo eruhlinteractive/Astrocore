@@ -63,15 +63,15 @@
 			[
 				{
 					"backtrace" : 4,
-					"path" : "/mnt/ChungusL/GitHubRepos/minifarmer/include"
+					"path" : "/mnt/ChungusL/GitHubRepos/raylib-farmer/include"
 				},
 				{
 					"backtrace" : 4,
-					"path" : "/mnt/ChungusL/GitHubRepos/minifarmer/EngineCore"
+					"path" : "/mnt/ChungusL/GitHubRepos/raylib-farmer/EngineCore"
 				},
 				{
 					"backtrace" : 4,
-					"path" : "/mnt/ChungusL/GitHubRepos/minifarmer/header"
+					"path" : "/mnt/ChungusL/GitHubRepos/raylib-farmer/header"
 				}
 			],
 			"language" : "CXX",
@@ -97,16 +97,16 @@
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-L/mnt/ChungusL/GitHubRepos/minifarmer/src",
+				"fragment" : "-L/mnt/ChungusL/GitHubRepos/raylib-farmer/src",
 				"role" : "libraryPath"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-L/mnt/ChungusL/GitHubRepos/minifarmer/EngineCore",
+				"fragment" : "-L/mnt/ChungusL/GitHubRepos/raylib-farmer/EngineCore",
 				"role" : "libraryPath"
 			},
 			{
-				"fragment" : "-Wl,-rpath,/mnt/ChungusL/GitHubRepos/minifarmer/src:/mnt/ChungusL/GitHubRepos/minifarmer/EngineCore",
+				"fragment" : "-Wl,-rpath,/mnt/ChungusL/GitHubRepos/raylib-farmer/src:/mnt/ChungusL/GitHubRepos/raylib-farmer/EngineCore",
 				"role" : "libraries"
 			},
 			{

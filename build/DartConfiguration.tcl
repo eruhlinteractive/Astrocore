@@ -4,8 +4,8 @@
 
 
 # Configuration directories and files
-SourceDirectory: /mnt/ChungusL/GitHubRepos/minifarmer
-BuildDirectory: /mnt/ChungusL/GitHubRepos/minifarmer/build
+SourceDirectory: /mnt/ChungusL/GitHubRepos/raylib-farmer
+BuildDirectory: /mnt/ChungusL/GitHubRepos/raylib-farmer/build
 
 # Where to place the cost data store
 CostDataFile: 
@@ -26,7 +26,7 @@ SubmitURL: http://
 NightlyStartTime: 00:00:00 EDT
 
 # Commands for the build/test/submit cycle
-ConfigureCommand: "/usr/bin/cmake" "/mnt/ChungusL/GitHubRepos/minifarmer"
+ConfigureCommand: "/usr/bin/cmake" "/mnt/ChungusL/GitHubRepos/raylib-farmer"
 MakeCommand: /usr/bin/cmake --build . --config "${CTEST_CONFIGURATION_TYPE}"
 DefaultCTestConfigurationType: Release
 
@@ -44,7 +44,7 @@ SVNOptions:
 SVNUpdateOptions: 
 
 # Git options
-GITCommand: 
+GITCommand: /usr/bin/git
 GITInitSubmodules: 
 GITUpdateOptions: 
 GITUpdateCustom: 
@@ -57,9 +57,9 @@ P4UpdateOptions:
 P4UpdateCustom: 
 
 # Generic update command
-UpdateCommand: 
+UpdateCommand: /usr/bin/git
 UpdateOptions: 
-UpdateType: 
+UpdateType: git
 
 # Compiler info
 Compiler: /usr/bin/g++

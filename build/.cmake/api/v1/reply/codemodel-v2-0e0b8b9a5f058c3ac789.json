@@ -221,7 +221,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "FarmingGame::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-FarmingGame-Debug-aea64c9aeb62ada4e9d6.json",
+					"jsonFile" : "target-FarmingGame-Debug-837eb2f31b54d1911e6d.json",
 					"name" : "FarmingGame",
 					"projectIndex" : 0
 				},
@@ -301,8 +301,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "/mnt/ChungusL/GitHubRepos/minifarmer/build",
-		"source" : "/mnt/ChungusL/GitHubRepos/minifarmer"
+		"build" : "/mnt/ChungusL/GitHubRepos/raylib-farmer/build",
+		"source" : "/mnt/ChungusL/GitHubRepos/raylib-farmer"
 	},
 	"version" : 
 	{
