@@ -21,10 +21,15 @@ bool InputManager::IsActionPressed(string actionName)
 /// @param actionName The name of the action to trigger
 /// @param positiveIndex The int index of the button/key press
 /// @param isController Is the action coming from a controller
-void InputManager::AddActionTrigger(string actionName, int positiveIndex, bool isController=false)
+void InputManager::AddActionTrigger(string actionName, int positiveIndex, int controllerId = -1)
 {
-    if (inputMap.count(actionName) >0)
+    // Update the current action
+    if (inputMap.count(actionName) > 0)
     {
+        InputAction actions = inputMap[actionName];
+
+        //TODO: Create new input action
+        InputEvent newEvent = InputEvent(controllerId, positiveIndex); 
 
     }
     
