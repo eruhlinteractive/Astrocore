@@ -27,9 +27,12 @@
 #include "input.h"
 #include <string>
 
+
 //------------------------------------------------------------------------------------
 // Program main entry point
 //------------------------------------------------------------------------------------
+
+
 int main()
 {
     // Initialization
@@ -39,13 +42,22 @@ int main()
 
     // Get reference to input instance
     InputManager input = InputManager::instance();
-    input.IsActionPressed("test");
+    
+    // TEMP testing 
+
+    InputEvent keyEvent = InputEvent(69);
+    InputAction* test = new InputAction("test");
+    InputAction* test2 = new InputAction("test2");
+
+    test2->AddInputEvent(InputEvent(70));
+
+    test->AddInputEvent(keyEvent);
+    input.AddInputAction(test);
+    input.AddInputAction(test2);
 
     InitWindow(screenWidth, screenHeight, "Agriculture");
 
     SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
-
-    
     //--------------------------------------------------------------------------------------
 
     // Main game loop
@@ -55,6 +67,15 @@ int main()
         //----------------------------------------------------------------------------------
         // TODO: Update your variables here
         //----------------------------------------------------------------------------------
+
+        if (input.IsActionPressed("test"))
+        {
+            std::cout << "E is pressed!" << std::endl;
+        }
+        else if (input.IsActionPressed("test2"))
+        {
+            std::cout << "F is NOT pressed!" << std::endl;
+        }
 
         // Draw
         //----------------------------------------------------------------------------------

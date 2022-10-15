@@ -9,29 +9,62 @@ using namespace std;
 struct InputEvent
 {
     // Constructor
-    InputEvent(int actionControllerId, int inputIndex) 
+    InputEvent(int inputIndex, int actionControllerId =-1) 
     {
         controllerId = actionControllerId;
         positiveInput = inputIndex;
     };
     /// Is this a controller action?
-    bool controllerId;
+    int controllerId = -1;
 
     // What index is the positive(on) input?
     int positiveInput;
 };
 
 /// @brief A struct representing a single input action (i.e jump)
-struct InputAction
+class InputAction
 {
+public:
+    InputAction() {};
+
+    // Parameterized constructors
     InputAction(string name)
     {
         eventName = name;
         eventActions = vector<InputEvent>();
+    };
+
+
+    InputAction(string name, vector<InputEvent> newEventActions) : InputAction(name)
+    {
+        eventActions = newEventActions;
+    };
+
+
+    /// @brief Add an input event to this action
+    /// @param newEvent The new event to add
+    void AddInputEvent(InputEvent newEvent)
+    {
+        eventActions.push_back(newEvent);
+    };
+
+    /// @brief Get the name of this input action
+    /// @return The name of the input action
+    string GetName()
+    {
+        return eventName;
     }
 
+
+    vector<InputEvent> GetEvents()
+    {
+        return eventActions;
+    }
+
+
+private:
     string eventName;
-    vector<InputEvent> eventActions;
+    vector<InputEvent> eventActions = vector<InputEvent>();
     float eventStrength = 0.0f;
 
 };
@@ -43,22 +76,23 @@ public:
     // Singleton
     static InputManager& instance()
     {
-       static InputManager *instance = new InputManager();
+       static InputManager* instance = new InputManager();
        return *instance;
     };
 
-    void AddActionTrigger(string actionName, int positiveIndex, int controllerId = -1);
-
     bool IsActionPressed(string actionName);
-    bool IsActionHeld(string actionName);
     bool RemoveActionTrigger(string actionName, int positiveIndex, bool isController=false);
     bool HasAction(string actionName);
+    void AddInputAction(InputAction* newAction);
+    void RemoveInputAction(string actionName);
+    void AddActionEvent(string actionName, int positiveIndex, int controllerId);
 
 private:
-    InputManager() {}
+    InputManager() {inputMap = new map<string, InputAction*>();}
+    InputAction* GetAction(string actionName);
     //~InputManager();
 
-    /// @brief The input map containing all input actions keyed to the event name
-    map<string, InputAction> inputMap = map<string, InputAction>();
+    /// @brief The input map containing all input actions keyed to the action name
+    map<string, InputAction*>* inputMap;
     
 };
