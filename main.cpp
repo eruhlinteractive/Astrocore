@@ -24,7 +24,7 @@
 #include "raylib.h"
 #include "game.h"
 #include <iostream>
-#include "input.h"
+#include "AstroCore/input.h"
 #include <string>
 
 
@@ -46,16 +46,16 @@ int main()
     // TEMP testing 
 
     InputEvent keyEvent = InputEvent(69);
-    InputAction* test = new InputAction("test");
-    InputAction* test2 = new InputAction("test2");
+    std::shared_ptr<InputAction> test = std::make_shared<InputAction>("test");
+    std::shared_ptr<InputAction> testTwo = std::make_shared<InputAction>("testTwo");
 
-    test2->AddInputEvent(InputEvent(70));
+    testTwo->AddInputEvent(InputEvent(70));
 
     test->AddInputEvent(keyEvent);
     input.AddInputAction(test);
-    input.AddInputAction(test2);
+    input.AddInputAction(testTwo);
 
-    InitWindow(screenWidth, screenHeight, "Agriculture");
+    InitWindow(screenWidth, screenHeight, "Agromation");
 
     SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
@@ -72,7 +72,7 @@ int main()
         {
             std::cout << "E is pressed!" << std::endl;
         }
-        else if (input.IsActionPressed("test2"))
+        if (input.IsActionPressed("testTwo"))
         {
             std::cout << "F is NOT pressed!" << std::endl;
         }
@@ -93,6 +93,5 @@ int main()
     //--------------------------------------------------------------------------------------
     CloseWindow();        // Close window and OpenGL context
     //--------------------------------------------------------------------------------------
-
     return 0;
 }

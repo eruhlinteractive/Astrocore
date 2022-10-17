@@ -9,7 +9,7 @@ bool InputManager::IsActionPressed(string actionName)
     // Do we have an action at this name currently?
     if (HasAction(actionName))
     {
-        InputAction* action = GetAction(actionName);
+        std::shared_ptr<InputAction> action = GetAction(actionName);
         vector<InputEvent> actionEvents = action->GetEvents();
 
         // Loop through each event, checking if it is currently being pressed
@@ -52,7 +52,7 @@ void InputManager::AddActionEvent(string actionName, int positiveIndex, int cont
     // Update the current action
     if (inputMap->count(actionName) > 0)
     {
-        InputAction* action = (*inputMap)[actionName];
+        shared_ptr<InputAction> action = (*inputMap)[actionName];
 
         // Create new input action
         InputEvent newEvent = InputEvent(controllerId, positiveIndex); 
@@ -62,7 +62,7 @@ void InputManager::AddActionEvent(string actionName, int positiveIndex, int cont
     // Action has not yet been added, create a new action and add event
     else
     {
-        InputAction* newAction = new InputAction(actionName);
+        shared_ptr<InputAction> newAction = std::make_shared<InputAction>(actionName);
         InputEvent newEvent = InputEvent(controllerId, positiveIndex);
         AddInputAction(newAction);
         newAction->AddInputEvent(newEvent);
@@ -94,7 +94,7 @@ void InputManager::RemoveInputAction(string actionName)
 
 /// @brief Add a new input action to the input map
 /// @param newAction The new action to add
-void InputManager::AddInputAction(InputAction* newAction)
+void InputManager::AddInputAction(shared_ptr<InputAction> newAction)
 {
    
     // Action already exists, throw error
@@ -110,7 +110,7 @@ void InputManager::AddInputAction(InputAction* newAction)
 /// @brief Get an input action
 /// @param actionName The name of the input action
 /// @return The input action object
-InputAction* InputManager::GetAction(string actionName)
+shared_ptr<InputAction> InputManager::GetAction(string actionName)
 {
     if (!HasAction(actionName))
     {

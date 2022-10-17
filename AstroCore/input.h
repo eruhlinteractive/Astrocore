@@ -2,6 +2,7 @@
 #include <vector>
 #include <map>
 #include <string>
+#include <memory>
 
 using namespace std;
 
@@ -71,28 +72,31 @@ private:
 
 class InputManager
 {
+private:
+    //InputManager();
+
+    InputManager(){};
+
+    std::shared_ptr<InputAction> GetAction(string actionName);
+    std::shared_ptr< map<string, std::shared_ptr<InputAction> > > inputMap = std::make_shared<map<string, std::shared_ptr<InputAction>>>();
+    //~InputManager();
+
+    /// @brief The input map containing all input actions keyed to the action name
+    //std::shared_ptr< map<string, std::shared_ptr<InputAction> > > inputMap;
+    
 public:
 
     // Singleton
     static InputManager& instance()
     {
-       static InputManager* instance = new InputManager();
-       return *instance;
+       static InputManager instance;
+       return instance;
     };
 
     bool IsActionPressed(string actionName);
     bool RemoveActionTrigger(string actionName, int positiveIndex, bool isController=false);
     bool HasAction(string actionName);
-    void AddInputAction(InputAction* newAction);
+    void AddInputAction(shared_ptr<InputAction> newAction);
     void RemoveInputAction(string actionName);
     void AddActionEvent(string actionName, int positiveIndex, int controllerId);
-
-private:
-    InputManager() {inputMap = new map<string, InputAction*>();}
-    InputAction* GetAction(string actionName);
-    //~InputManager();
-
-    /// @brief The input map containing all input actions keyed to the action name
-    map<string, InputAction*>* inputMap;
-    
 };

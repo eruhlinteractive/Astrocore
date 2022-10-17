@@ -1,14 +1,8 @@
 # ninja log v5
-0	289	1665788648897424690	CMakeFiles/FarmingGame.dir/src/game.cpp.o	ef01d00a1bf64596
-1	382	1665793024011864806	CMakeFiles/FarmingGame.dir/main.cpp.o	2a4685663f9c88
-479	559	1665793024187861245	FarmingGame	ababc38caa506371
-1	479	1665793024107862863	CMakeFiles/FarmingGame.dir/EngineCore/input.cpp.o	bce9215aad315872
-0	283	1665793301142327558	CMakeFiles/FarmingGame.dir/src/game.cpp.o	ef01d00a1bf64596
-0	365	1665793301222325975	CMakeFiles/FarmingGame.dir/main.cpp.o	2a4685663f9c88
-0	493	1665793301350323446	CMakeFiles/FarmingGame.dir/EngineCore/input.cpp.o	bce9215aad315872
-493	589	1665793301446321548	FarmingGame	ababc38caa506371
-1	374	1665798132242187320	CMakeFiles/FarmingGame.dir/main.cpp.o	2a4685663f9c88
-1	501	1665798132370184229	CMakeFiles/FarmingGame.dir/EngineCore/input.cpp.o	bce9215aad315872
-501	593	1665798132462182007	FarmingGame	ababc38caa506371
-1	467	1665798140853979642	CMakeFiles/FarmingGame.dir/EngineCore/input.cpp.o	bce9215aad315872
-467	555	1665798140941977523	FarmingGame	ababc38caa506371
+1	274	1665980769672819042	CMakeFiles/FarmingGame.dir/src/game.cpp.o	966d025396f2a6e5
+0	476	1665980793216471136	CMakeFiles/FarmingGame.dir/main.cpp.o	946772815581a748
+485	575	1665980227940942000	FarmingGame	ababc38caa506371
+1	631	1665980209889218339	CMakeFiles/FarmingGame.dir/EngineCore/input.cpp.o	bce9215aad315872
+1	549	1665980585175556712	AstroCore/CMakeFiles/astrocore.dir/input.cpp.o	19c7fcb59151425d
+1	51	1665980611207169069	AstroCore/libastrocore.a	fbc6767644bd65c
+1	98	1665980817796108223	FarmingGame	94efad2fa9163b6

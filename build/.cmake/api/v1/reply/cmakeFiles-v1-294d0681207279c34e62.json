@@ -158,6 +158,9 @@
 		{
 			"isExternal" : true,
 			"path" : "/usr/share/cmake-3.22/Templates/CPackConfig.cmake.in"
+		},
+		{
+			"path" : "AstroCore/CMakeLists.txt"
 		}
 	],
 	"kind" : "cmakeFiles",

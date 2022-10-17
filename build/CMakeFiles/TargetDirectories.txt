@@ -32,3 +32,9 @@
 /mnt/ChungusL/GitHubRepos/raylib-farmer/build/CMakeFiles/test.dir
 /mnt/ChungusL/GitHubRepos/raylib-farmer/build/CMakeFiles/edit_cache.dir
 /mnt/ChungusL/GitHubRepos/raylib-farmer/build/CMakeFiles/rebuild_cache.dir
+/mnt/ChungusL/GitHubRepos/raylib-farmer/build/AstroCore/CMakeFiles/astrocore.dir
+/mnt/ChungusL/GitHubRepos/raylib-farmer/build/AstroCore/CMakeFiles/package.dir
+/mnt/ChungusL/GitHubRepos/raylib-farmer/build/AstroCore/CMakeFiles/package_source.dir
+/mnt/ChungusL/GitHubRepos/raylib-farmer/build/AstroCore/CMakeFiles/test.dir
+/mnt/ChungusL/GitHubRepos/raylib-farmer/build/AstroCore/CMakeFiles/edit_cache.dir
+/mnt/ChungusL/GitHubRepos/raylib-farmer/build/AstroCore/CMakeFiles/rebuild_cache.dir

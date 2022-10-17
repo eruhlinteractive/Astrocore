@@ -6,6 +6,10 @@
 			[
 				{
 					"build" : ".",
+					"childIndexes" : 
+					[
+						1
+					],
 					"jsonFile" : "directory-.-Debug-f5ebdc15457944623624.json",
 					"minimumCMakeVersion" : 
 					{
@@ -45,6 +49,21 @@
 						27,
 						28
 					]
+				},
+				{
+					"build" : "AstroCore",
+					"jsonFile" : "directory-AstroCore-Debug-8e8478516f930b87829c.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0.0"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "AstroCore",
+					"targetIndexes" : 
+					[
+						29
+					]
 				}
 			],
 			"name" : "Debug",
@@ -53,7 +72,8 @@
 				{
 					"directoryIndexes" : 
 					[
-						0
+						0,
+						1
 					],
 					"name" : "FarmingGame",
 					"targetIndexes" : 
@@ -86,7 +106,8 @@
 						25,
 						26,
 						27,
-						28
+						28,
+						29
 					]
 				}
 			],
@@ -221,7 +242,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "FarmingGame::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-FarmingGame-Debug-7083e78fc24af70e2369.json",
+					"jsonFile" : "target-FarmingGame-Debug-50f0f1e19935ef769f5a.json",
 					"name" : "FarmingGame",
 					"projectIndex" : 0
 				},
@@ -293,6 +314,13 @@
 					"id" : "NightlyUpdate::@6890427a1f51a3e7e1df",
 					"jsonFile" : "target-NightlyUpdate-Debug-63d766d752c6738946de.json",
 					"name" : "NightlyUpdate",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "astrocore::@116ad4d991f191d04724",
+					"jsonFile" : "target-astrocore-Debug-5ffdaecb5125c2f3a11e.json",
+					"name" : "astrocore",
 					"projectIndex" : 0
 				}
 			]
