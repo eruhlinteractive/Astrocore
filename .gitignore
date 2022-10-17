@@ -30,3 +30,7 @@
 *.exe
 *.out
 *.app
+
+
+# Build is different from system to system, and gets rebuilt by CMake
+build/*

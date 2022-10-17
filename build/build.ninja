@@ -220,14 +220,14 @@ build cmake_object_order_depends_target_FarmingGame: phony || cmake_object_order
 build CMakeFiles/FarmingGame.dir/main.cpp.o: CXX_COMPILER__FarmingGame_Debug /mnt/ChungusL/GitHubRepos/raylib-farmer/main.cpp || cmake_object_order_depends_target_FarmingGame
   DEP_FILE = CMakeFiles/FarmingGame.dir/main.cpp.o.d
   FLAGS = -g
-  INCLUDES = -I/mnt/ChungusL/GitHubRepos/raylib-farmer/AstroCore/headers -I/mnt/ChungusL/GitHubRepos/raylib-farmer/include -I/mnt/ChungusL/GitHubRepos/raylib-farmer/header
+  INCLUDES = -I/mnt/ChungusL/GitHubRepos/raylib-farmer/AstroCore/../headers -I/mnt/ChungusL/GitHubRepos/raylib-farmer/include -I/mnt/ChungusL/GitHubRepos/raylib-farmer/header
   OBJECT_DIR = CMakeFiles/FarmingGame.dir
   OBJECT_FILE_DIR = CMakeFiles/FarmingGame.dir
 
 build CMakeFiles/FarmingGame.dir/src/game.cpp.o: CXX_COMPILER__FarmingGame_Debug /mnt/ChungusL/GitHubRepos/raylib-farmer/src/game.cpp || cmake_object_order_depends_target_FarmingGame
   DEP_FILE = CMakeFiles/FarmingGame.dir/src/game.cpp.o.d
   FLAGS = -g
-  INCLUDES = -I/mnt/ChungusL/GitHubRepos/raylib-farmer/AstroCore/headers -I/mnt/ChungusL/GitHubRepos/raylib-farmer/include -I/mnt/ChungusL/GitHubRepos/raylib-farmer/header
+  INCLUDES = -I/mnt/ChungusL/GitHubRepos/raylib-farmer/AstroCore/../headers -I/mnt/ChungusL/GitHubRepos/raylib-farmer/include -I/mnt/ChungusL/GitHubRepos/raylib-farmer/header
   OBJECT_DIR = CMakeFiles/FarmingGame.dir
   OBJECT_FILE_DIR = CMakeFiles/FarmingGame.dir/src
 
@@ -242,8 +242,8 @@ build CMakeFiles/FarmingGame.dir/src/game.cpp.o: CXX_COMPILER__FarmingGame_Debug
 build FarmingGame: CXX_EXECUTABLE_LINKER__FarmingGame_Debug CMakeFiles/FarmingGame.dir/main.cpp.o CMakeFiles/FarmingGame.dir/src/game.cpp.o | AstroCore/libastrocore.a || AstroCore/libastrocore.a
   FLAGS = -g
   LINK_FLAGS = -rdynamic
-  LINK_LIBRARIES = -Wl,-rpath,/mnt/ChungusL/GitHubRepos/raylib-farmer/src  -lraylib  AstroCore/libastrocore.a
-  LINK_PATH = -L/mnt/ChungusL/GitHubRepos/raylib-farmer/src
+  LINK_LIBRARIES = -Wl,-rpath,/mnt/ChungusL/GitHubRepos/raylib-farmer/src:/mnt/ChungusL/GitHubRepos/raylib-farmer/lib  -lraylib  AstroCore/libastrocore.a
+  LINK_PATH = -L/mnt/ChungusL/GitHubRepos/raylib-farmer/src   -L/mnt/ChungusL/GitHubRepos/raylib-farmer/lib
   OBJECT_DIR = CMakeFiles/FarmingGame.dir
   POST_BUILD = :
   PRE_LINK = :
@@ -553,6 +553,12 @@ build AstroCore/CMakeFiles/astrocore.dir/input.cpp.o: CXX_COMPILER__astrocore_De
   OBJECT_DIR = AstroCore/CMakeFiles/astrocore.dir
   OBJECT_FILE_DIR = AstroCore/CMakeFiles/astrocore.dir
 
+build AstroCore/CMakeFiles/astrocore.dir/file.cpp.o: CXX_COMPILER__astrocore_Debug /mnt/ChungusL/GitHubRepos/raylib-farmer/AstroCore/file.cpp || cmake_object_order_depends_target_astrocore
+  DEP_FILE = AstroCore/CMakeFiles/astrocore.dir/file.cpp.o.d
+  FLAGS = -g
+  OBJECT_DIR = AstroCore/CMakeFiles/astrocore.dir
+  OBJECT_FILE_DIR = AstroCore/CMakeFiles/astrocore.dir
+
 
 # =============================================================================
 # Link build statements for STATIC_LIBRARY target astrocore
@@ -561,7 +567,7 @@ build AstroCore/CMakeFiles/astrocore.dir/input.cpp.o: CXX_COMPILER__astrocore_De
 #############################################
 # Link the static library AstroCore/libastrocore.a
 
-build AstroCore/libastrocore.a: CXX_STATIC_LIBRARY_LINKER__astrocore_Debug AstroCore/CMakeFiles/astrocore.dir/input.cpp.o
+build AstroCore/libastrocore.a: CXX_STATIC_LIBRARY_LINKER__astrocore_Debug AstroCore/CMakeFiles/astrocore.dir/input.cpp.o AstroCore/CMakeFiles/astrocore.dir/file.cpp.o
   LANGUAGE_COMPILE_FLAGS = -g
   OBJECT_DIR = AstroCore/CMakeFiles/astrocore.dir
   POST_BUILD = :
