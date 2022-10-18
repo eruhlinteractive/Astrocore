@@ -24,7 +24,7 @@
 #include "raylib.h"
 #include "game.h"
 #include <iostream>
-#include "AstroCore/input.h"
+#include "AstroCore/engine/input.h"
 #include <string>
 
 int main()
@@ -61,15 +61,6 @@ int main()
         //----------------------------------------------------------------------------------
         // TODO: Update your variables here
         //----------------------------------------------------------------------------------
-
-        if (input.IsActionPressed("test"))
-        {
-            std::cout << "E is pressed!" << std::endl;
-        }
-        if (input.IsActionPressed("testTwo"))
-        {
-            std::cout << "F is NOT pressed!" << std::endl;
-        }
 
         // Draw
         //----------------------------------------------------------------------------------

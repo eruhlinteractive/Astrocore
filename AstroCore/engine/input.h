@@ -1,4 +1,4 @@
-#include "../include/raylib.h"
+#include "../../include/raylib.h"
 #include <vector>
 #include <map>
 #include <string>
@@ -73,16 +73,14 @@ private:
 class InputManager
 {
 private:
-    //InputManager();
-
     InputManager(){};
 
     std::shared_ptr<InputAction> GetAction(string actionName);
-    std::shared_ptr< map<string, std::shared_ptr<InputAction> > > inputMap = std::make_shared<map<string, std::shared_ptr<InputAction>>>();
-    //~InputManager();
 
     /// @brief The input map containing all input actions keyed to the action name
-    //std::shared_ptr< map<string, std::shared_ptr<InputAction> > > inputMap;
+    std::shared_ptr< map<string, std::shared_ptr<InputAction> > > inputMap = std::make_shared<map<string, std::shared_ptr<InputAction>>>();
+
+    
     
 public:
 
