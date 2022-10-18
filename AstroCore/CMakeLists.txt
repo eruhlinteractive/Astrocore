@@ -1,6 +1,7 @@
 add_library(astrocore 
 engine/input.cpp
 engine/file.cpp
+engine/game.cpp
 )
 
 target_include_directories(${PROJECT_NAME} 

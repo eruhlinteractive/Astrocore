@@ -3,7 +3,9 @@
 
 class File
 {
-//public:
+public:
+
+
 
 //private:
 
