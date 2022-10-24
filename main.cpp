@@ -25,6 +25,7 @@
 #include "game.h"
 #include <iostream>
 #include "AstroCore/input.h"
+#include "AstroCore/entity.h"
 #include <string>
 
 int main()
@@ -61,7 +62,7 @@ int main()
         //----------------------------------------------------------------------------------
         // TODO: Update your variables here
         //----------------------------------------------------------------------------------
-
+        DrawFPS(10,10);
         if (input.IsActionPressed("test"))
         {
             std::cout << "E is pressed!" << std::endl;
@@ -71,6 +72,7 @@ int main()
             std::cout << "F is NOT pressed!" << std::endl;
         }
 
+        
         // Draw
         //----------------------------------------------------------------------------------
         BeginDrawing();

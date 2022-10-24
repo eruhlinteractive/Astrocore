@@ -17,6 +17,7 @@ target_include_directories(${PROJECT_NAME}
 target_link_directories(${PROJECT_NAME}
     PRIVATE src
     PRIVATE lib
+    PRIVATE res
  )
 
 target_link_libraries(${PROJECT_NAME} raylib astrocore)

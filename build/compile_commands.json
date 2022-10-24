@@ -18,5 +18,15 @@
   "directory": "/mnt/ChungusL/GitHubRepos/raylib-farmer/build",
   "command": "/usr/bin/g++ -g -o AstroCore/CMakeFiles/astrocore.dir/file.cpp.o -c /mnt/ChungusL/GitHubRepos/raylib-farmer/AstroCore/file.cpp",
   "file": "/mnt/ChungusL/GitHubRepos/raylib-farmer/AstroCore/file.cpp"
+},
+{
+  "directory": "/mnt/ChungusL/GitHubRepos/raylib-farmer/build",
+  "command": "/usr/bin/g++ -g -o AstroCore/CMakeFiles/astrocore.dir/entity.cpp.o -c /mnt/ChungusL/GitHubRepos/raylib-farmer/AstroCore/entity.cpp",
+  "file": "/mnt/ChungusL/GitHubRepos/raylib-farmer/AstroCore/entity.cpp"
+},
+{
+  "directory": "/mnt/ChungusL/GitHubRepos/raylib-farmer/build",
+  "command": "/usr/bin/g++ -g -o AstroCore/CMakeFiles/astrocore.dir/spriteEntity.cpp.o -c /mnt/ChungusL/GitHubRepos/raylib-farmer/AstroCore/spriteEntity.cpp",
+  "file": "/mnt/ChungusL/GitHubRepos/raylib-farmer/AstroCore/spriteEntity.cpp"
 }
 ]

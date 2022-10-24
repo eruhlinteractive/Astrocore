@@ -242,8 +242,8 @@ build CMakeFiles/FarmingGame.dir/src/game.cpp.o: CXX_COMPILER__FarmingGame_Debug
 build FarmingGame: CXX_EXECUTABLE_LINKER__FarmingGame_Debug CMakeFiles/FarmingGame.dir/main.cpp.o CMakeFiles/FarmingGame.dir/src/game.cpp.o | AstroCore/libastrocore.a || AstroCore/libastrocore.a
   FLAGS = -g
   LINK_FLAGS = -rdynamic
-  LINK_LIBRARIES = -Wl,-rpath,/mnt/ChungusL/GitHubRepos/raylib-farmer/src:/mnt/ChungusL/GitHubRepos/raylib-farmer/lib  -lraylib  AstroCore/libastrocore.a
-  LINK_PATH = -L/mnt/ChungusL/GitHubRepos/raylib-farmer/src   -L/mnt/ChungusL/GitHubRepos/raylib-farmer/lib
+  LINK_LIBRARIES = -Wl,-rpath,/mnt/ChungusL/GitHubRepos/raylib-farmer/src:/mnt/ChungusL/GitHubRepos/raylib-farmer/lib:/mnt/ChungusL/GitHubRepos/raylib-farmer/res  -lraylib  AstroCore/libastrocore.a
+  LINK_PATH = -L/mnt/ChungusL/GitHubRepos/raylib-farmer/src   -L/mnt/ChungusL/GitHubRepos/raylib-farmer/lib   -L/mnt/ChungusL/GitHubRepos/raylib-farmer/res
   OBJECT_DIR = CMakeFiles/FarmingGame.dir
   POST_BUILD = :
   PRE_LINK = :
@@ -559,6 +559,18 @@ build AstroCore/CMakeFiles/astrocore.dir/file.cpp.o: CXX_COMPILER__astrocore_Deb
   OBJECT_DIR = AstroCore/CMakeFiles/astrocore.dir
   OBJECT_FILE_DIR = AstroCore/CMakeFiles/astrocore.dir
 
+build AstroCore/CMakeFiles/astrocore.dir/entity.cpp.o: CXX_COMPILER__astrocore_Debug /mnt/ChungusL/GitHubRepos/raylib-farmer/AstroCore/entity.cpp || cmake_object_order_depends_target_astrocore
+  DEP_FILE = AstroCore/CMakeFiles/astrocore.dir/entity.cpp.o.d
+  FLAGS = -g
+  OBJECT_DIR = AstroCore/CMakeFiles/astrocore.dir
+  OBJECT_FILE_DIR = AstroCore/CMakeFiles/astrocore.dir
+
+build AstroCore/CMakeFiles/astrocore.dir/spriteEntity.cpp.o: CXX_COMPILER__astrocore_Debug /mnt/ChungusL/GitHubRepos/raylib-farmer/AstroCore/spriteEntity.cpp || cmake_object_order_depends_target_astrocore
+  DEP_FILE = AstroCore/CMakeFiles/astrocore.dir/spriteEntity.cpp.o.d
+  FLAGS = -g
+  OBJECT_DIR = AstroCore/CMakeFiles/astrocore.dir
+  OBJECT_FILE_DIR = AstroCore/CMakeFiles/astrocore.dir
+
 
 # =============================================================================
 # Link build statements for STATIC_LIBRARY target astrocore
@@ -567,7 +579,7 @@ build AstroCore/CMakeFiles/astrocore.dir/file.cpp.o: CXX_COMPILER__astrocore_Deb
 #############################################
 # Link the static library AstroCore/libastrocore.a
 
-build AstroCore/libastrocore.a: CXX_STATIC_LIBRARY_LINKER__astrocore_Debug AstroCore/CMakeFiles/astrocore.dir/input.cpp.o AstroCore/CMakeFiles/astrocore.dir/file.cpp.o
+build AstroCore/libastrocore.a: CXX_STATIC_LIBRARY_LINKER__astrocore_Debug AstroCore/CMakeFiles/astrocore.dir/input.cpp.o AstroCore/CMakeFiles/astrocore.dir/file.cpp.o AstroCore/CMakeFiles/astrocore.dir/entity.cpp.o AstroCore/CMakeFiles/astrocore.dir/spriteEntity.cpp.o
   LANGUAGE_COMPILE_FLAGS = -g
   OBJECT_DIR = AstroCore/CMakeFiles/astrocore.dir
   POST_BUILD = :
