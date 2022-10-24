@@ -6,5 +6,11 @@ spriteEntity.cpp
 )
 
 target_include_directories(${PROJECT_NAME} 
-    PUBLIC ../headers
+    PUBLIC ../header
+    PUBLIC include
+)
+
+target_link_directories(${PROJECT_NAME}
+    PRIVATE src
+    PRIVATE lib
 )
