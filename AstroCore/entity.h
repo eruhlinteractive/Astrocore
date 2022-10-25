@@ -2,6 +2,10 @@
 #include <vector>
 #include <memory>
 
+#ifndef Entity2D_H
+#define Entity2D_H
+#endif
+
 class Entity2D
 {
 public:
@@ -52,7 +56,7 @@ public:
     int GetChildCount();
 
 
-private:
+protected:
     float positionX = 0.0f;
     float positionY = 0.0f;
 

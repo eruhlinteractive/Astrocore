@@ -25,8 +25,8 @@
 #include "game.h"
 #include <iostream>
 #include "AstroCore/input.h"
-#include "AstroCore/entity.h"
 #include <string>
+#include "AstroCore/spriteEntity.h"
 
 int main()
 {
@@ -52,6 +52,9 @@ int main()
 
     InitWindow(screenWidth, screenHeight, "Agromation");
 
+    SpriteEntity* testSprite = new SpriteEntity({24,24}, {48,48},"../src/res/testSprite.png");
+
+    testSprite->MoveGlobal({screenWidth/2 ,screenHeight/2});
     SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
 
@@ -65,14 +68,15 @@ int main()
         DrawFPS(10,10);
         if (input.IsActionPressed("test"))
         {
-            std::cout << "E is pressed!" << std::endl;
+            //std::cout << "E is pressed!" << std::endl;
+            testSprite->RotateDeg(20.0);
         }
         if (input.IsActionPressed("testTwo"))
         {
-            std::cout << "F is NOT pressed!" << std::endl;
+            //std::cout << "F is NOT pressed!" << std::endl;
+            testSprite->RotateDeg(-20.0);
         }
-
-        
+        //testSprite->MoveLocal({5.0 * GetFrameTime(), 5.0 * GetFrameTime()});
         // Draw
         //----------------------------------------------------------------------------------
         BeginDrawing();
@@ -80,6 +84,8 @@ int main()
             ClearBackground(RAYWHITE);
 
             DrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
+            testSprite->Draw();
+
 
         EndDrawing();
         //----------------------------------------------------------------------------------
