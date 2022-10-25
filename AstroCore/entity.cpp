@@ -1,6 +1,7 @@
 #include "entity.h"
 #include <math.h>
 #include <iostream>
+#include <stdexcept>
 
 #pragma region Constructors
 Entity2D::Entity2D()
@@ -33,7 +34,6 @@ Entity2D::~Entity2D()
 
 #pragma region Transformation Functions
 
-
 /// @brief Move the position in the global space
 /// @param movement The vector of movement
 void Entity2D::MoveGlobal(Vector2 movement)
@@ -61,7 +61,7 @@ void Entity2D::MoveLocal(Vector2 movement)
 /// @param rotRad The delta rotation in radians
 void Entity2D::Rotate(float rotRad)
 {
-    std::cout<< GetRotation() << std::endl;
+    //std::cout<< GetRotation() << std::endl;
     rotation += rotRad;
 
     // Keep within range 0-> 2PI
@@ -72,10 +72,8 @@ void Entity2D::Rotate(float rotRad)
 /// @param rotRad The delta rotation in radians
 void Entity2D::RotateDeg(float rotdeg)
 {
-    std::cout<< GetRotation() << std::endl;    
+    //std::cout<< GetRotation() << std::endl;    
     rotation += (rotdeg * ((float)M_PI / 180.0f));
-
-    
 
     // Keep within range 0-> 2PI
     rotation = std::fmod(rotation, (2.0f * M_PI));
@@ -119,8 +117,15 @@ void Entity2D::SetRotationDeg(float newRotationDeg)
 
 
 #pragma endregion
+
 #pragma region Children Functions
 
+/// @brief Get the parent of this object
+/// @return The raw ptr to the object, or nullptr if it doesn't exist
+Entity2D* Entity2D::GetParent()
+{
+    return parentEntity;
+}
 
 /// @brief Update the entity
 /// @param deltaTime The time since the previous frame
@@ -129,6 +134,40 @@ void Entity2D::Update(float deltaTime)
     if(!isReady)
     {
         Ready();
+    }
+}
+
+/// @brief Get the child ptr of a child at a specific index
+/// @param index The index of the child in the vector
+/// @return A pointer to the child entity
+Entity2D* Entity2D::GetChild(int index)
+{
+    if(children->size() < index)
+    {
+        return (*children)[index];
+    }
+
+    // Throw error, index out of bounds
+    throw std::invalid_argument("Child index out of bounds");
+}
+
+void Entity2D::SetParent(Entity2D* newParent)
+{
+    parentEntity = newParent;
+}
+
+/// @brief Add and entity as a child of this entity
+/// @param newChild The new child to add to this entity
+void Entity2D::AddChild(Entity2D* newChild)
+{
+    if(newChild->GetParent() != this)
+    {
+        // TODO: Swap parents, or throw error
+    }
+    else
+    {
+        children->push_back(newChild);
+        newChild->SetParent(this);
     }
 }
 #pragma endregion

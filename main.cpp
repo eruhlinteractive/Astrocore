@@ -26,6 +26,7 @@
 #include <iostream>
 //#include "AstroCore/input.h"
 #include <string>
+#include <math.h>
 #include "AstroCore/astrocore.h"
 
 int main()

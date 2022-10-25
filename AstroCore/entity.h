@@ -54,6 +54,9 @@ public:
     void RemoveChild(Entity2D*);
     bool HasChild(Entity2D*);
     int GetChildCount();
+    Entity2D* GetParent();
+
+    void SetParent(Entity2D* parent);
 
 
 protected:
@@ -68,8 +71,8 @@ protected:
     bool isReady = false;
 
     /// @brief The children of this entity
-    std::unique_ptr<std::vector<Entity2D*> > children = std::make_unique<std::vector<Entity2D*>>();
-
+    std::unique_ptr<std::vector<Entity2D*>> children = std::make_unique<std::vector<Entity2D*>>();
+    Entity2D* parentEntity;
 };
 
 #endif // Entity

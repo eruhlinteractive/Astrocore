@@ -40,5 +40,5 @@ void SpriteEntity::Draw()
 
 
     //DrawTextureEx(spriteText, {positionX + originX,positionY + originY}, rotation, scaleX, WHITE);
-    DrawTexturePro(spriteText, srcRect, destRect, {originX,originY}, rotation * (180.0/PI), WHITE);
+    DrawTexturePro(spriteText, srcRect, destRect, {originX * scaleX ,originY * scaleY}, rotation * (180.0/PI), WHITE);
 }
