@@ -56,7 +56,15 @@ int main()
 
     SpriteEntity* testSprite = new SpriteEntity({24,24}, {48,48},"../src/res/testSprite.png");
 
-    testSprite->MoveGlobal({screenWidth/2 ,screenHeight/2});
+    SpriteEntity* testChild = new SpriteEntity({24,24}, {48,48},"../src/res/testSprite.png");
+
+    testChild->SetScale({0.5,0.5});
+
+    testChild->MoveGlobal({50,0});
+    testSprite->AddChild(testChild);
+
+    testSprite->MoveGlobal({screenWidth/2 + 50 ,screenHeight/2 + 50});
+    testSprite->RotateDeg(45);
 
     std::shared_ptr<InputAction> up = std::make_shared<InputAction>("up");
     up->AddInputEvent(InputEvent(KEY_W));
@@ -76,28 +84,31 @@ int main()
         DrawFPS(10,10);
         if (input.IsActionPressed("rotRight"))
         {
-            //std::cout << "E is pressed!" << std::endl;
-            testSprite->RotateDeg(-1);
+            testChild->RotateDeg(-1);
         }
         if (input.IsActionPressed("rotLeft"))
         {
-            //std::cout << "F is NOT pressed!" << std::endl;
-            testSprite->RotateDeg(1);
+            testChild->RotateDeg(1);
         }
+        testSprite->RotateAroundPoint(0.04, {screenWidth/2 ,screenHeight/2});
 
         if(input.IsActionPressed("up"))
         {
             testSprite->MoveLocal({0,50 * GetFrameTime()});
         }
-        //testSprite->MoveLocal({5.0 * GetFrameTime(), 5.0 * GetFrameTime()});
+
         // Draw
         //----------------------------------------------------------------------------------
         BeginDrawing();
 
             ClearBackground(RAYWHITE);
 
-            DrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
+            DrawLine(screenWidth / 2, 0, screenWidth/2, screenHeight, GRAY);
+            DrawLine(0, screenHeight/2, screenWidth, screenHeight/2, GRAY);
+
+            //DrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
             testSprite->Draw();
+            testChild->Draw();
 
 
         EndDrawing();

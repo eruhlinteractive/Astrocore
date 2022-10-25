@@ -17,8 +17,13 @@ public:
     // Transformation functions
     void MoveLocal(Vector2 movement);
     void MoveGlobal(Vector2 movement);
+
     void Rotate(float rotRad);
+    void RotateAroundPoint(float rotRad, Vector2 point);
+
+    void RotateDegAroundPoint(float rotDeg, Vector2 point);
     void RotateDeg(float rotDeg);
+   
 
     void SetPosition(Vector2 newPosition);
     void SetScale(Vector2 newScale);
@@ -28,6 +33,7 @@ public:
     /// @brief Get the rotaion of the body in radians
     /// @return The rotation of the body in radians
     float GetRotation() {return rotation;}
+    Vector2 GetGlobalPosition();
     float GetRotationDeg(){ return (rotation * 180/PI);}
     Vector2 GetPosition() {return Vector2{positionX,positionY};}
     Vector2 GetScale() {return Vector2{positionX,positionY};}
@@ -49,10 +55,10 @@ public:
 
     // Get children
     std::vector<Entity2D*>* GetChildren();
-    Entity2D* GetChild(int index);
+    Entity2D* GetChildAtIndex(int index);
     void AddChild(Entity2D* newChild);
-    void RemoveChild(Entity2D*);
-    bool HasChild(Entity2D*);
+    void RemoveChild(Entity2D* childToCheck);
+    bool HasChild(Entity2D* childToCheck);
     int GetChildCount();
     Entity2D* GetParent();
 
