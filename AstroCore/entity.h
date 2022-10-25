@@ -2,9 +2,9 @@
 #include <vector>
 #include <memory>
 
-#ifndef Entity2D_H
-#define Entity2D_H
-#endif
+#ifndef ENTITY2D_H
+#define ENTITY2D_H
+
 
 class Entity2D
 {
@@ -71,3 +71,5 @@ protected:
     std::unique_ptr<std::vector<Entity2D*> > children = std::make_unique<std::vector<Entity2D*>>();
 
 };
+
+#endif // Entity

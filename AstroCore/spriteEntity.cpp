@@ -1,8 +1,6 @@
 #include "spriteEntity.h"
 #include <iostream>
 
-
-
 SpriteEntity::SpriteEntity(string spriteSrcPath)
 {
     this->spriteSrcPath = spriteSrcPath;
@@ -42,5 +40,5 @@ void SpriteEntity::Draw()
 
 
     //DrawTextureEx(spriteText, {positionX + originX,positionY + originY}, rotation, scaleX, WHITE);
-    DrawTexturePro(spriteText, srcRect, destRect, {originX,originY}, rotation, WHITE);
+    DrawTexturePro(spriteText, srcRect, destRect, {originX,originY}, rotation * (180.0/PI), WHITE);
 }

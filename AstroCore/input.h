@@ -1,8 +1,13 @@
+#ifndef INPUT_H
+#define INPUT_H
+
+
 #include <raylib.h>
 #include <vector>
 #include <map>
 #include <string>
 #include <memory>
+
 
 using namespace std;
 
@@ -98,3 +103,4 @@ public:
     void RemoveInputAction(string actionName);
     void AddActionEvent(string actionName, int positiveIndex, int controllerId);
 };
+#endif

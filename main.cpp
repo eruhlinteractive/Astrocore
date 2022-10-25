@@ -24,9 +24,9 @@
 #include "raylib.h"
 #include "game.h"
 #include <iostream>
-#include "AstroCore/input.h"
+//#include "AstroCore/input.h"
 #include <string>
-#include "AstroCore/spriteEntity.h"
+#include "AstroCore/astrocore.h"
 
 int main()
 {
@@ -40,21 +40,28 @@ int main()
     
     // TEMP testing 
 
-    InputEvent keyEvent = InputEvent(69);
-    std::shared_ptr<InputAction> test = std::make_shared<InputAction>("test");
-    std::shared_ptr<InputAction> testTwo = std::make_shared<InputAction>("testTwo");
+    InputEvent keyEvent = InputEvent(KEY_E);
+    std::shared_ptr<InputAction> right = std::make_shared<InputAction>("rotRight");
+   
 
-    testTwo->AddInputEvent(InputEvent(70));
+    right->AddInputEvent(InputEvent(KEY_Q));
 
-    test->AddInputEvent(keyEvent);
-    input.AddInputAction(test);
-    input.AddInputAction(testTwo);
+    std::shared_ptr<InputAction> left = std::make_shared<InputAction>("rotLeft");
+    left->AddInputEvent(keyEvent);
+    input.AddInputAction(right);
+    input.AddInputAction(left);
 
     InitWindow(screenWidth, screenHeight, "Agromation");
 
     SpriteEntity* testSprite = new SpriteEntity({24,24}, {48,48},"../src/res/testSprite.png");
 
     testSprite->MoveGlobal({screenWidth/2 ,screenHeight/2});
+
+    std::shared_ptr<InputAction> up = std::make_shared<InputAction>("up");
+    up->AddInputEvent(InputEvent(KEY_W));
+    input.AddInputAction(up);
+
+    //testSprite->SetRotation(0.78539);
     SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
 
@@ -66,15 +73,20 @@ int main()
         // TODO: Update your variables here
         //----------------------------------------------------------------------------------
         DrawFPS(10,10);
-        if (input.IsActionPressed("test"))
+        if (input.IsActionPressed("rotRight"))
         {
             //std::cout << "E is pressed!" << std::endl;
-            testSprite->RotateDeg(20.0);
+            testSprite->RotateDeg(-1);
         }
-        if (input.IsActionPressed("testTwo"))
+        if (input.IsActionPressed("rotLeft"))
         {
             //std::cout << "F is NOT pressed!" << std::endl;
-            testSprite->RotateDeg(-20.0);
+            testSprite->RotateDeg(1);
+        }
+
+        if(input.IsActionPressed("up"))
+        {
+            testSprite->MoveLocal({0,50 * GetFrameTime()});
         }
         //testSprite->MoveLocal({5.0 * GetFrameTime(), 5.0 * GetFrameTime()});
         // Draw

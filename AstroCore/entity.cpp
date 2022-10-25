@@ -2,9 +2,6 @@
 #include <math.h>
 #include <iostream>
 
-
-
-
 #pragma region Constructors
 Entity2D::Entity2D()
 {
@@ -49,9 +46,13 @@ void Entity2D::MoveGlobal(Vector2 movement)
 /// @param movement The vector of movement
 void Entity2D::MoveLocal(Vector2 movement)
 {
+
     Vector2 movLocal = movement;
     movLocal.x = movement.x * cos(rotation) - movement.y * sin(rotation);
     movLocal.y = movement.x * sin(rotation) + movement.y * cos(rotation);
+
+    //std::cout<< movLocal.x << ":" << movLocal.y << std::endl;
+    
     positionX += movLocal.x;
     positionY += movLocal.y;
 }
@@ -60,20 +61,24 @@ void Entity2D::MoveLocal(Vector2 movement)
 /// @param rotRad The delta rotation in radians
 void Entity2D::Rotate(float rotRad)
 {
+    std::cout<< GetRotation() << std::endl;
     rotation += rotRad;
 
     // Keep within range 0-> 2PI
-    //rotation = std::fmod(rotation, (2.0f * M_PI));
+    rotation = std::fmod(rotation, (2.0f * M_PI));
 }
 
 /// @brief Rotate the entity by rotDeg degrees
 /// @param rotRad The delta rotation in radians
 void Entity2D::RotateDeg(float rotdeg)
 {
-    rotation += (rotdeg * M_PI / 180);
+    std::cout<< GetRotation() << std::endl;    
+    rotation += (rotdeg * ((float)M_PI / 180.0f));
+
+    
 
     // Keep within range 0-> 2PI
-    //rotation = std::fmod(rotation, (2.0f * M_PI));
+    rotation = std::fmod(rotation, (2.0f * M_PI));
 }
 
 /// @brief Set the position of this entity

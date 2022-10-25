@@ -2,9 +2,9 @@
 #include "entity.h"
 #include <string>
 
-#ifndef Entity2D_H
-#define Entity2D_H
-#endif
+#ifndef SPRITE_ENTITY
+#define SPRITE_ENTITY
+
 
 using namespace std;
 
@@ -17,7 +17,6 @@ public:
     void Init();
     virtual void Draw();
     ~SpriteEntity();
-
 
 private:
     string spriteSrcPath;
@@ -32,3 +31,5 @@ private:
     Rectangle destRect;
     
 };
+
+#endif // Sprite entity
