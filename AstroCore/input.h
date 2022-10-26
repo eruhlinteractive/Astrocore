@@ -7,25 +7,10 @@
 #include <map>
 #include <string>
 #include <memory>
+#include "structs.h"
 
 
 using namespace std;
-
-/// @brief A struct representing a single input event (i.e an 'E' key press or 'A' button press on a controller)
-struct InputEvent
-{
-    // Constructor
-    InputEvent(int inputIndex, int actionControllerId =-1) 
-    {
-        controllerId = actionControllerId;
-        positiveInput = inputIndex;
-    };
-    /// Is this a controller action?
-    int controllerId = -1;
-
-    // What index is the positive(on) input?
-    int positiveInput;
-};
 
 /// @brief A struct representing a single input action (i.e jump)
 class InputAction
@@ -39,6 +24,13 @@ public:
         eventName = name;
         eventActions = vector<InputEvent>();
     };
+
+    // Create input with default event
+    InputAction(string name, int inputTrigger, int controllerId = -1): InputAction(name)
+    {
+        InputEvent defaultEvent = InputEvent(inputTrigger, controllerId);
+        this->AddInputEvent(defaultEvent);
+    }
 
 
     InputAction(string name, vector<InputEvent> newEventActions) : InputAction(name)
@@ -96,6 +88,7 @@ public:
        return instance;
     };
 
+    bool IsActionDown(string actionName);
     bool IsActionPressed(string actionName);
     bool RemoveActionTrigger(string actionName, int positiveIndex, bool isController=false);
     bool HasAction(string actionName);

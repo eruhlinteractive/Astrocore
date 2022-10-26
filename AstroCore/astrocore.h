@@ -3,3 +3,4 @@
 #include "entity.h"
 #include "input.h"
 #include "spriteEntity.h"
+#include "structs.h"

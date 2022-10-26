@@ -1,10 +1,52 @@
 #include "input.h"
 #include <iostream>
 
+
+bool InputManager::IsActionPressed(string actionName)
+{
+    // Do we have an action at this name currently?
+    if (HasAction(actionName))
+    {
+        std::shared_ptr<InputAction> action = GetAction(actionName);
+        vector<InputEvent> actionEvents = action->GetEvents();
+
+        // Loop through each event, checking if it is currently being pressed
+        for(int i= 0; i < actionEvents.size(); i++)
+        {
+            // Check keyboard inputs
+            if(actionEvents[i].controllerId == -1)
+            {
+                if (IsKeyPressed(actionEvents[i].positiveInput))
+                {
+                    return true;
+                }
+                // No controller input defined, continue the loop
+                continue;
+            }
+
+            // Check for controller input
+            else
+            {
+                if(IsGamepadAvailable(actionEvents[i].controllerId))
+                {
+                    if(IsGamepadButtonPressed(actionEvents[i].controllerId, actionEvents[i].positiveInput))
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+    }
+   
+    return false;
+
+}
+
+
 /// @brief Is an action currently pressed
 /// @param actionName The name of the action to check
 /// @return True if an action with the name actionName is pressed
-bool InputManager::IsActionPressed(string actionName)
+bool InputManager::IsActionDown(string actionName)
 {
     // Do we have an action at this name currently?
     if (HasAction(actionName))

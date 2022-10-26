@@ -44,11 +44,15 @@ void Entity2D::MoveGlobal(Vector2 movement)
     positionX += movement.x;
     positionY += movement.y;
 
-    //// Update child transforms
-    //for(Entity2D* child : *children)
-    //{
-    //    child->MoveGlobal(movement);
-    //}
+    // Update child transforms
+    for(Entity2D* child : *children)
+    {
+        // Undo movement to leave child in place
+        if(child->IsFlagSet(POS_UNIQUE))
+        {
+            child->MoveGlobal({-movement.x,-movement.y});
+        }
+    }
 }
 
 /// @brief Move the position realtive to the rotation
@@ -66,10 +70,14 @@ void Entity2D::MoveLocal(Vector2 movement)
     positionY += movLocal.y;
 
     // Update child transforms
-    //for(Entity2D* child : *children)
-    //{
-    //    child->MoveGlobal(movLocal);
-    //}
+    // Undo movement to leave child in place
+     for(Entity2D* child : *children)
+    {
+        if(child->IsFlagSet(POS_UNIQUE))
+        {
+            child->MoveGlobal({-movLocal.x,-movLocal.y});
+        }
+    }
 
 }
 
@@ -92,6 +100,27 @@ Vector2 Entity2D::GetGlobalPosition()
     }
 }
 
+/// @brief Get the rotation of this entity in global space (Degrees)
+/// @return The rotation in degrees
+float Entity2D::GetGlobalRotationDeg()
+{
+    return (GetGlobalRotation() * (180.0/M_PI));
+}
+
+/// @brief Get the rotation of this entity in global space in radians
+/// @return The global space rotation of this entity
+float Entity2D::GetGlobalRotation()
+{
+    float globalRot = rotation;
+    if(parentEntity != nullptr)
+    {
+        globalRot = GetRotation() + parentEntity->GetGlobalRotation();
+        globalRot = std::fmod(globalRot, (2.0f * M_PI));
+    }
+
+    return globalRot;
+}
+
 /// @brief Rotate this object around a point
 /// @param rotDeg The angle (degrees) to rotate by
 /// @param point The point to rotate around
@@ -103,6 +132,9 @@ void Entity2D::RotateDegAroundPoint(float rotDeg, Vector2 point)
     //MoveGlobal(translation);   
 }
 
+/// @brief Rotates the entity around a world-space point
+/// @param rotRad The rotation in radians
+/// @param point The Vector2 point in world space
 void Entity2D::RotateAroundPoint(float rotRad, Vector2 point)
 {
     Vector2 globalPos = GetGlobalPosition();
@@ -116,8 +148,6 @@ void Entity2D::RotateAroundPoint(float rotRad, Vector2 point)
 
     Vector2 movement = {translation.x - globalPos.x, translation.y - globalPos.y};
     
-    
-
     MoveGlobal(movement);
     for(Entity2D* child : *children)
     {
@@ -138,7 +168,12 @@ void Entity2D::Rotate(float rotRad)
 
     for (Entity2D* child : *children)
     {
-        child->RotateAroundPoint(rotRad, GetGlobalPosition());
+        // Check if child inherits parent rotaiton
+        //std::cout << !child->IsFlagSet(ROT_UNIQUE) << std::endl;
+        if(!child->IsFlagSet(ROT_UNIQUE))
+        {
+            child->RotateAroundPoint(rotRad, GetGlobalPosition());
+        }
         //child->Rotate(rotRad);
     }
 

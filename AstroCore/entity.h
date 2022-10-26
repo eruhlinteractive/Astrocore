@@ -5,14 +5,21 @@
 #ifndef ENTITY2D_H
 #define ENTITY2D_H
 
-// TODO: Set up transformation flags
-enum TRANSFORM_FLAGS {ROT_UNIQUE, POS_UNIQUE,SCL_UNIQUE};
+// Transformation flags
+// Since each flag is stored as a single bit, they need to be shifted to be in the proper positions
+// https://dietertack.medium.com/using-bit-flags-in-c-d39ec6e30f08
+enum TRANSFORM_FLAGS {
+    ROT_UNIQUE = 1 << 0, //1
+     POS_UNIQUE = 1 << 1, //2
+      SCL_UNIQUE = 1 << 2 //4
+      };
 
 
 class Entity2D
 {
 public:
     // Constructors
+
     Entity2D();
     Entity2D(Vector2 position, Vector2 scale, float rotation);
     virtual ~Entity2D();
@@ -36,11 +43,19 @@ public:
     void SetRotationDeg(float newRotationDeg);
     void ScaleTowardsPoint(Vector2 point, Vector2 scaleDelta);
 
+    // Flag operations 
+    
+    void SetTransformFlag(TRANSFORM_FLAGS flag) { transformFlags |= (int)flag;};
+    void UnsetTransformFlag(TRANSFORM_FLAGS flag) { transformFlags &= ~(int)flag;};
+    bool IsFlagSet(TRANSFORM_FLAGS flag){ return (transformFlags & (int)flag) ==(int)flag;};
+
     /// @brief Get the rotaion of the body in radians
     /// @return The rotation of the body in radians
     float GetRotation() {return rotation;}
     Vector2 GetGlobalPosition();
     float GetRotationDeg(){ return (rotation * 180/PI);}
+    float GetGlobalRotationDeg();
+    float GetGlobalRotation();
     Vector2 GetPosition() {return Vector2{positionX,positionY};}
     Vector2 GetScale() {return Vector2{positionX,positionY};}
 
@@ -80,11 +95,12 @@ protected:
     float scaleX = 0.0f;
     float scaleY = 0.0f;
 
-    bool isRotationIndependent;
-
     /// @brief Rotation of this entity in radians
     float rotation = 0.0f;
     bool isReady = false;
+
+    // Bit flags for this entity
+    uint8_t transformFlags = 0;
 
     /// @brief The children of this entity
     std::unique_ptr<std::vector<Entity2D*>> children = std::make_unique<std::vector<Entity2D*>>();

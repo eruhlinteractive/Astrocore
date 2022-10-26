@@ -35,41 +35,61 @@ int main()
     //--------------------------------------------------------------------------------------
     const int screenWidth = 1024;
     const int screenHeight = 600;
+    float deltaTime = 0.0;
 
     // Get reference to input instance
     InputManager input = InputManager::instance();
     
-    // TEMP testing 
+    // Init testing input map
+    std::shared_ptr<InputAction> right = std::make_shared<InputAction>("right",KEY_D);
+    std::shared_ptr<InputAction> left = std::make_shared<InputAction>("left",KEY_A);
+    std::shared_ptr<InputAction> up = std::make_shared<InputAction>("up",KEY_W);
+    std::shared_ptr<InputAction> down = std::make_shared<InputAction>("down",KEY_S);
 
-    InputEvent keyEvent = InputEvent(KEY_E);
-    std::shared_ptr<InputAction> right = std::make_shared<InputAction>("rotRight");
+    std::shared_ptr<InputAction> rotCW = std::make_shared<InputAction>("rotCW",KEY_E);
+     std::shared_ptr<InputAction> rotCCW = std::make_shared<InputAction>("rotCCW",KEY_Q);
    
-
-    right->AddInputEvent(InputEvent(KEY_Q));
-
-    std::shared_ptr<InputAction> left = std::make_shared<InputAction>("rotLeft");
-    left->AddInputEvent(keyEvent);
     input.AddInputAction(right);
     input.AddInputAction(left);
+    input.AddInputAction(up);
+    input.AddInputAction(down);
+    input.AddInputAction(rotCW);
+    input.AddInputAction(rotCCW);
+
+
 
     InitWindow(screenWidth, screenHeight, "Agromation");
 
-    SpriteEntity* testSprite = new SpriteEntity({24,24}, {48,48},"../src/res/testSprite.png");
+    SpriteEntity* testSprite = new SpriteEntity(
+        {25,18}, 
+        {50,37},
+        "../src/res/anim_test.png",
+        6,
+        6,
+        10
+        );
 
     SpriteEntity* testChild = new SpriteEntity({24,24}, {48,48},"../src/res/testSprite.png");
 
+    SpriteEntity* animTest = new SpriteEntity(
+        {25,18}, 
+        {50,37},
+        "../src/res/anim_test.png",
+        6,
+        6,
+        20
+        );
+
     testChild->SetScale({0.5,0.5});
+    animTest->SetScale({4,4});
 
     //testChild->MoveGlobal({screenWidth/2.0,screenHeight/2.0});
     testChild->SetPosition({50,0});
     testSprite->AddChild(testChild);
-
+    
+    animTest->MoveGlobal({screenWidth/4 ,screenHeight/4 });
     testSprite->MoveGlobal({screenWidth/2 ,screenHeight/2 });
     testSprite->RotateDeg(45);
-
-    std::shared_ptr<InputAction> up = std::make_shared<InputAction>("up");
-    up->AddInputEvent(InputEvent(KEY_W));
-    input.AddInputAction(up);
 
     //testSprite->SetRotation(0.78539);
     SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
@@ -83,21 +103,33 @@ int main()
         // TODO: Update your variables here
         //----------------------------------------------------------------------------------
         DrawFPS(10,10);
-        if (input.IsActionPressed("rotRight"))
+        if (input.IsActionDown("right"))
         {
-            testSprite->RotateDeg(-1);
+            testSprite->MoveLocal({50 * GetFrameTime(),0});
         }
-        if (input.IsActionPressed("rotLeft"))
+        if(input.IsActionPressed("left"))
+        {
+            animTest->FlipH();
+        }
+        if (input.IsActionDown("left"))
+        {
+            testSprite->MoveLocal({-50 * GetFrameTime(),0});;
+        }
+        if(input.IsActionDown("up"))
+        {
+            testSprite->MoveLocal({0,-50 * GetFrameTime()});
+        }
+        if(input.IsActionDown("down"))
+        {
+            testSprite->MoveLocal({0, 50 * GetFrameTime()});
+        }
+        if(input.IsActionDown("rotCW"))
         {
             testSprite->RotateDeg(1);
         }
-        testChild->RotateAroundPoint(0.05,testSprite->GetGlobalPosition());
-        testChild->RotateDeg(-10);
-        //testSprite->RotateAroundPoint(0.04, {screenWidth/2 ,screenHeight/2});
-
-        if(input.IsActionPressed("up"))
+        if(input.IsActionDown("rotCCW"))
         {
-            testSprite->MoveLocal({0,50 * GetFrameTime()});
+            testSprite->RotateDeg(-1);
         }
 
         // Draw
@@ -109,18 +141,13 @@ int main()
             DrawLine(screenWidth / 2, 0, screenWidth/2, screenHeight, GRAY);
             DrawLine(0, screenHeight/2, screenWidth, screenHeight/2, GRAY);
 
-            //DrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
+            testSprite->Draw(deltaTime);
+            testChild->Draw(deltaTime);
+            animTest->Draw(deltaTime);
             
-            
-            testSprite->Draw();
-            testChild->Draw();
-            
-            
-            
-
-
         EndDrawing();
         //----------------------------------------------------------------------------------
+        deltaTime = GetFrameTime();
     }
 
     // De-Initialization
