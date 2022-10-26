@@ -60,10 +60,11 @@ int main()
 
     testChild->SetScale({0.5,0.5});
 
-    testChild->MoveGlobal({50,0});
+    //testChild->MoveGlobal({screenWidth/2.0,screenHeight/2.0});
+    testChild->SetPosition({50,0});
     testSprite->AddChild(testChild);
 
-    testSprite->MoveGlobal({screenWidth/2 + 50 ,screenHeight/2 + 50});
+    testSprite->MoveGlobal({screenWidth/2 ,screenHeight/2 });
     testSprite->RotateDeg(45);
 
     std::shared_ptr<InputAction> up = std::make_shared<InputAction>("up");
@@ -84,13 +85,15 @@ int main()
         DrawFPS(10,10);
         if (input.IsActionPressed("rotRight"))
         {
-            testChild->RotateDeg(-1);
+            testSprite->RotateDeg(-1);
         }
         if (input.IsActionPressed("rotLeft"))
         {
-            testChild->RotateDeg(1);
+            testSprite->RotateDeg(1);
         }
-        testSprite->RotateAroundPoint(0.04, {screenWidth/2 ,screenHeight/2});
+        testChild->RotateAroundPoint(0.05,testSprite->GetGlobalPosition());
+        testChild->RotateDeg(-10);
+        //testSprite->RotateAroundPoint(0.04, {screenWidth/2 ,screenHeight/2});
 
         if(input.IsActionPressed("up"))
         {
@@ -107,8 +110,13 @@ int main()
             DrawLine(0, screenHeight/2, screenWidth, screenHeight/2, GRAY);
 
             //DrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
+            
+            
             testSprite->Draw();
             testChild->Draw();
+            
+            
+            
 
 
         EndDrawing();

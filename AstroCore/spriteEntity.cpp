@@ -33,12 +33,13 @@ void SpriteEntity::Init()
 void SpriteEntity::Draw()
 {
     // Update destination rect
-    destRect.x = positionX;
-    destRect.y = positionY;
+
+    Vector2 globalPos = this->GetGlobalPosition();
+    destRect.x = globalPos.x;
+    destRect.y = globalPos.y;
     destRect.width = sizeX * scaleX;
     destRect.height = sizeY * scaleY;
 
-
-    //DrawTextureEx(spriteText, {positionX + originX,positionY + originY}, rotation, scaleX, WHITE);
+    //DrawTexture(spriteText,positionX,positionY,WHITE);
     DrawTexturePro(spriteText, srcRect, destRect, {originX * scaleX ,originY * scaleY}, rotation * (180.0/PI), WHITE);
 }

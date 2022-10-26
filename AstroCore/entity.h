@@ -5,6 +5,9 @@
 #ifndef ENTITY2D_H
 #define ENTITY2D_H
 
+// TODO: Set up transformation flags
+enum TRANSFORM_FLAGS {ROT_UNIQUE, POS_UNIQUE,SCL_UNIQUE};
+
 
 class Entity2D
 {
@@ -15,6 +18,7 @@ public:
     virtual ~Entity2D();
 
     // Transformation functions
+
     void MoveLocal(Vector2 movement);
     void MoveGlobal(Vector2 movement);
 
@@ -26,9 +30,11 @@ public:
    
 
     void SetPosition(Vector2 newPosition);
+    void Scale(Vector2 scaleDelta);
     void SetScale(Vector2 newScale);
     void SetRotation(float newRotation);
     void SetRotationDeg(float newRotationDeg);
+    void ScaleTowardsPoint(Vector2 point, Vector2 scaleDelta);
 
     /// @brief Get the rotaion of the body in radians
     /// @return The rotation of the body in radians
@@ -66,11 +72,15 @@ public:
 
 
 protected:
+
+    // The position relative to the parent
     float positionX = 0.0f;
     float positionY = 0.0f;
 
     float scaleX = 0.0f;
     float scaleY = 0.0f;
+
+    bool isRotationIndependent;
 
     /// @brief Rotation of this entity in radians
     float rotation = 0.0f;
@@ -78,7 +88,7 @@ protected:
 
     /// @brief The children of this entity
     std::unique_ptr<std::vector<Entity2D*>> children = std::make_unique<std::vector<Entity2D*>>();
-    Entity2D* parentEntity;
+    Entity2D* parentEntity = nullptr;
 };
 
 #endif // Entity

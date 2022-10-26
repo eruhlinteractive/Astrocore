@@ -35,18 +35,20 @@ Entity2D::~Entity2D()
 
 #pragma region Transformation Functions
 
-/// @brief Move the position in the global space
+// Transformation functions
+
+/// @brief Move the position in the global space, ignoring parent transform
 /// @param movement The vector of movement
 void Entity2D::MoveGlobal(Vector2 movement)
 {
     positionX += movement.x;
     positionY += movement.y;
 
-    // Update child transforms
-    for(Entity2D* child : *children)
-    {
-        child->MoveGlobal(movement);
-    }
+    //// Update child transforms
+    //for(Entity2D* child : *children)
+    //{
+    //    child->MoveGlobal(movement);
+    //}
 }
 
 /// @brief Move the position realtive to the rotation
@@ -64,10 +66,10 @@ void Entity2D::MoveLocal(Vector2 movement)
     positionY += movLocal.y;
 
     // Update child transforms
-    for(Entity2D* child : *children)
-    {
-        child->MoveGlobal(movLocal);
-    }
+    //for(Entity2D* child : *children)
+    //{
+    //    child->MoveGlobal(movLocal);
+    //}
 
 }
 
@@ -75,10 +77,14 @@ void Entity2D::MoveLocal(Vector2 movement)
 /// @return A Vector2 representing the world coordinates
 Vector2 Entity2D::GetGlobalPosition()
 {
-    if(parentEntity != nullptr)
+    if(this->parentEntity != nullptr)
     {
+        //std::cout << parentEntity << std::endl;
         Vector2 parentGlobal = parentEntity->GetGlobalPosition();
+        //std::cout << (positionX + parentGlobal.x) << ":" << (positionY + parentGlobal.y) << std::endl;
+        //std::cout << (positionX) << ":" << (positionY) << std::endl;
         return {positionX + parentGlobal.x, positionY + parentGlobal.y};
+        //return GetPosition();
     }
     else
     {
@@ -99,7 +105,8 @@ void Entity2D::RotateDegAroundPoint(float rotDeg, Vector2 point)
 
 void Entity2D::RotateAroundPoint(float rotRad, Vector2 point)
 {
-    Vector2 translation = {positionX - point.x, positionY - point.y};
+    Vector2 globalPos = GetGlobalPosition();
+    Vector2 translation = {globalPos.x - point.x, globalPos.y - point.y};
 
     float xNew = translation.x * cos(rotRad) - translation.y * sin(rotRad);
     float yNew = translation.x * sin(rotRad) + translation.y * cos(rotRad);
@@ -107,14 +114,14 @@ void Entity2D::RotateAroundPoint(float rotRad, Vector2 point)
     translation = {xNew + point.x, yNew + point.y};
 
 
-    Vector2 movement = {translation.x - positionX, translation.y - positionY};
+    Vector2 movement = {translation.x - globalPos.x, translation.y - globalPos.y};
     
     
 
     MoveGlobal(movement);
     for(Entity2D* child : *children)
     {
-        child->RotateAroundPoint(rotRad, {positionX, positionY});
+        child->RotateAroundPoint(rotRad, GetGlobalPosition());
     }
     //SetPosition(movement);
     //Rotate(rotRad);
@@ -131,7 +138,7 @@ void Entity2D::Rotate(float rotRad)
 
     for (Entity2D* child : *children)
     {
-        child->RotateAroundPoint(rotRad, GetPosition());
+        child->RotateAroundPoint(rotRad, GetGlobalPosition());
         //child->Rotate(rotRad);
     }
 
@@ -151,17 +158,55 @@ void Entity2D::RotateDeg(float rotDeg)
 /// @param newPosition The new position to set
 void Entity2D::SetPosition(Vector2 newPosition)
 {
-    positionX = newPosition.x;
-    positionY = newPosition.y;
+
+    // Relative to parent
+    if(parentEntity != nullptr)
+    {
+        positionX = parentEntity->GetPosition().x + newPosition.x;
+        positionY = parentEntity->GetPosition().y + newPosition.y;
+    }
+    else
+    {  
+        positionX = newPosition.x;
+        positionY = newPosition.y;
+    }
+    
 }
+
+/// @brief Scale the entity
+/// @param scaleDelta The amount ot add to the scale
+void Entity2D::Scale(Vector2 scaleDelta)
+{
+    scaleX += scaleDelta.x;
+    scaleY += scaleDelta.y;
+
+    for(Entity2D* child : *children)
+    {
+        Vector2 childPos = child->GetGlobalPosition();
+        Vector2 translation = {childPos.x - positionX, childPos.y - positionY};
+        std::cout << (scaleDelta.x * translation.x) << ":" << scaleDelta.y << std::endl;
+        child->Scale(scaleDelta);
+        child->MoveLocal({scaleDelta.x * translation.x, scaleDelta.y * translation.y});
+    }
+}
+
 
 /// @brief Set the scale of this entity
 /// @param newScale The new scale to set
 void Entity2D::SetScale(Vector2 newScale)
 {
+    // TODO: Apply scaling to children
+    //for(Entity2D* child : *children)
+    //{
+    //    //Vector2 childPos = child->GetPosition();
+    //    //Vector2 diff = { childPos.x - positionX, childPos.y - positionY};
+    //    child->Scale(newScale);
+    //}
+
     scaleX = newScale.x;
     scaleY = newScale.y;
 }
+
 
 /// @brief Set the rotation of this entity in radians
 /// @param newRotation The new rotation to set (radians)
@@ -247,7 +292,7 @@ void Entity2D::SetParent(Entity2D* newParent)
 /// @param newChild The new child to add to this entity
 void Entity2D::AddChild(Entity2D* newChild)
 {
-    std::cout << children->size() << std::endl;
+    //std::cout << children->size() << std::endl;
     if(newChild->GetParent() != this)
     {
         // TODO: Swap parents, or throw error
