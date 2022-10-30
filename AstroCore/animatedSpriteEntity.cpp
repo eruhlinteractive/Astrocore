@@ -38,6 +38,8 @@ AnimatedSpriteEntity::AnimatedSpriteEntity(SpriteAnimation* defaultAnimation, st
     currentAnimationName = animationName;
 }
 
+#pragma endregion
+
 /// @brief Add an animation to the lists of animations for this sprite
 /// @param animationName The name of the animation to add
 /// @param anim A pointer to the aniamtion
@@ -65,10 +67,8 @@ void AnimatedSpriteEntity::RemoveAnimation(string animationName)
     }
 }
 
-
-#pragma endregion
-
-
+/// @brief Change the animation to a new animation state
+/// @param animationName The name of the animation to switch to
 void AnimatedSpriteEntity::ChangeAnimation(string animationName)
 {
     if(animStates->find(animationName) != animStates->end() && animationName != currentAnimationName)

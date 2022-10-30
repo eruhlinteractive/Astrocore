@@ -16,8 +16,6 @@ class AnimatedSpriteEntity: public Entity2D
 public:
     AnimatedSpriteEntity(Vector2 origin, Vector2 frameSize, Texture2D sprite, string defaultAnimName="default");
     AnimatedSpriteEntity(Vector2 origin, Vector2 frameSize, Texture2D sprite, int framesWide, int frameCount, int animFps);
-
-
     AnimatedSpriteEntity(SpriteAnimation* defaultAnimation, string animationName);
 
 
@@ -28,13 +26,18 @@ public:
     void ChangeAnimation(string animationName);
     void PauseAnimation(){isPlaying = false;};
     void PlayAnimation(){isPlaying = true;};
+    string GetCurrentAnimation(){return currentAnimationName;};
 
     /// @brief Flip the sprite horizontally (local)
     void FlipH(){spriteFlip.x *= -1;};
-     /// @brief Flip the sprite vertically (local)
+    /// @brief Flip the sprite vertically (local)
     void FlipV(){spriteFlip.y *= -1;};
     void SetFlipped(bool hFlipped, bool vFlipped)
-    { spriteFlip.y = vFlipped ? -1:1; spriteFlip.x = hFlipped ? -1:1;}
+    { spriteFlip.y = vFlipped ? -1:1; spriteFlip.x = hFlipped ? -1:1;};
+
+    bool IsFlippedH(){return (spriteFlip.x == -1);};
+    bool IsFlippedV(){return (spriteFlip.y == -1);};
+
     void Init();
     virtual void Draw(float frameTime);
     ~AnimatedSpriteEntity();
@@ -55,4 +58,4 @@ private:
     
 };
 
-#endif // Sprite entity
+#endif // Animated Sprite entity
