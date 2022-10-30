@@ -60,24 +60,28 @@ int main()
 
     InitWindow(screenWidth, screenHeight, "Agromation");
 
-    Texture2D spriteText = LoadTexture("../src/res/anim_test.png");
-    std::shared_ptr<Texture2D> sprite = std::make_shared<Texture2D>(spriteText);
+    Texture2D spriteRun = LoadTexture("../src/res/anim_test.png");
+    Texture2D spriteIdle = LoadTexture("../src/res/idle_test.png");
 
     AnimatedSpriteEntity* testSprite = new AnimatedSpriteEntity(
         {25,18}, 
         {50,37},
-        *sprite,
+        spriteRun,
         6,
         6,
-        10
+        8
         );
 
-    AnimatedSpriteEntity* testChild = new AnimatedSpriteEntity({24,24}, {48,48},*sprite);
+    SpriteAnimation* idleAnim = new SpriteAnimation(spriteIdle, 4, 6, 4, {25,18}, {50,37});
+
+    testSprite->AddAnimation("idle", idleAnim);
+
+    AnimatedSpriteEntity* testChild = new AnimatedSpriteEntity({24,24}, {48,48}, spriteIdle);
 
     AnimatedSpriteEntity* animTest = new AnimatedSpriteEntity(
         {25,18}, 
         {50,37},
-        *sprite,
+        spriteRun,
         6,
         6,
         20
@@ -90,9 +94,10 @@ int main()
     testChild->SetPosition({50,0});
     testSprite->AddChild(testChild);
     
+    animTest->SetScale({5,5});
     animTest->MoveGlobal({screenWidth/4 ,screenHeight/4 });
     testSprite->MoveGlobal({screenWidth/2 ,screenHeight/2 });
-    testSprite->RotateDeg(45);
+    //testSprite->RotateDeg(45);
 
     //testSprite->SetRotation(0.78539);
     SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
@@ -106,20 +111,31 @@ int main()
         // TODO: Update your variables here
         //----------------------------------------------------------------------------------
         DrawFPS(10,10);
+
+        
+
         if (input.IsActionDown("right"))
         {
-            testSprite->MoveLocal({50 * GetFrameTime(),0});
-            testSprite->PauseAnimation();
+            testSprite->MoveLocal({100 * GetFrameTime(),0});
+            testSprite->ChangeAnimation("default");
+            testSprite->SetFlipped(false, false);
+            animTest->SetFlipped(false, false);
         }
-        if(input.IsActionPressed("left"))
+        else if(input.IsActionDown("left"))
         {
-            animTest->FlipH();
-            testSprite->PlayAnimation();
+            testSprite->MoveLocal({-100 * GetFrameTime(),0});
+            testSprite->ChangeAnimation("default");
+            testSprite->SetFlipped(true, false);
+            animTest->SetFlipped(true, false);
         }
-        if (input.IsActionDown("left"))
+        else
         {
-            testSprite->MoveLocal({-50 * GetFrameTime(),0});;
+            testSprite->ChangeAnimation("idle");
+            //testSprite->SetFlipped(false, false);
+            animTest->SetFlipped(false, false);
         }
+        
+
         if(input.IsActionDown("up"))
         {
             testSprite->MoveLocal({0,-50 * GetFrameTime()});
@@ -128,14 +144,14 @@ int main()
         {
             testSprite->MoveLocal({0, 50 * GetFrameTime()});
         }
-        if(input.IsActionDown("rotCW"))
-        {
-            testSprite->RotateDeg(1);
-        }
-        if(input.IsActionDown("rotCCW"))
-        {
-            testSprite->RotateDeg(-1);
-        }
+        //if(input.IsActionDown("rotCW"))
+        //{
+        //    testSprite->RotateDeg(1);
+        //}
+        //if(input.IsActionDown("rotCCW"))
+        //{
+        //    testSprite->RotateDeg(-1);
+        //}
 
         deltaTime = GetFrameTime();
         // Draw
@@ -148,8 +164,8 @@ int main()
             DrawLine(0, screenHeight/2, screenWidth, screenHeight/2, GRAY);
 
             testSprite->Draw(deltaTime);
-            testChild->Draw(deltaTime);
-            animTest->Draw(deltaTime);
+            //testChild->Draw(deltaTime);
+            //animTest->Draw(deltaTime);
             
         EndDrawing();
         //----------------------------------------------------------------------------------

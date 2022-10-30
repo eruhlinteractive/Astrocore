@@ -27,6 +27,27 @@ struct Sprite
 
 struct SpriteAnimation
 {
+    SpriteAnimation()
+    {
+        frameMax = 0;
+        currentFrame = 1;
+        animFPS = 10;
+        framesWide = 1;
+        origin = {0,0};
+        frameSize = {0,0};
+    };
+    
+    SpriteAnimation(Texture2D sprite, int frameCount, int animFPS, int framesWide, Vector2 origin, Vector2 frameSize)
+    {
+        spriteTexture = sprite;
+        frameMax = frameCount;
+        currentFrame = 0;
+        this->animFPS = animFPS;
+        this->framesWide = framesWide;
+        this->origin = origin;
+        this->frameSize = frameSize;
+    };
+
     Texture spriteTexture;
     int frameMax = 0;
     int currentFrame = 1;

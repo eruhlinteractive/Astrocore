@@ -1,6 +1,8 @@
 #include "animatedSpriteEntity.h"
 #include <iostream>
 
+
+#pragma region Constructors
 /// @brief Initialize a static sprite entity
 /// @param origin 
 /// @param spriteSize 
@@ -36,9 +38,41 @@ AnimatedSpriteEntity::AnimatedSpriteEntity(SpriteAnimation* defaultAnimation, st
     currentAnimationName = animationName;
 }
 
+/// @brief Add an animation to the lists of animations for this sprite
+/// @param animationName The name of the animation to add
+/// @param anim A pointer to the aniamtion
+void AnimatedSpriteEntity::AddAnimation(string animationName, SpriteAnimation* anim)
+{
+    // If it doesn't already exist in the animtion states
+    if(animStates->find(animationName) == animStates->end())
+    {
+        animStates->insert(pair<string, SpriteAnimation*>(animationName, anim));
+    }
+}
+
+/// @brief Remove an animation from the list of playable animations
+/// @param animationName The name of the animation to remove
+void AnimatedSpriteEntity::RemoveAnimation(string animationName)
+{
+    // If the animation exists in the list of animations
+    if(animStates->find(animationName) != animStates->end())
+    {
+        SpriteAnimation* anim = (*animStates)[animationName];
+        animStates->erase(animationName);
+
+        delete anim;
+        anim =nullptr;
+    }
+}
+
+
+#pragma endregion
+
+
 void AnimatedSpriteEntity::ChangeAnimation(string animationName)
 {
-    if(animStates->find(animationName) != animStates->end())
+    std::cout << animStates->size() << endl;
+    if(animStates->find(animationName) != animStates->end() && animationName != currentAnimationName)
     {
         currentAnimationName = animationName;
         currentAnim = (*animStates)[animationName];
@@ -69,7 +103,6 @@ void AnimatedSpriteEntity::Init()
     animStates = new std::map<string,SpriteAnimation*>();
 }
 
-
 /// @brief Draw the animated sprite, incrementing the frame counter
 /// @param frameTime 
 void AnimatedSpriteEntity::Draw(float frameTime)
@@ -96,14 +129,14 @@ void AnimatedSpriteEntity::Draw(float frameTime)
     // Animated sprite
     if(currentAnim->frameMax != 0)
     {
-        srcRect = (Rectangle){srcPosX,srcPosY, currentAnim->frameSize.x, currentAnim->frameSize.y};
+        srcRect = (Rectangle){srcPosX,srcPosY, spriteFlip.x * currentAnim->frameSize.x, spriteFlip.y * currentAnim->frameSize.y};
         destRect = (Rectangle){globalPos.x, globalPos.y, currentAnim->frameSize.x * scaleX, currentAnim->frameSize.x * scaleY};
     }
 
     // Static Sprite
     else
     {
-        srcRect = (Rectangle){0, 0, currentAnim->frameSize.x, currentAnim->frameSize.y};
+        srcRect = (Rectangle){0, 0, spriteFlip.x * currentAnim->frameSize.x, spriteFlip.y * currentAnim->frameSize.y};
         destRect = (Rectangle){globalPos.x, globalPos.y, currentAnim->frameSize.x * scaleX, currentAnim->frameSize.x * scaleY};
     }
 

@@ -33,6 +33,8 @@ public:
     void FlipH(){spriteFlip.x *= -1;};
      /// @brief Flip the sprite vertically (local)
     void FlipV(){spriteFlip.y *= -1;};
+    void SetFlipped(bool hFlipped, bool vFlipped)
+    { spriteFlip.y = vFlipped ? -1:1; spriteFlip.x = hFlipped ? -1:1;}
     void Init();
     virtual void Draw(float frameTime);
     ~AnimatedSpriteEntity();
