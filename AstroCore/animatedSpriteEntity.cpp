@@ -71,7 +71,6 @@ void AnimatedSpriteEntity::RemoveAnimation(string animationName)
 
 void AnimatedSpriteEntity::ChangeAnimation(string animationName)
 {
-    std::cout << animStates->size() << endl;
     if(animStates->find(animationName) != animStates->end() && animationName != currentAnimationName)
     {
         currentAnimationName = animationName;
