@@ -60,21 +60,24 @@ int main()
 
     InitWindow(screenWidth, screenHeight, "Agromation");
 
-    SpriteEntity* testSprite = new SpriteEntity(
+    Texture2D spriteText = LoadTexture("../src/res/anim_test.png");
+    std::shared_ptr<Texture2D> sprite = std::make_shared<Texture2D>(spriteText);
+
+    AnimatedSpriteEntity* testSprite = new AnimatedSpriteEntity(
         {25,18}, 
         {50,37},
-        "../src/res/anim_test.png",
+        *sprite,
         6,
         6,
         10
         );
 
-    SpriteEntity* testChild = new SpriteEntity({24,24}, {48,48},"../src/res/testSprite.png");
+    AnimatedSpriteEntity* testChild = new AnimatedSpriteEntity({24,24}, {48,48},*sprite);
 
-    SpriteEntity* animTest = new SpriteEntity(
+    AnimatedSpriteEntity* animTest = new AnimatedSpriteEntity(
         {25,18}, 
         {50,37},
-        "../src/res/anim_test.png",
+        *sprite,
         6,
         6,
         20
@@ -106,10 +109,12 @@ int main()
         if (input.IsActionDown("right"))
         {
             testSprite->MoveLocal({50 * GetFrameTime(),0});
+            testSprite->PauseAnimation();
         }
         if(input.IsActionPressed("left"))
         {
             animTest->FlipH();
+            testSprite->PlayAnimation();
         }
         if (input.IsActionDown("left"))
         {
@@ -132,6 +137,7 @@ int main()
             testSprite->RotateDeg(-1);
         }
 
+        deltaTime = GetFrameTime();
         // Draw
         //----------------------------------------------------------------------------------
         BeginDrawing();
@@ -147,7 +153,7 @@ int main()
             
         EndDrawing();
         //----------------------------------------------------------------------------------
-        deltaTime = GetFrameTime();
+        
     }
 
     // De-Initialization

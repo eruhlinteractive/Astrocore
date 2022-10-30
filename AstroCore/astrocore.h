@@ -2,5 +2,5 @@
 
 #include "entity.h"
 #include "input.h"
-#include "spriteEntity.h"
+#include "animatedSpriteEntity.h"
 #include "structs.h"

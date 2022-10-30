@@ -23,7 +23,8 @@
 # Compiled Static libraries
 *.lai
 *.la
-#*.a
+# Raylib will need to be recompiled per-platform
+*.a
 *.lib
 
 # Executables

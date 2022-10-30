@@ -2,7 +2,7 @@
 #define STRUCTS_H
 
 /// @brief A struct representing a single input event (i.e an 'E' key press or 'A' button press on a controller)
-typedef struct InputEvent
+struct InputEvent
 {
     // Constructor
     InputEvent(int inputIndex, int actionControllerId =-1) 
@@ -16,10 +16,16 @@ typedef struct InputEvent
 
     // What index is the positive(on) input?
     int positiveInput;
-}InputEvent;
+};
 
 
-typedef struct Sprite
+struct Sprite
+{
+    Texture spriteTexture;
+    Vector2 origin;
+};
+
+struct SpriteAnimation
 {
     Texture spriteTexture;
     int frameMax = 0;
@@ -28,7 +34,7 @@ typedef struct Sprite
     int framesWide = 1 ;
     Vector2 origin;
     Vector2 frameSize;
-}Sprite;
+};
 
 
 #endif
