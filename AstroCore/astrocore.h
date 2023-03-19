@@ -1,6 +1,6 @@
 // Single file to include functionality of the Astro Core
 
-#include "entity.h"
-#include "input.h"
-#include "animatedSpriteEntity.h"
-#include "structs.h"
+#include "header/entity.h"
+#include "header/input.h"
+#include "header/animatedSpriteEntity.h"
+#include "header/structs.h"

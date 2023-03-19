@@ -1,13 +1,13 @@
-add_library(astrocore 
-input.cpp
-file.cpp
-entity.cpp
-animatedSpriteEntity.cpp
-spriteEntity.cpp
+add_library(astrocore
+src/input.cpp
+src/file.cpp
+src/entity.cpp
+src/animatedSpriteEntity.cpp
+src/spriteEntity.cpp
 )
 
 target_include_directories(${PROJECT_NAME} 
-    PUBLIC ../header
+    PUBLIC header
     PUBLIC include
 )
 

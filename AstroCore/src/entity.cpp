@@ -1,4 +1,4 @@
-#include "entity.h"
+#include "../header/entity.h"
 #include <math.h>
 #include <iostream>
 #include <stdexcept>

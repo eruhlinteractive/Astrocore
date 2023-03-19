@@ -1,4 +1,4 @@
-#include "spriteEntity.h"
+#include "../header/spriteEntity.h"
 
 
 SpriteEntity::SpriteEntity(Sprite* sprite)

@@ -31,8 +31,6 @@
 
 int main()
 {
-    // Initialization
-    //--------------------------------------------------------------------------------------
     const int screenWidth = 1024;
     const int screenHeight = 600;
     float deltaTime = 0.0;
@@ -47,7 +45,7 @@ int main()
     std::shared_ptr<InputAction> down = std::make_shared<InputAction>("down",KEY_S);
 
     std::shared_ptr<InputAction> rotCW = std::make_shared<InputAction>("rotCW",KEY_E);
-     std::shared_ptr<InputAction> rotCCW = std::make_shared<InputAction>("rotCCW",KEY_Q);
+    std::shared_ptr<InputAction> rotCCW = std::make_shared<InputAction>("rotCCW",KEY_Q);
    
     input.AddInputAction(right);
     input.AddInputAction(left);

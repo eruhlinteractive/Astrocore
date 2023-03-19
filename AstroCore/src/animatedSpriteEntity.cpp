@@ -1,4 +1,4 @@
-#include "animatedSpriteEntity.h"
+#include "../header/animatedSpriteEntity.h"
 #include <iostream>
 
 
