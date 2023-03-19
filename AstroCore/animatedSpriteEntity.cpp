@@ -126,19 +126,9 @@ void AnimatedSpriteEntity::Draw(float frameTime)
     Vector2 globalPos = this->GetGlobalPosition();
 
     // Animated sprite
-    if(currentAnim->frameMax != 0)
-    {
-        srcRect = (Rectangle){srcPosX,srcPosY, spriteFlip.x * currentAnim->frameSize.x, spriteFlip.y * currentAnim->frameSize.y};
-        destRect = (Rectangle){globalPos.x, globalPos.y, currentAnim->frameSize.x * scaleX, currentAnim->frameSize.x * scaleY};
-    }
 
-    // Static Sprite
-    else
-    {
-        srcRect = (Rectangle){0, 0, spriteFlip.x * currentAnim->frameSize.x, spriteFlip.y * currentAnim->frameSize.y};
-        destRect = (Rectangle){globalPos.x, globalPos.y, currentAnim->frameSize.x * scaleX, currentAnim->frameSize.x * scaleY};
-    }
-
+    srcRect = (Rectangle){srcPosX,srcPosY, spriteFlip.x * currentAnim->frameSize.x, spriteFlip.y * currentAnim->frameSize.y};
+    destRect = (Rectangle){globalPos.x, globalPos.y, currentAnim->frameSize.x * scaleX, currentAnim->frameSize.x * scaleY};
     //DrawTexture(spriteText,positionX,positionY,WHITE);
     DrawTexturePro(currentAnim->spriteTexture, srcRect, destRect, {currentAnim->origin.x * scaleX ,currentAnim->origin.y * scaleY}, rotation * (180.0/PI), WHITE);
 }

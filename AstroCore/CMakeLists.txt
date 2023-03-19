@@ -3,6 +3,7 @@ input.cpp
 file.cpp
 entity.cpp
 animatedSpriteEntity.cpp
+spriteEntity.cpp
 )
 
 target_include_directories(${PROJECT_NAME} 

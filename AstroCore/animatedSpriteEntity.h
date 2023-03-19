@@ -1,5 +1,6 @@
 #include <raylib.h>
 #include "entity.h"
+#include "spriteEntity.h"
 #include <string>
 #include "structs.h"
 #include <map>
@@ -27,25 +28,24 @@ public:
     void PauseAnimation(){isPlaying = false;};
     void PlayAnimation(){isPlaying = true;};
     string GetCurrentAnimation(){return currentAnimationName;};
+    virtual void Draw(float frameTime);
+    void Init();
 
+    bool IsFlippedH(){return (spriteFlip.x == -1);};
+    bool IsFlippedV(){return (spriteFlip.y == -1);};
+    void SetFlipped(bool hFlipped, bool vFlipped)
+    { spriteFlip.y = vFlipped ? -1:1; spriteFlip.x = hFlipped ? -1:1;};
     /// @brief Flip the sprite horizontally (local)
     void FlipH(){spriteFlip.x *= -1;};
     /// @brief Flip the sprite vertically (local)
     void FlipV(){spriteFlip.y *= -1;};
-    void SetFlipped(bool hFlipped, bool vFlipped)
-    { spriteFlip.y = vFlipped ? -1:1; spriteFlip.x = hFlipped ? -1:1;};
-
-    bool IsFlippedH(){return (spriteFlip.x == -1);};
-    bool IsFlippedV(){return (spriteFlip.y == -1);};
-
-    void Init();
-    virtual void Draw(float frameTime);
     ~AnimatedSpriteEntity();
 
 private:
 
     string currentAnimationName;
     Vector2 spriteFlip = {1,1};
+    
     float animAcc = 0.0f;
     SpriteAnimation* currentAnim;
 
@@ -53,8 +53,6 @@ private:
     bool isPlaying = true;
 
     map<string,SpriteAnimation*>* animStates;
-    Rectangle srcRect;
-    Rectangle destRect;
     
 };
 
