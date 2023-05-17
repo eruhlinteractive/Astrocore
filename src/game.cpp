@@ -4,6 +4,9 @@ void Game::InitGame(int screenWidth, int screenHeight)
 {
 
     worldCamera = new Camera2D();
+    worldCamera->zoom = 1.0f;
+    worldCamera->rotation = 0.0f;
+    worldCamera->offset = {screenWidth/2.0f, screenHeight/2.0f};
     
 
     // Get reference to input instance
@@ -136,11 +139,11 @@ void Game::Draw(float deltaTime)
 {
 
     // Draw world
-    //BeginMode2D(*worldCamera);
+    BeginMode2D(*worldCamera);
 
     DrawWorld();
    //animTest->Draw(1.0/60.0);
-    //EndMode2D();
+    EndMode2D();
     DrawUI();   
 }
 
