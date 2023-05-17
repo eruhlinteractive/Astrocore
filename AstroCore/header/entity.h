@@ -78,6 +78,16 @@ public:
     /// @param deltaTime The time between the previous and current frame
     virtual void Draw(float deltaTime);
 
+    /// @brief The layer this sprite is drawn on (lower = first)
+    int drawLayer = 0;
+
+    /// @brief The offset used for Y position-based sorting
+    float ySortOffset = 0;
+
+    /// @brief Set the position used for Y sorting
+    /// @param newOffset The new offset to use when Y sorting
+    void SetYSortOffset(float newOffset){ySortOffset = newOffset;};
+
     // Get children
     std::vector<Entity2D*>* GetChildren();
     Entity2D* GetChildAtIndex(int index);

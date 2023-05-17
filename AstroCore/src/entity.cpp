@@ -18,7 +18,6 @@ Entity2D::Entity2D(Vector2 startPosition, Vector2 startScale, float startRotatio
 {
     position = startPosition;
     rotation = startRotation;
-
     scale = startScale;
     Init();
 }

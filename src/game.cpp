@@ -2,7 +2,7 @@
 
 void Game::InitGame(int screenWidth, int screenHeight)
 {
-
+    currentScene = new Scene();
     worldCamera = new Camera2D();
     worldCamera->zoom = 1.0f;
     worldCamera->rotation = 0.0f;
@@ -47,6 +47,7 @@ void Game::InitGame(int screenWidth, int screenHeight)
     testSpr->MoveGlobal({10,10});
     testSpr->Scale((Vector2){0.5f,1.0f});
 
+    
     SpriteAnimation* idleAnim = new SpriteAnimation(spriteIdle, 4, 6, 4, {25,18}, {50,37});
 
     testSprite->AddAnimation("idle", idleAnim);
@@ -73,6 +74,12 @@ void Game::InitGame(int screenWidth, int screenHeight)
    // animTest->MoveGlobal({screenWidth/4.0f ,screenHeight/4.0f });
     //testSprite->MoveGlobal({screenWidth/2.0f ,screenHeight/2.0f });
     testSprite->RotateDeg(45);
+
+    testSprite->ySortOffset = 10;
+
+    currentScene->RegisterEntity("Test Sprite Player", testSprite);
+    currentScene->RegisterEntity("Test Sprite Static", testSpr);
+    currentScene->RegisterEntity("Test Sprite Animated", animTest);
     //worldCamera->target = testSprite->GetGlobalPosition();
 
 }
@@ -132,6 +139,7 @@ void Game::Update(float deltaTime)
         }
     worldCamera->target = testSprite->GetGlobalPosition();
         
+    currentScene->Update(deltaTime);
     
 }
 
@@ -142,7 +150,8 @@ void Game::Draw(float deltaTime)
     // Draw world
     BeginMode2D(*worldCamera);
 
-    DrawWorld();
+    //DrawWorld();
+    currentScene->Draw(deltaTime);
    //animTest->Draw(1.0/60.0);
     EndMode2D();
     DrawUI();   

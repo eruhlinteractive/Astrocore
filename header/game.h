@@ -4,7 +4,7 @@
 #include "../AstroCore/astrocore.h"
 
 using namespace std;
-
+using namespace Astrolib;
 class Game
 {
 public:
@@ -31,6 +31,7 @@ public:
     AnimatedSpriteEntity* testSprite;
     AnimatedSpriteEntity* animTest;
     SpriteEntity* testSpr;
+    Scene* currentScene;
 
     void OnExit();
 

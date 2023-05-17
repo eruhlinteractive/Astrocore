@@ -11,6 +11,8 @@
 
 using namespace std;
 
+namespace Astrolib
+{
 class AnimatedSpriteEntity: public Entity2D
 {
 
@@ -39,6 +41,7 @@ public:
     void FlipH(){spriteFlip.x *= -1;};
     /// @brief Flip the sprite vertically (local)
     void FlipV(){spriteFlip.y *= -1;};
+
     ~AnimatedSpriteEntity();
 
 private:
@@ -56,4 +59,5 @@ private:
     
 };
 
+}
 #endif // Animated Sprite entity

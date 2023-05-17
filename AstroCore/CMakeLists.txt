@@ -1,9 +1,9 @@
 add_library(astrocore
 src/input.cpp
-src/file.cpp
 src/entity.cpp
 src/animatedSpriteEntity.cpp
 src/spriteEntity.cpp
+src/scene.cpp
 )
 
 target_include_directories(${PROJECT_NAME} 

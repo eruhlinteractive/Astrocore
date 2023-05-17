@@ -1,6 +1,7 @@
 #include "../header/animatedSpriteEntity.h"
 #include <iostream>
 
+using namespace Astrolib;
 
 #pragma region Constructors
 /// @brief Initialize a static sprite entity
