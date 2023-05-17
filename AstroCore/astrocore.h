@@ -5,3 +5,5 @@
 #include "header/animatedSpriteEntity.h"
 #include "header/structs.h"
 #include "header/scene.h"
+
+using namespace Astrolib;

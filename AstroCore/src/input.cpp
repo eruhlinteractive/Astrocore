@@ -1,6 +1,7 @@
 #include "../header/input.h"
 #include <iostream>
 
+using namespace Astrolib;
 
 bool InputManager::IsActionPressed(string actionName)
 {

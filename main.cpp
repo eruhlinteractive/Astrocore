@@ -24,7 +24,6 @@
 #include "raylib.h"
 #include "header/game.h"
 #include <iostream>
-//#include "AstroCore/input.h"
 #include <string>
 #include <math.h>
 #include "AstroCore/astrocore.h"
@@ -61,10 +60,8 @@ int main()
         game->Draw(GetFrameTime());
 
         EndDrawing();
-        
     }
 
-    
     // De-Initialization
     //--------------------------------------------------------------------------------------
     CloseWindow();        // Close window and OpenGL context

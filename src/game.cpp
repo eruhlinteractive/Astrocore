@@ -131,11 +131,11 @@ void Game::Update(float deltaTime)
         }
         if(input.IsActionDown("rotCW"))
         {
-            testSprite->RotateDeg(1);
+            testSprite->RotateDeg(30 * GetFrameTime());
         }
         if(input.IsActionDown("rotCCW"))
         {
-            testSprite->RotateDeg(-1);
+            testSprite->RotateDeg(-30 * GetFrameTime());
         }
     worldCamera->target = testSprite->GetGlobalPosition();
         

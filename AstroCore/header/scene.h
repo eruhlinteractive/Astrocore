@@ -27,11 +27,13 @@ public:
     /// @param p2 The second pair
     /// @return Whether the draw layer of the first value is larger than the second
     static bool SortByLayerIndex(Entity2D* p1, Entity2D* p2){
+
         // Y Position sorting
         if(p1->drawLayer == p2->drawLayer)
         {
             return p1->GetPosition().y < p2->GetPosition().y;
         }
+        
         return p1->drawLayer < p2->drawLayer;
     }
 

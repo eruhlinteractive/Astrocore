@@ -12,6 +12,8 @@
 
 using namespace std;
 
+namespace Astrolib
+{
 /// @brief A struct representing a single input action (i.e jump)
 class InputAction
 {
@@ -94,4 +96,5 @@ public:
         return INSTANCE;
     }
 };
+}
 #endif

@@ -4,6 +4,8 @@
 #include <stdexcept>
 #include <algorithm>
 
+using namespace Astrolib;
+
 #pragma region Constructors
 Entity2D::Entity2D()
 {

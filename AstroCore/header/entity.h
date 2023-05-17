@@ -14,7 +14,8 @@ enum TRANSFORM_FLAGS {
       SCL_UNIQUE = 1 << 2 //4
       };
 
-
+namespace Astrolib
+{
 class Entity2D
 {
 public:
@@ -119,6 +120,6 @@ protected:
     std::unique_ptr<std::vector<Entity2D*>> children = std::make_unique<std::vector<Entity2D*>>();
     Entity2D* parentEntity = nullptr;
 };
-
+}
 
 #endif // Entity

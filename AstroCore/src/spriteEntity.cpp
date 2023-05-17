@@ -1,5 +1,5 @@
 #include "../header/spriteEntity.h"
-
+using namespace Astrolib;
 
 SpriteEntity::SpriteEntity(Sprite* sprite)
 {

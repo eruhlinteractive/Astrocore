@@ -5,6 +5,9 @@
 #ifndef SPRITE_ENTITY_H
 #define SPRITE_ENTITY_H
 
+namespace Astrolib
+{
+
 class SpriteEntity: public Entity2D
 {
     
@@ -28,4 +31,5 @@ protected:
     Vector2 spriteFlip = {1,1};
     Sprite* sprite;
 };
+}
 #endif //SPRITE_ENTITY_H
