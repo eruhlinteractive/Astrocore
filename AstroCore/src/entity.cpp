@@ -7,23 +7,19 @@
 #pragma region Constructors
 Entity2D::Entity2D()
 {
-    positionX = 0.0f;
-    positionY = 0.0f;
+    position = (Vector2){0,0};
+    scale = (Vector2){1,1};
     rotation = 0.0f;
 
-    scaleX = 1.0f;
-    scaleY = 1.0f;
     Init();
 }
 
 Entity2D::Entity2D(Vector2 startPosition, Vector2 startScale, float startRotation)
 {
-    positionX = startPosition.x;
-    positionY = startPosition.y;
+    position = startPosition;
     rotation = startRotation;
 
-    scaleX = startScale.x;
-    scaleY = startScale.y;
+    scale = startScale;
     Init();
 }
 
@@ -41,8 +37,7 @@ Entity2D::~Entity2D()
 /// @param movement The vector of movement
 void Entity2D::MoveGlobal(Vector2 movement)
 {
-    positionX += movement.x;
-    positionY += movement.y;
+    position = (Vector2){movement.x + position.x, movement.y + position.y};
 
     // Update child transforms
     for(Entity2D* child : *children)
@@ -66,8 +61,7 @@ void Entity2D::MoveLocal(Vector2 movement)
 
     //std::cout<< movLocal.x << ":" << movLocal.y << std::endl;
     
-    positionX += movLocal.x;
-    positionY += movLocal.y;
+    position = (Vector2){movLocal.x + position.x, movLocal.y + position.y};
 
     // Update child transforms
     // Undo movement to leave child in place
@@ -91,7 +85,7 @@ Vector2 Entity2D::GetGlobalPosition()
         Vector2 parentGlobal = parentEntity->GetGlobalPosition();
         //std::cout << (positionX + parentGlobal.x) << ":" << (positionY + parentGlobal.y) << std::endl;
         //std::cout << (positionX) << ":" << (positionY) << std::endl;
-        return {positionX + parentGlobal.x, positionY + parentGlobal.y};
+        return {position.x + parentGlobal.x, position.y + parentGlobal.y};
         //return GetPosition();
     }
     else
@@ -197,28 +191,26 @@ void Entity2D::SetPosition(Vector2 newPosition)
     // Relative to parent
     if(parentEntity != nullptr)
     {
-        positionX = parentEntity->GetPosition().x + newPosition.x;
-        positionY = parentEntity->GetPosition().y + newPosition.y;
+        position.x =  parentEntity->GetPosition().x + newPosition.x;
+        position.y = parentEntity->GetPosition().y + newPosition.y;
     }
     else
     {  
-        positionX = newPosition.x;
-        positionY = newPosition.y;
+        position = (Vector2){newPosition.x, newPosition.y};
     }
     
 }
 
 /// @brief Scale the entity
-/// @param scaleDelta The amount ot add to the scale
+/// @param scaleDelta The amount to multiply the scale by
 void Entity2D::Scale(Vector2 scaleDelta)
 {
-    scaleX += scaleDelta.x;
-    scaleY += scaleDelta.y;
+    scale = (Vector2){scale.x * scaleDelta.x, scale.y * scaleDelta.y};
 
     for(Entity2D* child : *children)
     {
         Vector2 childPos = child->GetGlobalPosition();
-        Vector2 translation = {childPos.x - positionX, childPos.y - positionY};
+        Vector2 translation = {childPos.x - position.x, childPos.y - position.y};
         std::cout << (scaleDelta.x * translation.x) << ":" << scaleDelta.y << std::endl;
         child->Scale(scaleDelta);
         child->MoveLocal({scaleDelta.x * translation.x, scaleDelta.y * translation.y});
@@ -238,8 +230,7 @@ void Entity2D::SetScale(Vector2 newScale)
     //    child->Scale(newScale);
     //}
 
-    scaleX = newScale.x;
-    scaleY = newScale.y;
+    scale = newScale;
 }
 
 

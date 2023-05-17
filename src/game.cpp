@@ -45,6 +45,7 @@ void Game::InitGame(int screenWidth, int screenHeight)
 
     testSpr = new SpriteEntity(beuh, {212,180}, {0,0});
     testSpr->MoveGlobal({10,10});
+    testSpr->Scale((Vector2){0.5f,1.0f});
 
     SpriteAnimation* idleAnim = new SpriteAnimation(spriteIdle, 4, 6, 4, {25,18}, {50,37});
 
@@ -151,9 +152,9 @@ void Game::DrawWorld()
 {
     /// ---- World Drawing Logic Here ----
     testSprite->Draw(1.0f/60.0f);
-    
     //testChild->Draw(1.0f/60.0f);
     animTest->Draw(1.0/60.0);
+    testSpr->Draw(1.0/60.0f);
 }
 
 void Game::DrawUI()

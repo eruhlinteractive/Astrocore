@@ -56,8 +56,8 @@ public:
     float GetRotationDeg(){ return (rotation * 180/PI);}
     float GetGlobalRotationDeg();
     float GetGlobalRotation();
-    Vector2 GetPosition() {return Vector2{positionX,positionY};}
-    Vector2 GetScale() {return Vector2{positionX,positionY};}
+    Vector2 GetPosition() {return position;}
+    Vector2 GetScale() {return scale;}
 
     // Functions
 
@@ -89,11 +89,10 @@ public:
 protected:
 
     // The position relative to the parent
-    float positionX = 0.0f;
-    float positionY = 0.0f;
+    
+    Vector2 position;
 
-    float scaleX = 0.0f;
-    float scaleY = 0.0f;
+    Vector2 scale;
 
     /// @brief Rotation of this entity in radians
     float rotation = 0.0f;

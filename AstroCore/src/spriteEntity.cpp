@@ -16,8 +16,10 @@ SpriteEntity::SpriteEntity(Texture2D spriteTexture, Vector2 frameSize, Vector2 o
 void SpriteEntity::Draw(float frameTime)
 {
     // Update destination rect
-
-
-    DrawTextureEx(sprite->spriteTexture, {positionX ,positionY }, rotation, scaleX, WHITE);
+    Rectangle srcRect, destRect;
+    srcRect = (Rectangle){0, 0, sprite->spriteTexture.width, sprite->spriteTexture.height};
+    destRect = (Rectangle){position.x, position.y, sprite->spriteTexture.width * scale.x, sprite->spriteTexture.height * scale.y};
+    DrawTexturePro(sprite->spriteTexture, srcRect, destRect, position, rotation, WHITE);
+    //DrawTextureEx(sprite->spriteTexture, position, rotation, scale.x, WHITE);
 
 }
