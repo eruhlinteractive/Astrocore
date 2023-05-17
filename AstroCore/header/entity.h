@@ -74,6 +74,10 @@ public:
     /// @brief Called when the object is de-allocated
     virtual void OnDestroy(){};
 
+    /// @brief  Draw function
+    /// @param deltaTime The time between the previous and current frame
+    virtual void Draw(float deltaTime);
+
     // Get children
     std::vector<Entity2D*>* GetChildren();
     Entity2D* GetChildAtIndex(int index);
@@ -105,5 +109,6 @@ protected:
     std::unique_ptr<std::vector<Entity2D*>> children = std::make_unique<std::vector<Entity2D*>>();
     Entity2D* parentEntity = nullptr;
 };
+
 
 #endif // Entity

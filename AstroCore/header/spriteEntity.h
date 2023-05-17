@@ -11,7 +11,7 @@ class SpriteEntity: public Entity2D
 public:
     SpriteEntity(Sprite* sprite);
     SpriteEntity(Texture2D spriteTexture, Vector2 frameSize, Vector2 origin);
-    virtual void Draw(float frameTime);
+    void Draw(float frameTime);
     bool IsFlippedH(){return (spriteFlip.x == -1);};
     bool IsFlippedV(){return (spriteFlip.y == -1);};
     void SetFlipped(bool hFlipped, bool vFlipped)

@@ -314,6 +314,11 @@ void Entity2D::SetParent(Entity2D* newParent)
     parentEntity->AddChild(this);
 }
 
+
+void Entity2D::Draw(float deltaTime)
+{}
+
+
 /// @brief Add and entity as a child of this entity
 /// @param newChild The new child to add to this entity
 void Entity2D::AddChild(Entity2D* newChild)
