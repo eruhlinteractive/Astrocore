@@ -1,5 +1,6 @@
 #include "game.h"
 #include "testScene.h"
+#include "../AstroCore/astrocore.h"
 
 using namespace Astrolib;
 
@@ -14,6 +15,7 @@ void Game::OnExit()
 {
     delete currentScene;
     currentScene = nullptr;
+    TextureManager::instance().UnloadAllTextures();
 }
 
 void Game::Update(float deltaTime)

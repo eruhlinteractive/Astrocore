@@ -5,5 +5,6 @@
 #include "header/animatedSpriteEntity.h"
 #include "header/structs.h"
 #include "header/scene.h"
+#include "header/texturemanager.h"
 
 using namespace Astrolib;

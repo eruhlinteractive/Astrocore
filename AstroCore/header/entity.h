@@ -60,6 +60,7 @@ public:
     Vector2 GetPosition() {return position;}
     Vector2 GetScale() {return scale;}
 
+    int GetId(){return id;}
     // Functions
 
     /// @brief Called when the object is initialized
@@ -79,8 +80,19 @@ public:
     /// @param deltaTime The time between the previous and current frame
     virtual void Draw(float deltaTime);
 
-    /// @brief The layer this sprite is drawn on (lower = first)
+    /// @brief The layer this sprite is drawn on (lower = first), relative to the parent
     int drawLayer = 0;
+
+
+    int GetDrawLayer(){
+        if(parentEntity != nullptr)
+        {
+            return drawLayer + parentEntity->GetDrawLayer();
+        }
+        
+        return drawLayer;
+    };
+
 
     /// @brief The offset used for Y position-based sorting
     float ySortOffset = 0;
@@ -90,7 +102,7 @@ public:
     void SetYSortOffset(float newOffset){ySortOffset = newOffset;};
 
     // Get children
-    std::vector<Entity2D*>* GetChildren();
+    std::vector<Entity2D*> GetChildren();
     Entity2D* GetChildAtIndex(int index);
     void AddChild(Entity2D* newChild);
     void RemoveChild(Entity2D* childToCheck);
@@ -115,6 +127,7 @@ protected:
 
     // Bit flags for this entity
     uint8_t transformFlags = 0;
+    int id = 0;
 
     /// @brief The children of this entity
     std::unique_ptr<std::vector<Entity2D*>> children = std::make_unique<std::vector<Entity2D*>>();

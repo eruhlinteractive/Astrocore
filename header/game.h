@@ -14,8 +14,6 @@ public:
 
     Game() {};
 
-    Camera2D *worldCamera;
-
     /// @brief Initialize Runtime
     void InitGame(int screenWidth, int screenHeight);
 

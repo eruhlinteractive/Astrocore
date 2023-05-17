@@ -12,7 +12,7 @@ Entity2D::Entity2D()
     position = (Vector2){0,0};
     scale = (Vector2){1,1};
     rotation = 0.0f;
-
+    id = (int)GetTime();
     Init();
 }
 
@@ -341,6 +341,12 @@ void Entity2D::AddChild(Entity2D* newChild)
         newChild->SetParent(this);
     }
 }
+
+std::vector<Entity2D*> Entity2D::GetChildren()
+{
+    return *children;
+}
+
 
 /// @brief Checks if the entity is a child of this entity
 /// @param childToCheck The potential child in question

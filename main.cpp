@@ -62,11 +62,15 @@ int main()
         EndDrawing();
     }
 
+    game->OnExit();
+    delete game;
+    game = nullptr;
+
+
     // De-Initialization
     //--------------------------------------------------------------------------------------
     CloseWindow();        // Close window and OpenGL context
     //--------------------------------------------------------------------------------------
-    game->OnExit();
-    
+   
     return 0;
 }

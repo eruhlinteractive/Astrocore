@@ -9,7 +9,13 @@ SpriteEntity::SpriteEntity(Sprite* sprite)
 SpriteEntity::SpriteEntity(Texture2D spriteTexture, Vector2 frameSize, Vector2 origin)
 {
     this->sprite = new Sprite(spriteTexture, origin);
-    
+}
+
+SpriteEntity::~SpriteEntity()
+{
+    TextureManager::instance().UnloadTexture(sprite->spriteTexture);
+    delete sprite;
+    sprite = nullptr;
 }
 
 

@@ -4,6 +4,7 @@ src/entity.cpp
 src/animatedSpriteEntity.cpp
 src/spriteEntity.cpp
 src/scene.cpp
+src/texturemanager.cpp
 )
 
 target_include_directories(${PROJECT_NAME} 

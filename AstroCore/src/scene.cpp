@@ -10,6 +10,15 @@ Scene::Scene()
 
 bool Scene::RegisterEntity(std::string name, Entity2D* entity)
 {
+    if(entity->GetChildCount() > 0)
+    {
+        std::vector<Entity2D*> children = entity->GetChildren();
+        for(Entity2D* child : children)
+        {
+            RegisterEntity(std::to_string(child->GetId()), child);
+        }
+    }
+
     // Insert new reference
     if(entities.find(name) == entities.end())
     {
@@ -28,6 +37,9 @@ Scene::~Scene()
         delete e.second;
         e.second = nullptr;
     }
+
+    delete currentCamera;
+    currentCamera = nullptr;
 
 }
 

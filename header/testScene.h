@@ -40,11 +40,12 @@ public:
         input.AddInputAction(rotCW);
         input.AddInputAction(rotCCW);
 
+        TextureManager tmInstance = TextureManager::instance();
+        Texture2D spriteRun = tmInstance.GetTexture("../src/res/anim_test.png");
+        Texture2D spriteIdle = tmInstance.GetTexture("../src/res/idle_test.png");
 
-        Texture2D spriteRun = LoadTexture("../src/res/anim_test.png");
-        Texture2D spriteIdle = LoadTexture("../src/res/idle_test.png");
+        Texture2D beuh = tmInstance.GetTexture("../src/res/beuh.png");
 
-        Texture2D beuh = LoadTexture("../src/res/beuh.png");
 
         AnimatedSpriteEntity* testSprite = new AnimatedSpriteEntity(
             {25,18}, 
@@ -78,7 +79,7 @@ public:
         testChild->SetScale({0.5,0.5});
         animTest->SetScale({1,1});
 
-        //testChild->MoveGlobal({screenWidth/2.0,screenHeight/2.0});
+        //testChild->MoveGlobal({0,50});
         //testChild->SetPosition({100,0});
         testSprite->AddChild(testChild);
 

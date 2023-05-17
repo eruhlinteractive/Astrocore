@@ -2,6 +2,7 @@
 #define __SCENE_H__
 
 #include "entity.h"
+#include "texturemanager.h"
 #include <map>
 #include <string>
 #include <algorithm>
@@ -37,25 +38,18 @@ public:
     /// @param p2 The second pair
     /// @return Whether the draw layer of the first value is larger than the second
     static bool SortByLayerIndex(Entity2D* p1, Entity2D* p2){
-
-        // Y Position sorting
-        if(p1->drawLayer == p2->drawLayer)
-        {
-            return p1->GetPosition().y < p2->GetPosition().y;
-        }
-
-        return p1->drawLayer < p2->drawLayer;
+        return p1->GetDrawLayer() < p2->GetDrawLayer();
     }
 
     static bool SortByLayerIndexWithYSort(Entity2D* p1, Entity2D* p2){
 
         // Y Position sorting
-        if(p1->drawLayer == p2->drawLayer)
+        if(p1->GetDrawLayer() == p2->GetDrawLayer())
         {
             return p1->GetPosition().y < p2->GetPosition().y;
         }
 
-        return p1->drawLayer < p2->drawLayer;
+        return p1->GetDrawLayer() < p2->GetDrawLayer();
     }
 
     /// @brief Check if the entity at screenPosition is visible on screen

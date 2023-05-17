@@ -1,4 +1,5 @@
 #include "../header/animatedSpriteEntity.h"
+#include "../header/texturemanager.h"
 #include <iostream>
 
 using namespace Astrolib;
@@ -91,13 +92,14 @@ AnimatedSpriteEntity::~AnimatedSpriteEntity()
         // Unload all textures
         SpriteAnimation* sAnim = anim->second;
 
-        //if(sAnim != nullptr)
-        //{
-        //Texture2D s = sAnim->spriteTexture;
+        if(sAnim != nullptr)
+        {
+            Texture2D s = sAnim->spriteTexture;
+            TextureManager::instance().UnloadTexture(s);
 
-        //    delete sAnim;
-        //    sAnim = nullptr;
-        //}
+            delete sAnim;
+            sAnim = nullptr;
+        }
     }
 
     delete animStates;
