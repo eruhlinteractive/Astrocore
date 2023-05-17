@@ -80,14 +80,6 @@ private:
     
     
 public:
-
-    // Singleton
-    static InputManager& instance()
-    {
-       static InputManager instance;
-       return instance;
-    };
-
     bool IsActionDown(string actionName);
     bool IsActionPressed(string actionName);
     bool RemoveActionTrigger(string actionName, int positiveIndex, bool isController=false);
@@ -95,5 +87,11 @@ public:
     void AddInputAction(shared_ptr<InputAction> newAction);
     void RemoveInputAction(string actionName);
     void AddActionEvent(string actionName, int positiveIndex, int controllerId);
+
+    static InputManager& instance()
+    {
+        static InputManager INSTANCE;
+        return INSTANCE;
+    }
 };
 #endif

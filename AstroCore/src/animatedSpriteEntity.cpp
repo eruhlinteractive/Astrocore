@@ -71,6 +71,7 @@ void AnimatedSpriteEntity::RemoveAnimation(string animationName)
 /// @param animationName The name of the animation to switch to
 void AnimatedSpriteEntity::ChangeAnimation(string animationName)
 {
+    
     if(animStates->find(animationName) != animStates->end() && animationName != currentAnimationName)
     {
         currentAnimationName = animationName;
@@ -108,7 +109,6 @@ void AnimatedSpriteEntity::Draw(float frameTime)
 {
     Rectangle srcRect, destRect;
     float srcPosX, srcPosY;
-
 
     if(isPlaying) animAcc += frameTime;
 

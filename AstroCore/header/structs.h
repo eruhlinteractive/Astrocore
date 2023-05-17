@@ -18,11 +18,15 @@ struct InputEvent
     int positiveInput;
 };
 
-
 struct Sprite
 {
     Texture spriteTexture;
     Vector2 origin;
+    Sprite(Texture2D texture, Vector2 origin)
+    {
+        this->spriteTexture = texture;
+        this->origin = origin;
+    }
 };
 
 struct SpriteAnimation

@@ -138,7 +138,6 @@ void InputManager::RemoveInputAction(string actionName)
 /// @param newAction The new action to add
 void InputManager::AddInputAction(shared_ptr<InputAction> newAction)
 {
-   
     // Action already exists, throw error
     if (HasAction(newAction->GetName()))
     {
