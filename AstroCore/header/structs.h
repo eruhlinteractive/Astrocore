@@ -52,11 +52,11 @@ struct SpriteAnimation
         this->frameSize = frameSize;
     };
 
-    Texture spriteTexture;
+    Texture2D spriteTexture;
     int frameMax = 0;
     int currentFrame = 1;
     int animFPS = 10;
-    int framesWide = 1 ;
+    int framesWide = 1;
     Vector2 origin;
     Vector2 frameSize;
 };

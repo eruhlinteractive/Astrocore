@@ -90,9 +90,14 @@ AnimatedSpriteEntity::~AnimatedSpriteEntity()
     {
         // Unload all textures
         SpriteAnimation* sAnim = anim->second;
-        UnloadTexture(sAnim->spriteTexture);
-        delete sAnim;
-        sAnim = nullptr;
+
+        //if(sAnim != nullptr)
+        //{
+        //Texture2D s = sAnim->spriteTexture;
+
+        //    delete sAnim;
+        //    sAnim = nullptr;
+        //}
     }
 
     delete animStates;

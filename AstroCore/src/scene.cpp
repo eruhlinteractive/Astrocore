@@ -5,6 +5,7 @@ using namespace Astrolib;
 Scene::Scene()
 {
     entities = std::map<std::string, Entity2D*>();
+    LoadScene();
 }
 
 bool Scene::RegisterEntity(std::string name, Entity2D* entity)
@@ -19,10 +20,21 @@ bool Scene::RegisterEntity(std::string name, Entity2D* entity)
     return false;
 }
 
+Scene::~Scene()
+{
+    // Cleanup scene memory
+    for(auto e : entities)
+    {
+        delete e.second;
+        e.second = nullptr;
+    }
+
+}
+
 
 Entity2D* Scene::FindEntityByName(std::string name)
 {
-    if(entities.find(name) == entities.end())
+    if(entities.find(name) != entities.end())
     {
         return entities[name];
     }
@@ -41,28 +53,45 @@ void Scene::Update(float deltaTime)
 
 void Scene::Draw(float deltaTime)
 {
-    
+    BeginMode2D(*currentCamera);
     std::vector<Entity2D*> pairs;
     // Create a list of all entities in the scene
     for (auto p : entities)
     {
-        pairs.push_back(p.second);
+        pairs.push_back((Entity2D*)p.second);
     }
-    // Sort by draw layer
-    
-    std::sort(pairs.begin(), pairs.end(), SortByLayerIndex);
 
-    
-    // Draw every entity
-    for(auto e : pairs)
+    if(ySortEnabled)
     {
-        e->Draw(deltaTime);
+        // Sort by draw layer
+        std::sort(pairs.begin(), pairs.end(), SortByLayerIndexWithYSort);
+    }
+    else
+    {
+        // Sort by draw layer
+        std::sort(pairs.begin(), pairs.end(), SortByLayerIndex);
+    }
+    
+
+    // Draw every entity
+    for(Entity2D* e : pairs)
+    {
+        // Don't draw if it's off screen
+
+        Vector2 screenPos = GetWorldToScreen2D(e->GetPosition(), *currentCamera);
+        // Screen border buffer to prevent pop-ins
+        float rimBuffer = 75.0f;
+        // AABB rect test to tell if we're on screen
+        
+        
+        if(IsOnScreen(screenPos,rimBuffer))
+        {
+            e->Draw(deltaTime);
+        }
+        
     }
 
-   for(auto e : pairs)
-   {
-        e->Draw(deltaTime);
-   }
+   EndMode2D();
    
 }
 

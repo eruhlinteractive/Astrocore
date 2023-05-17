@@ -5,6 +5,9 @@
 
 using namespace std;
 using namespace Astrolib;
+
+namespace Astrolib
+{
 class Game
 {
 public:
@@ -28,13 +31,19 @@ public:
     void Update(float deltaTime);
     void Draw(float deltaTime);
 
-    AnimatedSpriteEntity* testSprite;
-    AnimatedSpriteEntity* animTest;
-    SpriteEntity* testSpr;
     Scene* currentScene;
+
+    Vector2 GetScreenSize(){return (Vector2){ (float)GetScreenWidth(), (float)GetScreenHeight()};}
 
     void OnExit();
 
+    static Game& instance()
+    {
+        static Game INSTANCE;
+        return INSTANCE;
+    }
+
 private:
-    std::vector<Entity2D> entities;
+    bool ySortEnabled = true;
 };
+}
