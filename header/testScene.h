@@ -13,11 +13,12 @@ public:
     void LoadScene()
     {
         currentCamera = new Camera2D();
-        currentCamera->zoom = 1.0f;
+        currentCamera->zoom = 2.0f;
         currentCamera->rotation = 0.0f;
 
         Vector2 screenSize = Game::instance().GetScreenSize();
         currentCamera->offset = {screenSize.x/2.0f, screenSize.y/2.0f};
+
 
 
         // Get reference to input instance
@@ -54,9 +55,9 @@ public:
             8
             );
 
-        SpriteEntity* testSpr = new SpriteEntity(beuh, {212,180}, {0,0});
+        SpriteEntity* testSpr = new SpriteEntity(beuh, {212,180}, {106,90});
         testSpr->MoveGlobal({10,10});
-        testSpr->Scale((Vector2){0.5f,1.0f});
+        testSpr->Scale((Vector2){1.0f,1.0f});
 
 
         SpriteAnimation* idleAnim = new SpriteAnimation(spriteIdle, 4, 6, 4, {25,18}, {50,37});
@@ -84,7 +85,7 @@ public:
         animTest->SetScale({5,5});
        // animTest->MoveGlobal({screenWidth/4.0f ,screenHeight/4.0f });
         //testSprite->MoveGlobal({screenWidth/2.0f ,screenHeight/2.0f });
-        testSprite->RotateDeg(45);
+        //testSprite->RotateDeg(45);
 
         testSprite->ySortOffset = 10;
 
