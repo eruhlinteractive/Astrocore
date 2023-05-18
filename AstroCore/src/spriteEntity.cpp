@@ -23,7 +23,8 @@ void SpriteEntity::Draw(float deltaTime)
 {
     // Update destination rect
     Rectangle srcRect, destRect;
+    Vector2 globalPos = GetGlobalPosition();
     srcRect = (Rectangle){0.0f, 0.0f, (float)sprite->spriteTexture.width, (float)sprite->spriteTexture.height};
-    destRect = (Rectangle){position.x - (sprite->origin.x * scale.x), position.y- (sprite->origin.y * scale.y), sprite->spriteTexture.width * scale.x, sprite->spriteTexture.height * scale.y};
-    DrawTexturePro(sprite->spriteTexture, srcRect, destRect, position, rotation, WHITE);
+    destRect = (Rectangle){globalPos.x - (sprite->origin.x * transform.scale.x), globalPos.y- (sprite->origin.y * transform.scale.y), sprite->spriteTexture.width * transform.scale.x, sprite->spriteTexture.height * transform.scale.y};
+    DrawTexturePro(sprite->spriteTexture, srcRect, destRect, globalPos, GetGlobalRotation(), WHITE);
 }

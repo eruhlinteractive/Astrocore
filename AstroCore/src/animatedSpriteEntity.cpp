@@ -151,8 +151,8 @@ void AnimatedSpriteEntity::Draw(float frameTime)
     // Animated sprite
 
     srcRect = (Rectangle){srcPosX,srcPosY, spriteFlip.x * currentAnim->frameSize.x, spriteFlip.y * currentAnim->frameSize.y};
-    destRect = (Rectangle){globalPos.x, globalPos.y, currentAnim->frameSize.x * scale.x, currentAnim->frameSize.x * scale.y};
+    destRect = (Rectangle){globalPos.x, globalPos.y, currentAnim->frameSize.x * transform.scale.x, currentAnim->frameSize.x * transform.scale.y};
 
     //DrawTexture(spriteText,positionX,positionY,WHITE);
-    DrawTexturePro(currentAnim->spriteTexture, srcRect, destRect, {currentAnim->origin.x * scale.x ,currentAnim->origin.y * scale.y}, rotation * (180.0/PI), WHITE);
+    DrawTexturePro(currentAnim->spriteTexture, srcRect, destRect, {currentAnim->origin.x * transform.scale.x ,currentAnim->origin.y * transform.scale.y}, GetGlobalRotation() * (180.0/PI), WHITE);
 }

@@ -1,3 +1,6 @@
+
+#include <math.h>
+
 #ifndef STRUCTS_H
 #define STRUCTS_H
 
@@ -93,7 +96,7 @@ struct Transform2D
 
     void RotateDegrees(float deltaRotationDeg)
     {
-        Rotate((deltaRotationDeg * ((float)M_PI / 180.0f)));
+        Rotate((deltaRotationDeg * ((float)PI / 180.0f)));
     }
 
     void Scale(Vector2 scaleDelta)
@@ -112,7 +115,7 @@ struct Transform2D
         position = (Vector2){movLocal.x + position.x, movLocal.y + position.y};
     }
 
-    void RotateAroundPoint(float deltaRotationRadians, Vector2 point)
+    void RotateAround(Vector2 point, float deltaRotationRadians)
     {
         Vector2 translation = {position.x - point.x, position.y - point.y};
 

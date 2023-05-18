@@ -166,7 +166,7 @@ void Scene::Draw(float deltaTime)
     {
         // Don't draw if it's off screen
 
-        Vector2 screenPos = GetWorldToScreen2D(e->GetPosition(), *currentCamera);
+        Vector2 screenPos = GetWorldToScreen2D(e->GetGlobalPosition(), *currentCamera);
         // Screen border buffer to prevent pop-ins
         float rimBuffer = 100.0f * currentCamera->zoom;
         // AABB rect test to tell if we're on screen

@@ -1,5 +1,5 @@
 #include "../header/entity.h"
-#include <math.h>
+
 #include <iostream>
 #include <stdexcept>
 #include <algorithm>
@@ -9,9 +9,7 @@ using namespace Astrolib;
 #pragma region Constructors
 Entity2D::Entity2D()
 {
-    position = (Vector2){0,0};
-    scale = (Vector2){1,1};
-    rotation = 0.0f;
+    transform = Transform2D();
     id = (int)GetTime();
     name = "Entity2D" + std::to_string(id);
     Init();
@@ -24,9 +22,7 @@ Entity2D::Entity2D(std::string name) : Entity2D()
 
 Entity2D::Entity2D(std::string name, Vector2 startPosition, Vector2 startScale, float startRotation): Entity2D(name)
 {
-    position = startPosition;
-    rotation = startRotation;
-    scale = startScale;
+    transform = Transform2D(startPosition, startRotation, startScale);
     id = (int)GetTime();
     name = "Entity2D" + std::to_string(id);
     Init();
@@ -41,50 +37,6 @@ Entity2D::~Entity2D()
 
 #pragma region Transformation Functions
 
-// Transformation functions
-
-/// @brief Move the position in the global space, ignoring parent transform
-/// @param movement The vector of movement
-void Entity2D::MoveGlobal(Vector2 movement)
-{
-    position = (Vector2){movement.x + position.x, movement.y + position.y};
-
-    // Update child transforms
-    for(Entity2D* child : *children)
-    {
-        // Undo movement to leave child in place
-        if(child->IsFlagSet(POS_UNIQUE))
-        {
-            child->MoveGlobal({-movement.x,-movement.y});
-        }
-    }
-}
-
-/// @brief Move the position realtive to the rotation
-/// @param movement The vector of movement
-void Entity2D::MoveLocal(Vector2 movement)
-{
-
-    Vector2 movLocal = movement;
-    movLocal.x = movement.x * cos(rotation) - movement.y * sin(rotation);
-    movLocal.y = movement.x * sin(rotation) + movement.y * cos(rotation);
-
-    //std::cout<< movLocal.x << ":" << movLocal.y << std::endl;
-    
-    position = (Vector2){movLocal.x + position.x, movLocal.y + position.y};
-
-    // Update child transforms
-    // Undo movement to leave child in place
-     for(Entity2D* child : *children)
-    {
-        if(child->IsFlagSet(POS_UNIQUE))
-        {
-            child->MoveGlobal({-movLocal.x,-movLocal.y});
-        }
-    }
-
-}
-
 /// @brief Get the position of this entity in world space
 /// @return A Vector2 representing the world coordinates
 Vector2 Entity2D::GetGlobalPosition()
@@ -95,12 +47,12 @@ Vector2 Entity2D::GetGlobalPosition()
         Vector2 parentGlobal = parentEntity->GetGlobalPosition();
         //std::cout << (positionX + parentGlobal.x) << ":" << (positionY + parentGlobal.y) << std::endl;
         //std::cout << (positionX) << ":" << (positionY) << std::endl;
-        return {position.x + parentGlobal.x, position.y + parentGlobal.y};
+        return {transform.position.x + parentGlobal.x, transform.position.y + parentGlobal.y};
         //return GetPosition();
     }
     else
     {
-        return GetPosition();
+        return transform.position;
     }
 }
 
@@ -115,157 +67,15 @@ float Entity2D::GetGlobalRotationDeg()
 /// @return The global space rotation of this entity
 float Entity2D::GetGlobalRotation()
 {
-    float globalRot = rotation;
+    float globalRot = transform.rotation;
+
     if(parentEntity != nullptr)
     {
-        globalRot = GetRotation() + parentEntity->GetGlobalRotation();
+        globalRot = transform.rotation + parentEntity->GetGlobalRotation();
         globalRot = std::fmod(globalRot, (2.0f * M_PI));
     }
 
     return globalRot;
-}
-
-/// @brief Rotate this object around a point
-/// @param rotDeg The angle (degrees) to rotate by
-/// @param point The point to rotate around
-void Entity2D::RotateDegAroundPoint(float rotDeg, Vector2 point)
-{
-    float rotRad = (rotDeg * ((float)M_PI / 180.0f));
-    RotateAroundPoint(rotRad, point);
-   
-    //MoveGlobal(translation);   
-}
-
-/// @brief Rotates the entity around a world-space point
-/// @param rotRad The rotation in radians
-/// @param point The Vector2 point in world space
-void Entity2D::RotateAroundPoint(float rotRad, Vector2 point)
-{
-    Vector2 globalPos = GetGlobalPosition();
-    Vector2 translation = {globalPos.x - point.x, globalPos.y - point.y};
-
-    float xNew = translation.x * cos(rotRad) - translation.y * sin(rotRad);
-    float yNew = translation.x * sin(rotRad) + translation.y * cos(rotRad);
-
-    translation = {xNew + point.x, yNew + point.y};
-
-
-    Vector2 movement = {translation.x - globalPos.x, translation.y - globalPos.y};
-    
-    MoveGlobal(movement);
-    for(Entity2D* child : *children)
-    {
-        child->RotateAroundPoint(rotRad, GetGlobalPosition());
-    }
-    //SetPosition(movement);
-    //Rotate(rotRad);
-    rotation += rotRad;
-}
-
-
-/// @brief Rotate the entity by rotRad radians
-/// @param rotRad The delta rotation in radians
-void Entity2D::Rotate(float rotRad)
-{
-    //std::cout<< GetRotation() << std::endl;
-    rotation += rotRad;
-
-    for (Entity2D* child : *children)
-    {
-        // Check if child inherits parent rotaiton
-        //std::cout << !child->IsFlagSet(ROT_UNIQUE) << std::endl;
-        if(!child->IsFlagSet(ROT_UNIQUE))
-        {
-            child->RotateAroundPoint(rotRad, GetGlobalPosition());
-        }
-        //child->Rotate(rotRad);
-    }
-
-    // Keep within range 0-> 2PI
-    rotation = std::fmod(rotation, (2.0f * M_PI));
-}
-
-/// @brief Rotate the entity by rotDeg degrees
-/// @param rotRad The delta rotation in radians
-void Entity2D::RotateDeg(float rotDeg)
-{
-    //std::cout<< GetRotation() << std::endl;    
-    Rotate((rotDeg * ((float)M_PI / 180.0f)));
-}
-
-/// @brief Set the position of this entity
-/// @param newPosition The new position to set
-void Entity2D::SetPosition(Vector2 newPosition)
-{
-
-    // Relative to parent
-    if(parentEntity != nullptr)
-    {
-        position.x =  parentEntity->GetPosition().x + newPosition.x;
-        position.y = parentEntity->GetPosition().y + newPosition.y;
-    }
-    else
-    {  
-        position = (Vector2){newPosition.x, newPosition.y};
-    }
-    
-}
-
-/// @brief Scale the entity
-/// @param scaleDelta The amount to multiply the scale by
-void Entity2D::Scale(Vector2 scaleDelta)
-{
-    scale = (Vector2){scale.x * scaleDelta.x, scale.y * scaleDelta.y};
-
-    for(Entity2D* child : *children)
-    {
-        Vector2 childPos = child->GetGlobalPosition();
-        Vector2 translation = {childPos.x - position.x, childPos.y - position.y};
-        std::cout << (scaleDelta.x * translation.x) << ":" << scaleDelta.y << std::endl;
-        child->Scale(scaleDelta);
-        child->MoveLocal({scaleDelta.x * translation.x, scaleDelta.y * translation.y});
-    }
-}
-
-
-/// @brief Set the scale of this entity
-/// @param newScale The new scale to set
-void Entity2D::SetScale(Vector2 newScale)
-{
-    // TODO: Apply scaling to children
-    //for(Entity2D* child : *children)
-    //{
-    //    //Vector2 childPos = child->GetPosition();
-    //    //Vector2 diff = { childPos.x - positionX, childPos.y - positionY};
-    //    child->Scale(newScale);
-    //}
-
-    scale = newScale;
-}
-
-
-/// @brief Set the rotation of this entity in radians
-/// @param newRotation The new rotation to set (radians)
-void Entity2D::SetRotation(float newRotation)
-{
-    for(Entity2D* child: *children)
-    {
-        child->RotateAroundPoint(rotation - newRotation, GetPosition());
-    }
-    rotation = newRotation;
-
-    // Keep within range 0-> 2PI
-    rotation = std::fmod(rotation, (2.0f * M_PI));
-}
-
-/// @brief Set the rotation of this entity in degrees
-/// @param newRotation The new rotation to set (degrees)
-void Entity2D::SetRotationDeg(float newRotationDeg)
-{
-    rotation = (newRotationDeg * M_PI / 180);
-
-    // Keep within range 0-> 2PI
-    rotation = std::fmod(rotation, (2.0f * M_PI));
 }
 
 #pragma endregion

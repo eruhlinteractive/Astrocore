@@ -48,7 +48,7 @@ public:
         // Y Position sorting
         if(p1->GetDrawLayer() == p2->GetDrawLayer())
         {
-            return p1->GetPosition().y < p2->GetPosition().y;
+            return p1->transform.position.y < p2->transform.position.y;
         }
 
         return p1->GetDrawLayer() < p2->GetDrawLayer();

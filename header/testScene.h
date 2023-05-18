@@ -55,8 +55,8 @@ public:
             );
 
         SpriteEntity* testSpr = new SpriteEntity(beuh, {212,180}, {106,90});
-        testSpr->MoveGlobal({10,10});
-        testSpr->Scale((Vector2){1.0f,1.0f});
+        testSpr->transform.MoveGlobal({10,10});
+        testSpr->transform.Scale((Vector2){1.0f,1.0f});
 
 
         SpriteAnimation* idleAnim = new SpriteAnimation(spriteIdle, 4, 6, 4, {25,18}, {50,37});
@@ -75,14 +75,14 @@ public:
             20
             );
 
-        testChild->SetScale({0.5,0.5});
-        animTest->SetScale({1,1});
+        testChild->transform.scale = (Vector2){0.5,0.5};
+        animTest->transform.scale = (Vector2){1,1};
 
         //testChild->MoveGlobal({0,50});
         //testChild->SetPosition({100,0});
         testSprite->AddChild(testChild);
 
-        animTest->SetScale({5,5});
+        animTest->transform.scale = (Vector2){5,5};
        // animTest->MoveGlobal({screenWidth/4.0f ,screenHeight/4.0f });
         //testSprite->MoveGlobal({screenWidth/2.0f ,screenHeight/2.0f });
         //testSprite->RotateDeg(45);
@@ -110,7 +110,7 @@ public:
         
         if (input.IsActionDown("right"))
         {
-            testSprite->MoveLocal({100 * GetFrameTime(),0});
+            testSprite->transform.MoveLocal({100 * GetFrameTime(),0});
             testSprite->ChangeAnimation("default");
             testSprite->SetFlipped(false, false);
             if(animTest != nullptr)
@@ -121,7 +121,7 @@ public:
         }
         else if(input.IsActionDown("left"))
         {
-            testSprite->MoveLocal({-100 * GetFrameTime(),0});
+            testSprite->transform.MoveLocal({-100 * GetFrameTime(),0});
             testSprite->ChangeAnimation("default");
             testSprite->SetFlipped(true, false);
             if(animTest != nullptr)
@@ -143,19 +143,19 @@ public:
 
         if(input.IsActionDown("up"))
         {
-            testSprite->MoveLocal({0,-50 * GetFrameTime()});
+            testSprite->transform.MoveLocal({0,-50 * GetFrameTime()});
         }
         if(input.IsActionDown("down"))
         {
-            testSprite->MoveLocal({0, 50 * GetFrameTime()});
+            testSprite->transform.MoveLocal({0, 50 * GetFrameTime()});
         }
         if(input.IsActionDown("rotCW"))
         {
-            testSprite->RotateDeg(30 * GetFrameTime());
+            testSprite->transform.RotateDegrees(30 * GetFrameTime());
         }
         if(input.IsActionDown("rotCCW"))
         {
-            testSprite->RotateDeg(-30 * GetFrameTime());
+            testSprite->transform.RotateDegrees(-30 * GetFrameTime());
         }
         
         currentCamera->target = testSprite->GetGlobalPosition();
