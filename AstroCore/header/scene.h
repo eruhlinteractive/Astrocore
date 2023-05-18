@@ -6,6 +6,7 @@
 #include <map>
 #include <string>
 #include <algorithm>
+#include <regex>
 
 namespace Astrolib
 {
@@ -19,6 +20,7 @@ public:
 
     //Scene(std::string name){};
     Entity2D* FindEntityByName(std::string name);
+    Entity2D* GetEntity(std::string path);
 
     virtual void LoadScene(){};
     virtual void UnloadScene(){};
@@ -26,7 +28,7 @@ public:
     virtual void Update(float deltaTime);
     void Draw(float deltaTime);
 
-    bool RegisterEntity(std::string name, Entity2D* entity);
+    bool RegisterEntity(Entity2D* entity);
     bool UnRegisterEntity(std::string name);
 
     Camera2D* currentCamera;
@@ -64,6 +66,7 @@ public:
     }
 
 private:
+    /// @brief Top level of the scene graph
     std::map<std::string, Entity2D*> entities;
     std::string sceneName = "";
 };

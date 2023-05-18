@@ -9,9 +9,10 @@ using namespace Astrolib;
 /// @param origin 
 /// @param spriteSize 
 /// @param spriteSrcPath 
-AnimatedSpriteEntity::AnimatedSpriteEntity(Vector2 origin, Vector2 frameSize, Texture2D sprite, string defaultAnimName)
+AnimatedSpriteEntity::AnimatedSpriteEntity(std::string name, Vector2 origin, Vector2 frameSize, Texture2D sprite, string defaultAnimName)
 {
     Init();
+    
     //this->spriteSrcPath = spriteSrcPath;
     SpriteAnimation* anim = new SpriteAnimation();
 
@@ -19,13 +20,22 @@ AnimatedSpriteEntity::AnimatedSpriteEntity(Vector2 origin, Vector2 frameSize, Te
     anim->origin = origin;
     anim->frameSize = frameSize;
     anim->framesWide = 1;
+    if(name == "")
+    {
+        this->name = "AnimatedEntity2D" + std::to_string(id);
+    }
+    else
+    {
+        this->name = name;
+    }
 
     animStates->insert(pair<string, SpriteAnimation*>(defaultAnimName, anim));
     currentAnimationName = defaultAnimName;
     currentAnim = anim;
 }
 
-AnimatedSpriteEntity::AnimatedSpriteEntity(Vector2 origin, Vector2 frameSize, Texture2D sprite, int framesWide, int frameCount, int animFps) : AnimatedSpriteEntity(origin,frameSize, sprite)
+AnimatedSpriteEntity::AnimatedSpriteEntity(std::string name, Vector2 origin, Vector2 frameSize, Texture2D sprite, int framesWide, int frameCount, int animFps) 
+: AnimatedSpriteEntity(name, origin, frameSize, sprite)
 {
     SpriteAnimation* anim = (*animStates)[currentAnimationName];
     anim->framesWide = framesWide;
@@ -33,9 +43,14 @@ AnimatedSpriteEntity::AnimatedSpriteEntity(Vector2 origin, Vector2 frameSize, Te
     anim->frameMax = frameCount;
 }
 
-AnimatedSpriteEntity::AnimatedSpriteEntity(SpriteAnimation* defaultAnimation, string animationName)
+AnimatedSpriteEntity::AnimatedSpriteEntity(std::string name, SpriteAnimation* defaultAnimation, string animationName)
 {
     Init();
+    if(name == "")
+    {
+        name = "AnimatedEntity2D" + std::to_string(id);
+    }
+   
     animStates->insert(pair<string, SpriteAnimation*>(animationName, defaultAnimation));
     currentAnimationName = animationName;
 }
@@ -137,6 +152,7 @@ void AnimatedSpriteEntity::Draw(float frameTime)
 
     srcRect = (Rectangle){srcPosX,srcPosY, spriteFlip.x * currentAnim->frameSize.x, spriteFlip.y * currentAnim->frameSize.y};
     destRect = (Rectangle){globalPos.x, globalPos.y, currentAnim->frameSize.x * scale.x, currentAnim->frameSize.x * scale.y};
+
     //DrawTexture(spriteText,positionX,positionY,WHITE);
     DrawTexturePro(currentAnim->spriteTexture, srcRect, destRect, {currentAnim->origin.x * scale.x ,currentAnim->origin.y * scale.y}, rotation * (180.0/PI), WHITE);
 }

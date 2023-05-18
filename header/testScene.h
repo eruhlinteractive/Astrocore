@@ -46,8 +46,8 @@ public:
 
         Texture2D beuh = tmInstance.GetTexture("../src/res/beuh.png");
 
-
         AnimatedSpriteEntity* testSprite = new AnimatedSpriteEntity(
+            "testSprite",
             {25,18}, 
             {50,37},
             spriteRun,
@@ -65,9 +65,10 @@ public:
 
         testSprite->AddAnimation("idle", idleAnim);
 
-        AnimatedSpriteEntity* testChild = new AnimatedSpriteEntity({24,24}, {48,48}, spriteIdle);
+        AnimatedSpriteEntity* testChild = new AnimatedSpriteEntity("testChild", {24,24}, {48,48}, spriteIdle);
 
         AnimatedSpriteEntity* animTest = new AnimatedSpriteEntity(
+            "animTest",
             {25,18}, 
             {50,37},
             spriteRun,
@@ -90,11 +91,14 @@ public:
 
         testSprite->ySortOffset = 10;
 
-        RegisterEntity("Test Sprite Player", testSprite);
-        RegisterEntity("Test Sprite Static", testSpr);
-        RegisterEntity("Test Sprite Animated", animTest);
-       
-        // TODO: Figure out how to unload/manage textures
+        RegisterEntity(testSprite);
+        RegisterEntity(testSpr);
+        RegisterEntity(animTest);
+        
+        Entity2D* t = GetEntity("testSprite/testChild");
+        std::string path = t->GetPath();
+        t = GetEntity(path);
+        std::string name = t->GetName();
     };
 
     void Update(float deltaTime)
@@ -103,8 +107,8 @@ public:
 
         InputManager input = InputManager::instance();
 
-        AnimatedSpriteEntity* testSprite = (AnimatedSpriteEntity*)FindEntityByName("Test Sprite Player");
-        AnimatedSpriteEntity* animTest = (AnimatedSpriteEntity*)FindEntityByName("Test Sprite Animated");
+        AnimatedSpriteEntity* testSprite = (AnimatedSpriteEntity*)FindEntityByName("testSprite");
+        AnimatedSpriteEntity* animTest = (AnimatedSpriteEntity*)GetEntity("animTest");
         
         if (input.IsActionDown("right"))
         {
@@ -125,7 +129,7 @@ public:
             if(animTest != nullptr)
             {
                 animTest->SetFlipped(true, false);
-                UnRegisterEntity("Test Sprite Animated");
+                //UnRegisterEntity("Test Sprite Animated");
             }
         }
         else

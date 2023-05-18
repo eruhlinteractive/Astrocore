@@ -13,16 +13,25 @@ Entity2D::Entity2D()
     scale = (Vector2){1,1};
     rotation = 0.0f;
     id = (int)GetTime();
+    name = "Entity2D" + std::to_string(id);
     Init();
 }
 
-Entity2D::Entity2D(Vector2 startPosition, Vector2 startScale, float startRotation)
+Entity2D::Entity2D(std::string name) : Entity2D()
+{
+    this->name = name; 
+}
+
+Entity2D::Entity2D(std::string name, Vector2 startPosition, Vector2 startScale, float startRotation): Entity2D(name)
 {
     position = startPosition;
     rotation = startRotation;
     scale = startScale;
+    id = (int)GetTime();
+    name = "Entity2D" + std::to_string(id);
     Init();
 }
+
 
 Entity2D::~Entity2D()
 {
@@ -280,11 +289,41 @@ Entity2D* Entity2D::GetParent()
     return parentEntity;
 }
 
+std::string Entity2D::GetPath()
+{
+    std::string path = GetName();
+
+    Entity2D* current = GetParent();
+    while(current != nullptr)
+    {
+        path = current->GetName() + "/" + path;
+        current = current->GetParent();
+    }
+    return path;
+}
+
+
 /// @brief Get the amount of children this entity has
 /// @return Int of how many child entities this entity has
 int Entity2D::GetChildCount()
 {
     return children->size();
+}
+
+/// @brief Get a child of this node by name
+/// @param name The name of the child to get
+/// @return The pointer to the entity
+Entity2D* Entity2D::GetChild(std::string name)
+{
+    for(Entity2D* child : *children)
+    {
+        if(child->GetName() == name)
+        {
+            return child;
+        }
+    }
+
+    return nullptr;
 }
 
 /// @brief Get the child ptr of a child at a specific index

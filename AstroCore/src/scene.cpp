@@ -8,14 +8,16 @@ Scene::Scene()
     LoadScene();
 }
 
-bool Scene::RegisterEntity(std::string name, Entity2D* entity)
+bool Scene::RegisterEntity(Entity2D* entity)
 {
+    std::string name = entity->GetName();
+
     if(entity->GetChildCount() > 0)
     {
         std::vector<Entity2D*> children = entity->GetChildren();
         for(Entity2D* child : children)
         {
-            RegisterEntity(std::to_string(child->GetId()), child);
+            RegisterEntity(child);
         }
     }
 
@@ -24,6 +26,13 @@ bool Scene::RegisterEntity(std::string name, Entity2D* entity)
     {
         entities.insert(std::pair{name, entity});
         return true;
+    }
+    else
+    {
+        // Create unique name
+        // TODO: This doesn't cover all cases, as an entity could be removed then another one added
+        throw std::runtime_error("Failred: Name " + name + " already exists in scene!");
+        return false;
     }
 
     return false;
@@ -56,6 +65,54 @@ bool Scene::UnRegisterEntity(std::string name)
     }
     
     return false;
+}
+
+Entity2D* Scene::GetEntity(std::string path)
+{
+    // Split string by '/' token (oh lord help me)
+    std::vector<std::string> split;
+
+    std::string s = "";
+    for(char c : path)
+    {
+        if(c != '/')
+        {
+            s += c;
+        }
+        else
+        {   if(s != "")
+            {
+                split.push_back(s);
+                s = "";
+            }
+        }
+    }
+    if(s != "")
+    {
+        split.push_back(s);
+    }
+
+    // Traverse tree to locate Entity
+
+    // Top level entity isn't found
+    if(entities.find(split[0]) == entities.end())
+    {
+        return nullptr;
+    }
+
+    // Iterate through path to find entity
+    Entity2D* current = entities[split[0]];
+
+    for(int i = 1; i < split.size(); i++)
+    {
+        current = current->GetChild(split[i]);
+        if(current == nullptr)
+        {
+            return nullptr;
+        }
+    }
+    // Navigate through children   
+    return current;
 }
 
 

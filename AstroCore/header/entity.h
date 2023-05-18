@@ -1,6 +1,7 @@
 #include <raylib.h>
 #include <vector>
 #include <memory>
+#include <string>
 
 #ifndef ENTITY2D_H
 #define ENTITY2D_H
@@ -22,7 +23,8 @@ public:
     // Constructors
 
     Entity2D();
-    Entity2D(Vector2 position, Vector2 scale, float rotation);
+    Entity2D(std::string name);
+    Entity2D(std::string name, Vector2 position, Vector2 scale, float rotation);
     virtual ~Entity2D();
 
     // Transformation functions
@@ -59,6 +61,10 @@ public:
     float GetGlobalRotation();
     Vector2 GetPosition() {return position;}
     Vector2 GetScale() {return scale;}
+
+    /// @brief Get the path from the scene root to this entity
+    /// @return The path to this entity from the scene root
+    std::string GetPath();
 
     int GetId(){return id;}
     // Functions
@@ -101,9 +107,13 @@ public:
     /// @param newOffset The new offset to use when Y sorting
     void SetYSortOffset(float newOffset){ySortOffset = newOffset;};
 
+    void SetName(std::string newName){name = newName;};
+    std::string GetName(){return name;};
+
     // Get children
     std::vector<Entity2D*> GetChildren();
     Entity2D* GetChildAtIndex(int index);
+    Entity2D* GetChild(std::string name);
     void AddChild(Entity2D* newChild);
     void RemoveChild(Entity2D* childToCheck);
     bool HasChild(Entity2D* childToCheck);
@@ -118,7 +128,6 @@ protected:
     // The position relative to the parent
     
     Vector2 position;
-
     Vector2 scale;
 
     /// @brief Rotation of this entity in radians
@@ -128,6 +137,7 @@ protected:
     // Bit flags for this entity
     uint8_t transformFlags = 0;
     int id = 0;
+    std::string name;
 
     /// @brief The children of this entity
     std::unique_ptr<std::vector<Entity2D*>> children = std::make_unique<std::vector<Entity2D*>>();

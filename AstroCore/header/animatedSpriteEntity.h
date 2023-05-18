@@ -17,9 +17,9 @@ class AnimatedSpriteEntity: public Entity2D
 {
 
 public:
-    AnimatedSpriteEntity(Vector2 origin, Vector2 frameSize, Texture2D sprite, string defaultAnimName = "default");
-    AnimatedSpriteEntity(Vector2 origin, Vector2 frameSize, Texture2D sprite, int framesWide, int frameCount, int animFps);
-    AnimatedSpriteEntity(SpriteAnimation* defaultAnimation, string animationName);
+    AnimatedSpriteEntity(std::string name, Vector2 origin, Vector2 frameSize, Texture2D sprite, string defaultAnimName = "default");
+    AnimatedSpriteEntity(std::string name, Vector2 origin, Vector2 frameSize, Texture2D sprite, int framesWide, int frameCount, int animFps);
+    AnimatedSpriteEntity(std::string name, SpriteAnimation* defaultAnimation, string animationName);
 
 
     void AddAnimation(string animationName, SpriteAnimation* anim);
