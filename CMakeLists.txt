@@ -5,14 +5,13 @@ include(CTest)
 enable_testing()
 
 
-add_executable(FarmingGame main.cpp src/game.cpp)
+add_executable(FarmingGame main.cpp)
 add_subdirectory(AstroCore)
 
 target_include_directories(${PROJECT_NAME} 
     PUBLIC include
     PUBLIC header
 )
-
 
 target_link_directories(${PROJECT_NAME}
     PRIVATE src

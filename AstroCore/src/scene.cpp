@@ -5,6 +5,7 @@ using namespace Astrolib;
 Scene::Scene()
 {
     entities = std::map<std::string, Entity2D*>();
+    currentCamera = new Camera2D();
     LoadScene();
 }
 

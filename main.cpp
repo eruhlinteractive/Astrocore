@@ -21,30 +21,19 @@
 *
 ********************************************************************************************/
 
-#include "raylib.h"
-#include "header/game.h"
 #include <iostream>
 #include <string>
 #include <math.h>
 #include "AstroCore/astrocore.h"
+#include "testGame.h"
 
 int main()
 {
-    Game* game = new Game();
+    TestGame* game = new TestGame();
+    int screenWidth = 1280;
+    int screenHeight = 720;
 
-   
-    const int screenWidth = 1024;
-    const int screenHeight = 600;
-    float deltaTime = 0.0;
-
-    
-    InitWindow(screenWidth, screenHeight, "Agromation 2D :D");
-
-    game->InitGame(screenWidth, screenHeight);
-
-    //testSprite->SetRotation(0.78539);
-    SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
-    //--------------------------------------------------------------------------------------
+    game->InitGame("Astrolib Dev", 1280, 720);
 
     // Main game loop
     while (!WindowShouldClose())    // Detect window close button or ESC key
@@ -62,14 +51,9 @@ int main()
         EndDrawing();
     }
 
-    game->OnExit();
-   
-    // De-Initialization
-    //--------------------------------------------------------------------------------------
-    CloseWindow();        // Close window and OpenGL context
-    //--------------------------------------------------------------------------------------
-   
+    game->Exit();
     delete game;
     game = nullptr;
+
     return 0;
 }

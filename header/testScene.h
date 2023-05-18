@@ -12,7 +12,6 @@ public:
 
     void LoadScene()
     {
-        currentCamera = new Camera2D();
         currentCamera->zoom = 2.0f;
         currentCamera->rotation = 0.0f;
 
