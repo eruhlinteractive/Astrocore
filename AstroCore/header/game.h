@@ -58,7 +58,6 @@ public:
         currentScene = nullptr;
 
         TextureManager::instance().UnloadAllTextures();
-
         CloseWindow();   
     };
 
