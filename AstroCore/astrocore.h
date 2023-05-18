@@ -8,5 +8,5 @@
 #include "header/scene.h"
 #include "header/texturemanager.h"
 #include "header/game.h"
-
+#include "header/light2D.h"
 using namespace Astrolib;

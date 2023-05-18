@@ -19,6 +19,16 @@ public:
         currentCamera->offset = {screenSize.x/2.0f, screenSize.y/2.0f};
 
 
+        Light2D* newLight = new Light2D(50.0, 1.0, RED);
+        newLight->SetName("testLight");
+        newLight->transform.MoveGlobal({10,30.0});
+        RegisterEntity(newLight);
+
+        Light2D* testLight2 = new Light2D(50.0, 1.0, BLUE);
+        testLight2->SetName("testLight2");
+        testLight2->transform.MoveGlobal({-20,30.0});
+        RegisterEntity(testLight2);
+
 
         // Get reference to input instance
         InputManager input = InputManager::instance();

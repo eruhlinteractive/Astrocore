@@ -5,6 +5,7 @@ src/animatedSpriteEntity.cpp
 src/spriteEntity.cpp
 src/scene.cpp
 src/texturemanager.cpp
+src/light2D.cpp
 )
 
 target_include_directories(${PROJECT_NAME} 

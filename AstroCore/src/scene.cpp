@@ -6,6 +6,8 @@ Scene::Scene()
 {
     entities = std::map<std::string, Entity2D*>();
     currentCamera = new Camera2D();
+    //screenSpaceLightMap = LoadRenderTexture();
+    screenSpaceLightMap = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
     LoadScene();
 }
 
@@ -143,6 +145,8 @@ void Scene::Draw(float deltaTime)
 {
     BeginMode2D(*currentCamera);
     std::vector<Entity2D*> pairs;
+    std::vector<Light2D*> lights;
+
     // Create a list of all entities in the scene
     for (auto p : entities)
     {
@@ -174,12 +178,54 @@ void Scene::Draw(float deltaTime)
         
         if(IsOnScreen(screenPos,rimBuffer))
         {
-            e->Draw(deltaTime);
-        }
+            if(e->drawType == NORMAL)
+            {
+                e->Draw(deltaTime);
+            }
+            else if(e->drawType == LIGHT)
+            {
+                lights.push_back((Light2D*)e);
+            }
+            
+        }       
+    }
+
+    EndMode2D();
+
+    // Render lights
+
+    // Clear background
+    BeginTextureMode(screenSpaceLightMap);
+    ClearBackground(ColorAlpha(BLACK,0.0));
+
+
+    // Draw each light to buffer texture
+    for(Light2D* light : lights)
+    {
+        //light->Draw(deltaTime, screenSpaceLightMap);
+        Vector2 screenPos = GetWorldToScreen2D(light->transform.position, *currentCamera);
+        //Vector2 screenPos = light->GetGlobalPosition();
+        //DrawCircleGradient(screenPos.x, screenPos.y, light->distance * currentCamera->zoom, light->color, ColorAlpha(light->color, 0.0));
+        //DrawCircle(screenPos.x, screenPos.y, light->distance, light->color);
         
     }
 
-   EndMode2D();
+    EndTextureMode();
+    //EndBlendMode();
+    
+    BeginBlendMode(BLEND_ADD_COLORS);
+    //BeginBlendMode(3);
+    SetTextureFilter(screenSpaceLightMap.texture, TEXTURE_FILTER_BILINEAR);
+
+    Rectangle lightSrc, lightDest;
+
+    lightSrc = (Rectangle){0,0, (float)GetScreenWidth(), (float)-GetScreenHeight()};
+    lightDest = (Rectangle){0, 0, (float)GetScreenWidth(), (float)GetScreenHeight()};
+
+    //DrawTexture(screenSpaceLightMap.texture, 0, 0,WHITE);
+    DrawTexturePro(screenSpaceLightMap.texture, lightSrc, lightDest, (Vector2){0,0}, 0, WHITE);
+    //EndBlendMode();
+    EndBlendMode();
    
 }
 

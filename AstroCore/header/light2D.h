@@ -1,0 +1,24 @@
+#ifndef __LIGHT_H__
+#define __LIGHT_H__
+#include "entity.h"
+
+
+namespace Astrolib
+{
+class Light2D : public Entity2D
+{
+public:
+    Light2D();
+    Light2D(float distance, float brightness, Color color);
+    float distance;
+    float brightness;
+    Transform2D transform;
+    Color color;
+
+    //void Draw(float deltaTime);
+    void Draw(float deltaTime);
+    
+};
+}
+
+#endif // __LIGHT_H__

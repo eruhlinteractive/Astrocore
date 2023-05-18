@@ -86,7 +86,7 @@ struct Transform2D
 
     void MoveGlobal(Vector2 movement)
     {
-        this->position = (Vector2){position.x + movement.x, position.y + movement.y};
+        position = (Vector2){position.x + movement.x, position.y + movement.y};
     }
 
     void Rotate(float deltaRotationRadians)

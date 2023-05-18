@@ -3,6 +3,7 @@
 
 #include "entity.h"
 #include "texturemanager.h"
+#include "light2D.h"
 #include <map>
 #include <string>
 #include <algorithm>
@@ -69,6 +70,7 @@ private:
     /// @brief Top level of the scene graph
     std::map<std::string, Entity2D*> entities;
     std::string sceneName = "";
+    RenderTexture2D screenSpaceLightMap;
 };
 }
 

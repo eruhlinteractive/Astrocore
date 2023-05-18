@@ -16,6 +16,13 @@ enum TRANSFORM_FLAGS {
       SCL_UNIQUE = 1 << 2 //4
       };
 
+// Draw type, defines when the entity is drawn
+enum DRAW_TYPE
+{
+    NORMAL = 1 << 0, // Normal world space drawing
+    LIGHT  =1 << 1 // World overlay
+};
+
 namespace Astrolib
 {
 class Entity2D
@@ -28,12 +35,11 @@ public:
     Entity2D(std::string name, Vector2 position, Vector2 scale, float rotation);
     virtual ~Entity2D();
 
-
     // Flag operations 
     
     void SetTransformFlag(TRANSFORM_FLAGS flag) { transformFlags |= (int)flag;};
     void UnsetTransformFlag(TRANSFORM_FLAGS flag) { transformFlags &= ~(int)flag;};
-    bool IsFlagSet(TRANSFORM_FLAGS flag){ return (transformFlags & (int)flag) ==(int)flag;};
+    bool IsTransformFlagSet(TRANSFORM_FLAGS flag){ return (transformFlags & (int)flag) ==(int)flag;};
 
     Vector2 GetGlobalPosition();
     float GetGlobalRotationDeg();
@@ -66,16 +72,15 @@ public:
     /// @brief The layer this sprite is drawn on (lower = first), relative to the parent
     int drawLayer = 0;
 
+    DRAW_TYPE drawType = NORMAL;
 
     int GetDrawLayer(){
         if(parentEntity != nullptr)
         {
             return drawLayer + parentEntity->GetDrawLayer();
         }
-        
         return drawLayer;
     };
-
 
     /// @brief The offset used for Y position-based sorting
     float ySortOffset = 0;
@@ -84,7 +89,7 @@ public:
     /// @param newOffset The new offset to use when Y sorting
     void SetYSortOffset(float newOffset){ySortOffset = newOffset;};
 
-    void SetName(std::string newName){name = newName;};
+    void SetName(std::string newName){this->name = newName;};
     std::string GetName(){return name;};
 
     // Get children
@@ -98,12 +103,10 @@ public:
     Entity2D* GetParent();
 
     void SetParent(Entity2D* parent);
-
     Transform2D transform;
 
 protected:
 
-   
     bool isReady = false;
 
     // Bit flags for this entity
