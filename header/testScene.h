@@ -111,20 +111,31 @@ public:
             testSprite->MoveLocal({100 * GetFrameTime(),0});
             testSprite->ChangeAnimation("default");
             testSprite->SetFlipped(false, false);
-            animTest->SetFlipped(false, false);
+            if(animTest != nullptr)
+            {
+                 animTest->SetFlipped(false, false);
+            }
+           
         }
         else if(input.IsActionDown("left"))
         {
             testSprite->MoveLocal({-100 * GetFrameTime(),0});
             testSprite->ChangeAnimation("default");
             testSprite->SetFlipped(true, false);
-            animTest->SetFlipped(true, false);
+            if(animTest != nullptr)
+            {
+                animTest->SetFlipped(true, false);
+                UnRegisterEntity("Test Sprite Animated");
+            }
         }
         else
         {
             testSprite->ChangeAnimation("idle");
             //testSprite->SetFlipped(false, false);
-            animTest->SetFlipped(false, false);
+            if(animTest != nullptr)
+            {
+                animTest->SetFlipped(false, false);
+            }
         }
         
 

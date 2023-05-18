@@ -28,6 +28,7 @@ void Game::Draw(float deltaTime)
 {
     // Draw world
     currentScene->Draw(deltaTime);
+    DrawUI();
 }
 
 void Game::DrawUI()

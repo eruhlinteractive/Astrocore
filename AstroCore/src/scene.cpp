@@ -37,10 +37,25 @@ Scene::~Scene()
         delete e.second;
         e.second = nullptr;
     }
-
+    
     delete currentCamera;
     currentCamera = nullptr;
 
+}
+
+bool Scene::UnRegisterEntity(std::string name)
+{
+    if(entities.find(name) != entities.end())
+    {
+        
+        delete entities[name];
+        entities[name] = nullptr;
+
+        entities.erase(name);
+        return true;
+    }
+    
+    return false;
 }
 
 
@@ -62,6 +77,9 @@ void Scene::Update(float deltaTime)
         e.second->Update(deltaTime);
     }
 }
+
+
+
 
 void Scene::Draw(float deltaTime)
 {
