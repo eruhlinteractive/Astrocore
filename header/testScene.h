@@ -40,10 +40,9 @@ public:
         input.AddInputAction(rotCCW);
 
         TextureManager tmInstance = TextureManager::instance();
-        Texture2D spriteRun = tmInstance.GetTexture("../src/res/anim_test.png");
-        Texture2D spriteIdle = tmInstance.GetTexture("../src/res/idle_test.png");
-
-        Texture2D beuh = tmInstance.GetTexture("../src/res/beuh.png");
+        Texture2D spriteRun = tmInstance.GetTexture("res/anim_test.png");
+        Texture2D spriteIdle = tmInstance.GetTexture("res/idle_test.png");
+        Texture2D beuh = tmInstance.GetTexture("res/beuh.png");
 
         AnimatedSpriteEntity* testSprite = new AnimatedSpriteEntity(
             "testSprite",

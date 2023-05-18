@@ -20,7 +20,10 @@ target_link_directories(${PROJECT_NAME}
 
 target_link_libraries(${PROJECT_NAME} raylib astrocore)
 
-
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
 include(CPack)
+
+# Copy relevant directories/files into bin folder for distribution
+add_custom_command(TARGET ${PROJECT_NAME} COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/src/res ${CMAKE_SOURCE_DIR}/build/bin/res)
+add_custom_command(TARGET ${PROJECT_NAME} COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/build/FarmingGame ${CMAKE_SOURCE_DIR}/build/bin)
