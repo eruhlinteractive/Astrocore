@@ -5,21 +5,32 @@ using namespace Astrolib;
 
 TextureManager::TextureManager()
 {
-    textures = std::map<std::string, Texture2D>();
-    textureReferences = std::map<std::string, int>();
+    textures = new std::map<std::string, Texture2D>();
+    textureReferences = new std::map<std::string, int>();
 }
 
 
 void TextureManager::UnloadAllTextures()
 {
-    for(std::pair p : textures)
+    if(textures == nullptr)
+    {
+        return;
+    }
+    for(std::pair p : *textures)
     {   
         RLAPI::UnloadTexture((Texture2D)p.second);
     }    
+
+    delete textures;
+    textures = nullptr;
+
+    delete textureReferences;
+    textureReferences = nullptr;
 }
 
 TextureManager::~TextureManager()
 {
+    //UnloadAllTextures();
     //delete textures;
     //textures = nullptr;
 
@@ -31,19 +42,19 @@ TextureManager::~TextureManager()
 Texture2D TextureManager::GetTexture(std::string path)
 {
     // Texture not yet loaded, load and return
-    if(textures.find(path) == textures.end())
+    if(textures->find(path) == textures->end())
     {
         Texture2D text = RLAPI::LoadTexture(path.c_str());
-        textures.insert(std::pair{path, text});
-        textureReferences.insert(std::pair{path, 1});
+        textures->insert(std::pair{path, text});
+        textureReferences->insert(std::pair{path, 1});
         return text;
     }
 
     // Return loaded texture
     else
     {
-        textureReferences[path] += 1;
-        return textures[path];
+        (*textureReferences)[path] += 1;
+        return (*textures)[path];
     }
 
 }
@@ -51,7 +62,7 @@ Texture2D TextureManager::GetTexture(std::string path)
 
 std::string TextureManager::GetTexturePath(Texture2D texture)
 {
-    for(std::pair p : textures)
+    for(std::pair p : (*textures))
     {   
         if(p.second.id == texture.id)
         {
@@ -66,17 +77,18 @@ std::string TextureManager::GetTexturePath(Texture2D texture)
 void TextureManager::UnloadTexture(std::string path)
 {
 
-    if(textures.find(path) != textures.end())
+    if(textures->find(path) != textures->end())
     {
         
-        textureReferences[path] -= 1;
+        (*textureReferences)[path] -= 1;
+        
         // Texture is no longer referenced, unload it
-        if(textureReferences[path] <= 0)
+        if((*textureReferences)[path] <= 0)
         {
-            textureReferences.erase(path);
-            Texture2D texture = textures[path];
+            textureReferences->erase(path);
+            Texture2D texture = (*textures)[path];
             RLAPI::UnloadTexture(texture);
-            textures.erase(path);
+            textures->erase(path);
         }
     }
 

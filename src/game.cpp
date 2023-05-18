@@ -15,6 +15,7 @@ void Game::OnExit()
 {
     delete currentScene;
     currentScene = nullptr;
+    
     TextureManager::instance().UnloadAllTextures();
 }
 

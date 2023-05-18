@@ -35,10 +35,10 @@ public:
 
 private:
     /// @brief The currently loaded textures
-    std::map<std::string, Texture2D> textures;
+    std::map<std::string, Texture2D>* textures;
 
     /// @brief The amount of 'references' to each texture
-    std::map<std::string, int> textureReferences;
+    std::map<std::string, int>* textureReferences;
 };
 }
 #endif // __TEXTUREMANAGER_H__
