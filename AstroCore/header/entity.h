@@ -23,6 +23,7 @@ public:
     // Constructors
 
     Entity2D();
+    Transform transform;
     Entity2D(std::string name);
     Entity2D(std::string name, Vector2 position, Vector2 scale, float rotation);
     virtual ~Entity2D();
@@ -126,7 +127,6 @@ public:
 protected:
 
     // The position relative to the parent
-    
     Vector2 position;
     Vector2 scale;
 
