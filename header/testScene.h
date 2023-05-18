@@ -18,15 +18,15 @@ public:
         Vector2 screenSize = Game::instance().GetScreenSize();
         currentCamera->offset = {screenSize.x/2.0f, screenSize.y/2.0f};
 
-
-        Light2D* newLight = new Light2D(50.0, 1.0, RED);
+        ambientColor = GRAY;
+        Light2D* newLight = new Light2D(50.0, 1.0, YELLOW);
         newLight->SetName("testLight");
         newLight->transform.MoveGlobal({10,30.0});
         RegisterEntity(newLight);
 
-        Light2D* testLight2 = new Light2D(50.0, 1.0, BLUE);
+        Light2D* testLight2 = new Light2D(50.0, 1.0, RED);
         testLight2->SetName("testLight2");
-        testLight2->transform.MoveGlobal({-20,30.0});
+        testLight2->transform.MoveGlobal({-100,0});
         RegisterEntity(testLight2);
 
 
@@ -74,6 +74,7 @@ public:
         testSprite->AddAnimation("idle", idleAnim);
 
         AnimatedSpriteEntity* testChild = new AnimatedSpriteEntity("testChild", {24,24}, {48,48}, spriteIdle);
+        testChild->transform.MoveGlobal({20,0});
 
         AnimatedSpriteEntity* animTest = new AnimatedSpriteEntity(
             "animTest",
@@ -91,6 +92,7 @@ public:
         //testChild->MoveGlobal({0,50});
         //testChild->SetPosition({100,0});
         testSprite->AddChild(testChild);
+        testSprite->AddChild(testLight2);
 
         animTest->transform.scale = (Vector2){5,5};
        // animTest->MoveGlobal({screenWidth/4.0f ,screenHeight/4.0f });

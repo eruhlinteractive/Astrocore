@@ -72,9 +72,9 @@ struct Transform2D
 
     Transform2D()
     {
-        position = (Vector2){0,0};
-        rotation = 0;
-        scale = (Vector2){1,1};
+        this->position = (Vector2){0,0};
+        this->rotation = 0;
+        this->scale = (Vector2){1,1};
     }
 
     Transform2D(Vector2 position, float rotation, Vector2 scale)
@@ -86,12 +86,12 @@ struct Transform2D
 
     void MoveGlobal(Vector2 movement)
     {
-        position = (Vector2){position.x + movement.x, position.y + movement.y};
+        this->position = (Vector2){position.x + movement.x, position.y + movement.y};
     }
 
     void Rotate(float deltaRotationRadians)
     {
-        rotation += deltaRotationRadians;
+        this->rotation += deltaRotationRadians;
     }
 
     void RotateDegrees(float deltaRotationDeg)
@@ -101,7 +101,7 @@ struct Transform2D
 
     void Scale(Vector2 scaleDelta)
     {
-        scale = (Vector2){scale.x * scaleDelta.x, scale.y * scaleDelta.y};
+        this->scale = (Vector2){scale.x * scaleDelta.x, scale.y * scaleDelta.y};
     }
 
     /// @brief Move relative to the current rotation
@@ -112,7 +112,7 @@ struct Transform2D
         movLocal.x = movement.x * cos(rotation) - movement.y * sin(rotation);
         movLocal.y = movement.x * sin(rotation) + movement.y * cos(rotation);
 
-        position = (Vector2){movLocal.x + position.x, movLocal.y + position.y};
+        this->position = (Vector2){movLocal.x + position.x, movLocal.y + position.y};
     }
 
     void RotateAround(Vector2 point, float deltaRotationRadians)
@@ -126,16 +126,16 @@ struct Transform2D
 
         Vector2 movement = {translation.x - position.x, translation.y - position.y};
 
-        rotation += deltaRotationRadians;
+        this->rotation += deltaRotationRadians;
 
         MoveGlobal(movement);
     }
 
     void SetRotationDeg(float newRotationDeg)
     {
-        rotation = (newRotationDeg * M_PI / 180);
+        this->rotation = (newRotationDeg * M_PI / 180);
         // Keep within range 0-> 2PI
-        rotation = std::fmod(rotation, (2.0f * M_PI));
+        this->rotation = std::fmod(rotation, (2.0f * M_PI));
     }
 };
 

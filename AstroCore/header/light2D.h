@@ -12,7 +12,6 @@ public:
     Light2D(float distance, float brightness, Color color);
     float distance;
     float brightness;
-    Transform2D transform;
     Color color;
 
     //void Draw(float deltaTime);

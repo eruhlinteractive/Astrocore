@@ -4,10 +4,16 @@
 #include "entity.h"
 #include "texturemanager.h"
 #include "light2D.h"
+#include "rlgl.h"
 #include <map>
 #include <string>
 #include <algorithm>
 #include <regex>
+
+// Custom Blend Modes
+#define RLGL_SRC_ALPHA 0x0302
+#define RLGL_MIN 0x8007
+#define RLGL_MAX 0x8008
 
 namespace Astrolib
 {
@@ -34,6 +40,7 @@ public:
 
     Camera2D* currentCamera;
 
+    Color ambientColor = WHITE;
     bool ySortEnabled = true;
 
     /// @brief Sorts two pairs in the map based on their draw index
@@ -65,7 +72,7 @@ public:
         return (screenPosition.x - buffer <= size.x && screenPosition.x + buffer >= 0.0) &&
         (screenPosition.y - buffer <= size.y && screenPosition.y + buffer >= 0.0);
     }
-
+    
 private:
     /// @brief Top level of the scene graph
     std::map<std::string, Entity2D*> entities;

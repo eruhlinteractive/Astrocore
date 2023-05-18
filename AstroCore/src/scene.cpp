@@ -8,6 +8,7 @@ Scene::Scene()
     currentCamera = new Camera2D();
     //screenSpaceLightMap = LoadRenderTexture();
     screenSpaceLightMap = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
+    ambientColor = WHITE;
     LoadScene();
 }
 
@@ -34,7 +35,7 @@ bool Scene::RegisterEntity(Entity2D* entity)
     {
         // Create unique name
         // TODO: This doesn't cover all cases, as an entity could be removed then another one added
-        throw std::runtime_error("Failred: Name " + name + " already exists in scene!");
+        //throw std::runtime_error("Failred: Name " + name + " already exists in scene!");
         return false;
     }
 
@@ -50,6 +51,7 @@ Scene::~Scene()
         e.second = nullptr;
     }
     
+    UnloadRenderTexture(screenSpaceLightMap);
     delete currentCamera;
     currentCamera = nullptr;
 
@@ -139,8 +141,6 @@ void Scene::Update(float deltaTime)
 }
 
 
-
-
 void Scene::Draw(float deltaTime)
 {
     BeginMode2D(*currentCamera);
@@ -193,38 +193,35 @@ void Scene::Draw(float deltaTime)
     EndMode2D();
 
     // Render lights
+    // Based on https://slembcke.github.io/2D-Lighting-Overview
 
     // Clear background
     BeginTextureMode(screenSpaceLightMap);
-    ClearBackground(ColorAlpha(BLACK,0.0));
-
+    ClearBackground(ambientColor);
+    
+    BeginBlendMode(BLEND_ADDITIVE);
 
     // Draw each light to buffer texture
     for(Light2D* light : lights)
     {
-        //light->Draw(deltaTime, screenSpaceLightMap);
-        Vector2 screenPos = GetWorldToScreen2D(light->transform.position, *currentCamera);
-        //Vector2 screenPos = light->GetGlobalPosition();
-        //DrawCircleGradient(screenPos.x, screenPos.y, light->distance * currentCamera->zoom, light->color, ColorAlpha(light->color, 0.0));
-        //DrawCircle(screenPos.x, screenPos.y, light->distance, light->color);
-        
+        Vector2 pos = light->GetGlobalPosition();
+        Vector2 screenPos = GetWorldToScreen2D(light->GetGlobalPosition(), *currentCamera);
+        //DrawCircle(screenPos.x, screenPos.y, light->distance * currentCamera->zoom, light->color);
+        DrawCircleGradient(screenPos.x, screenPos.y, light->distance * currentCamera->zoom, light->color , ColorAlpha(light->color, 0.0));
+       
     }
-
+    EndBlendMode();
     EndTextureMode();
-    //EndBlendMode();
     
-    BeginBlendMode(BLEND_ADD_COLORS);
-    //BeginBlendMode(3);
-    SetTextureFilter(screenSpaceLightMap.texture, TEXTURE_FILTER_BILINEAR);
+    //SetTextureFilter(screenSpaceLightMap.texture, TEXTURE_FILTER_BILINEAR);
 
     Rectangle lightSrc, lightDest;
 
     lightSrc = (Rectangle){0,0, (float)GetScreenWidth(), (float)-GetScreenHeight()};
     lightDest = (Rectangle){0, 0, (float)GetScreenWidth(), (float)GetScreenHeight()};
 
-    //DrawTexture(screenSpaceLightMap.texture, 0, 0,WHITE);
+    BeginBlendMode(BLEND_MULTIPLIED);
     DrawTexturePro(screenSpaceLightMap.texture, lightSrc, lightDest, (Vector2){0,0}, 0, WHITE);
-    //EndBlendMode();
     EndBlendMode();
    
 }

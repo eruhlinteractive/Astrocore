@@ -43,16 +43,25 @@ Vector2 Entity2D::GetGlobalPosition()
 {
     if(this->parentEntity != nullptr)
     {
-        //std::cout << parentEntity << std::endl;
+        
         Vector2 parentGlobal = parentEntity->GetGlobalPosition();
-        //std::cout << (positionX + parentGlobal.x) << ":" << (positionY + parentGlobal.y) << std::endl;
-        //std::cout << (positionX) << ":" << (positionY) << std::endl;
-        return {transform.position.x + parentGlobal.x, transform.position.y + parentGlobal.y};
+        // Apply parent's rotation to position 
+        // https://academo.org/demos/rotation-about-point/
+        float parentRotation = parentEntity->GetGlobalRotation();
+
+        Vector2 rotatedPos = (Vector2)
+        {
+            transform.position.x * cos(parentRotation) - transform.position.y * sin(parentRotation),
+            transform.position.y * cos(parentRotation) + transform.position.x * sin(parentRotation),
+        };
+
+        return {parentGlobal.x + rotatedPos.x, parentGlobal.y + rotatedPos.y};
         //return GetPosition();
     }
     else
     {
-        return transform.position;
+        Vector2 globalPos = transform.position;
+        return globalPos;
     }
 }
 
