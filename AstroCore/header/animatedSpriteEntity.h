@@ -17,6 +17,7 @@ class AnimatedSpriteEntity: public Entity2D
 {
 
 public:
+    AnimatedSpriteEntity(){ name = "AnimatedSpriteEntity" + std::to_string(entityID);};
     AnimatedSpriteEntity(std::string name, Vector2 origin, Vector2 frameSize, Texture2D sprite, string defaultAnimName = "default");
     AnimatedSpriteEntity(std::string name, Vector2 origin, Vector2 frameSize, Texture2D sprite, int framesWide, int frameCount, int animFps);
     AnimatedSpriteEntity(std::string name, SpriteAnimation* defaultAnimation, string animationName);

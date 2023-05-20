@@ -13,10 +13,6 @@ public:
     float distance;
     float brightness;
     Color color;
-
-    //void Draw(float deltaTime);
-    void Draw(float deltaTime);
-    
 };
 }
 

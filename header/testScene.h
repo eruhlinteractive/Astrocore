@@ -26,7 +26,7 @@ public:
 
         Light2D* testLight2 = new Light2D(50.0, 1.0, RED);
         testLight2->SetName("testLight2");
-        testLight2->transform.MoveGlobal({-100,0});
+        testLight2->transform.MoveGlobal({-50,0});
         RegisterEntity(testLight2);
 
 
@@ -66,7 +66,7 @@ public:
 
         SpriteEntity* testSpr = new SpriteEntity(beuh, {212,180}, {106,90});
         testSpr->transform.MoveGlobal({10,10});
-        testSpr->transform.Scale((Vector2){1.0f,1.0f});
+        testSpr->transform.Scale((Vector2){0.2f, 0.2f});
 
 
         SpriteAnimation* idleAnim = new SpriteAnimation(spriteIdle, 4, 6, 4, {25,18}, {50,37});
@@ -92,7 +92,7 @@ public:
         //testChild->MoveGlobal({0,50});
         //testChild->SetPosition({100,0});
         testSprite->AddChild(testChild);
-        testSprite->AddChild(testLight2);
+        //testSprite->AddChild(testLight2);
 
         animTest->transform.scale = (Vector2){5,5};
        // animTest->MoveGlobal({screenWidth/4.0f ,screenHeight/4.0f });
@@ -139,7 +139,7 @@ public:
             if(animTest != nullptr)
             {
                 animTest->SetFlipped(true, false);
-                //UnRegisterEntity("Test Sprite Animated");
+                //UnRegisterEntity("animTest");
             }
         }
         else

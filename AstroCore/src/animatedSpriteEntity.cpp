@@ -9,7 +9,7 @@ using namespace Astrolib;
 /// @param origin 
 /// @param spriteSize 
 /// @param spriteSrcPath 
-AnimatedSpriteEntity::AnimatedSpriteEntity(std::string name, Vector2 origin, Vector2 frameSize, Texture2D sprite, string defaultAnimName)
+AnimatedSpriteEntity::AnimatedSpriteEntity(std::string name, Vector2 origin, Vector2 frameSize, Texture2D sprite, string defaultAnimName) : AnimatedSpriteEntity()
 {
     Init();
     
@@ -20,11 +20,7 @@ AnimatedSpriteEntity::AnimatedSpriteEntity(std::string name, Vector2 origin, Vec
     anim->origin = origin;
     anim->frameSize = frameSize;
     anim->framesWide = 1;
-    if(name == "")
-    {
-        this->name = "AnimatedEntity2D" + std::to_string(id);
-    }
-    else
+    if(name != "")
     {
         this->name = name;
     }
@@ -34,7 +30,7 @@ AnimatedSpriteEntity::AnimatedSpriteEntity(std::string name, Vector2 origin, Vec
     currentAnim = anim;
 }
 
-AnimatedSpriteEntity::AnimatedSpriteEntity(std::string name, Vector2 origin, Vector2 frameSize, Texture2D sprite, int framesWide, int frameCount, int animFps) 
+AnimatedSpriteEntity::AnimatedSpriteEntity(std::string name, Vector2 origin, Vector2 frameSize, Texture2D sprite, int framesWide, int frameCount, int animFps)
 : AnimatedSpriteEntity(name, origin, frameSize, sprite)
 {
     SpriteAnimation* anim = (*animStates)[currentAnimationName];
@@ -43,12 +39,12 @@ AnimatedSpriteEntity::AnimatedSpriteEntity(std::string name, Vector2 origin, Vec
     anim->frameMax = frameCount;
 }
 
-AnimatedSpriteEntity::AnimatedSpriteEntity(std::string name, SpriteAnimation* defaultAnimation, string animationName)
+AnimatedSpriteEntity::AnimatedSpriteEntity(std::string name, SpriteAnimation* defaultAnimation, string animationName): AnimatedSpriteEntity()
 {
     Init();
-    if(name == "")
+    if(name != "")
     {
-        name = "AnimatedEntity2D" + std::to_string(id);
+        this->name = name;
     }
    
     animStates->insert(pair<string, SpriteAnimation*>(animationName, defaultAnimation));

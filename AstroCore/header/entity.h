@@ -49,7 +49,7 @@ public:
     /// @return The path to this entity from the scene root
     std::string GetPath();
 
-    int GetId(){return id;}
+    int GetEntityID(){return entityID;}
     // Functions
 
     /// @brief Called when the object is initialized
@@ -111,12 +111,17 @@ protected:
 
     // Bit flags for this entity
     uint8_t transformFlags = 0;
-    int id = 0;
+    int entityID = 0;
     std::string name;
 
     /// @brief The children of this entity
     std::unique_ptr<std::vector<Entity2D*>> children = std::make_unique<std::vector<Entity2D*>>();
     Entity2D* parentEntity = nullptr;
+
+private:
+    // Count of all entities in a scene
+    // Used to assign a unique ID to each entity
+    static int entityCount;
 };
 }
 

@@ -15,10 +15,12 @@ Scene::Scene()
 bool Scene::RegisterEntity(Entity2D* entity)
 {
     std::string name = entity->GetName();
+    //int id = entity->GetEntityId();
 
     if(entity->GetChildCount() > 0)
     {
         std::vector<Entity2D*> children = entity->GetChildren();
+
         for(Entity2D* child : children)
         {
             RegisterEntity(child);
@@ -31,11 +33,11 @@ bool Scene::RegisterEntity(Entity2D* entity)
         entities.insert(std::pair{name, entity});
         return true;
     }
-    else
+
+    // The entity is not the same as the already registered entity
+    else if(entities[name]->GetEntityID() != entity->GetEntityID())
     {
-        // Create unique name
-        // TODO: This doesn't cover all cases, as an entity could be removed then another one added
-        //throw std::runtime_error("Failred: Name " + name + " already exists in scene!");
+        throw std::runtime_error("Failed to register entity: Name " + name + " already exists in scene!");
         return false;
     }
 
@@ -61,7 +63,6 @@ bool Scene::UnRegisterEntity(std::string name)
 {
     if(entities.find(name) != entities.end())
     {
-        
         delete entities[name];
         entities[name] = nullptr;
 
@@ -200,7 +201,6 @@ void Scene::Draw(float deltaTime)
     ClearBackground(ambientColor);
     
     BeginBlendMode(BLEND_ADDITIVE);
-
     // Draw each light to buffer texture
     for(Light2D* light : lights)
     {

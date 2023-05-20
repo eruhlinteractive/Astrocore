@@ -14,8 +14,3 @@ Light2D::Light2D(float distance, float brightness, Color color) : Light2D()
     this->brightness = brightness;
     this->color = color;
 }
-
-void Light2D::Draw(float deltaTime)
-{
-  
-}

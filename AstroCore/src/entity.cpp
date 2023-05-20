@@ -6,12 +6,15 @@
 
 using namespace Astrolib;
 
+int Entity2D::entityCount = 0;
+
 #pragma region Constructors
 Entity2D::Entity2D()
 {
     transform = Transform2D();
-    id = (int)GetTime();
-    name = "Entity2D" + std::to_string(id);
+    entityID = entityCount;
+    entityCount++;
+    name = "Entity2D" + std::to_string(entityID);
     Init();
 }
 
@@ -23,8 +26,6 @@ Entity2D::Entity2D(std::string name) : Entity2D()
 Entity2D::Entity2D(std::string name, Vector2 startPosition, Vector2 startScale, float startRotation): Entity2D(name)
 {
     transform = Transform2D(startPosition, startRotation, startScale);
-    id = (int)GetTime();
-    name = "Entity2D" + std::to_string(id);
     Init();
 }
 
