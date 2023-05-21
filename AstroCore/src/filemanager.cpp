@@ -14,7 +14,8 @@ unsigned char* FileManager::LoadFileBytes(std::string filePath)
 
 std::string FileManager::LoadFileAsText(std::string filePath)
 {
-    char* data = RLAPI::LoadFileText(filePath.c_str());
+    std::string fullPath = (std::string)GetWorkingDirectory() +"/" + filePath;
+    char* data = RLAPI::LoadFileText(fullPath.c_str());
     std::string d = data;
     UnloadFileText(data);
     return d;

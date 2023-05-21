@@ -29,12 +29,12 @@
 
 int main()
 {
+
     TestGame* game = new TestGame();
     int screenWidth = 1280;
     int screenHeight = 720;
 
     game->InitGame("Astrolib Dev", 1280, 720);
-    std::string data = FileManager::instance().LoadFileAsText((std::string)GetWorkingDirectory() + "/res/test.txt");
 
     std::cout << GetWorkingDirectory() << std::endl;
    

@@ -10,12 +10,12 @@ src/tilemap.cpp
 src/filemanager.cpp
 )
 
-target_include_directories(${PROJECT_NAME} 
-    PUBLIC header
+target_include_directories(${PROJECT_NAME}
     PUBLIC include
+    PUBLIC header
 )
 
 target_link_directories(${PROJECT_NAME}
-    PRIVATE src
     PRIVATE lib
+    PRIVATE src
 )

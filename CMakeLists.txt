@@ -9,16 +9,17 @@ add_executable(FarmingGame.x86_64 main.cpp)
 add_subdirectory(AstroCore)
 
 target_include_directories(${PROJECT_NAME} 
-    PUBLIC include
     PUBLIC header
+    PUBLIC include
+    
 )
 
 target_link_directories(${PROJECT_NAME}
-    PRIVATE src
     PRIVATE lib
+    PRIVATE src
  )
 
-target_link_libraries(${PROJECT_NAME} raylib astrocore)
+target_link_libraries(${PROJECT_NAME} astrocore raylib tmxlite)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})

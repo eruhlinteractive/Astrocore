@@ -76,6 +76,10 @@ public:
         AnimatedSpriteEntity* testChild = new AnimatedSpriteEntity("testChild", {24,24}, {48,48}, spriteIdle);
         testChild->transform.MoveGlobal({20,0});
 
+
+        TileMap* tm  = new TileMap();
+        tm->LoadDataTMX("res/tilemap/map.tmx");
+
         AnimatedSpriteEntity* animTest = new AnimatedSpriteEntity(
             "animTest",
             {25,18}, 
