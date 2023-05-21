@@ -5,7 +5,7 @@
 #define STRUCTS_H
 
 /// @brief A struct representing a single input event (i.e an 'E' key press or 'A' button press on a controller)
-struct InputEvent
+typedef struct InputEvent
 {
     // Constructor
     InputEvent(int inputIndex, int actionControllerId =-1) 
@@ -19,9 +19,9 @@ struct InputEvent
 
     // What index is the positive(on) input?
     int positiveInput;
-};
+} InputEvent;
 
-struct Sprite
+typedef struct Sprite
 {
     Texture spriteTexture;
     Vector2 origin;
@@ -30,9 +30,9 @@ struct Sprite
         this->spriteTexture = texture;
         this->origin = origin;
     }
-};
+} Sprite;
 
-struct SpriteAnimation
+typedef struct SpriteAnimation
 {
     SpriteAnimation()
     {
@@ -62,9 +62,9 @@ struct SpriteAnimation
     int framesWide = 1;
     Vector2 origin;
     Vector2 frameSize;
-};
+} SpriteAnimation;
 
-struct Transform2D
+typedef struct Transform2D
 {
     Vector2 position;
     float rotation;
@@ -137,6 +137,6 @@ struct Transform2D
         // Keep within range 0-> 2PI
         this->rotation = std::fmod(rotation, (2.0f * M_PI));
     }
-};
+} Transform2D;
 
 #endif

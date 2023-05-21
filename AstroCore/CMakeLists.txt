@@ -6,6 +6,8 @@ src/spriteEntity.cpp
 src/scene.cpp
 src/texturemanager.cpp
 src/light2D.cpp
+src/tilemap.cpp
+src/filemanager.cpp
 )
 
 target_include_directories(${PROJECT_NAME} 

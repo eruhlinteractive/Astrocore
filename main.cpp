@@ -34,7 +34,10 @@ int main()
     int screenHeight = 720;
 
     game->InitGame("Astrolib Dev", 1280, 720);
+    std::string data = FileManager::instance().LoadFileAsText((std::string)GetWorkingDirectory() + "/res/test.txt");
 
+    std::cout << GetWorkingDirectory() << std::endl;
+   
     // Main game loop
     while (!WindowShouldClose())    // Detect window close button or ESC key
     {
@@ -46,7 +49,7 @@ int main()
             
         DrawLine(screenWidth / 2, 0, screenWidth/2, screenHeight, GRAY);
         DrawLine(0, screenHeight/2, screenWidth, screenHeight/2, GRAY);            
-        
+       
         game->Draw(GetFrameTime());
 
         EndDrawing();

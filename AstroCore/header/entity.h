@@ -1,11 +1,11 @@
-#include <raylib.h>
+#include "../include/raylib.h"
 #include <vector>
 #include <memory>
 #include <string>
 #include "structs.h"
 
-#ifndef ENTITY2D_H
-#define ENTITY2D_H
+#ifndef __ENTITY2D_H__
+#define __ENTITY2D_H__
 
 // Transformation flags
 // Since each flag is stored as a single bit, they need to be shifted to be in the proper positions
@@ -20,7 +20,8 @@ enum TRANSFORM_FLAGS {
 enum DRAW_TYPE
 {
     NORMAL = 1 << 0, // Normal world space drawing
-    LIGHT  =1 << 1 // World overlay
+    TILEMAP = 1 << 1, // Tilemap drawing
+    LIGHT  = 1 << 2, // World overlay
 };
 
 namespace Astrolib
@@ -125,4 +126,4 @@ private:
 };
 }
 
-#endif // Entity
+#endif // __ENTITY2D_H__

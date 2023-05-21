@@ -25,5 +25,5 @@ set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
 include(CPack)
 
 # Copy relevant directories/files into bin folder for distribution
-add_custom_command(TARGET ${PROJECT_NAME} COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/src/res ${CMAKE_SOURCE_DIR}/build/bin/res)
-add_custom_command(TARGET ${PROJECT_NAME} COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/build/FarmingGame.x86_64 ${CMAKE_SOURCE_DIR}/build/bin)
+add_custom_command(TARGET ${PROJECT_NAME} COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/res ${CMAKE_SOURCE_DIR}/build/res)
+#add_custom_command(TARGET ${PROJECT_NAME} COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/build/FarmingGame.x86_64 ${CMAKE_SOURCE_DIR}/build/bin)
