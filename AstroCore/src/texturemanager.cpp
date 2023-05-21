@@ -38,14 +38,19 @@ TextureManager::~TextureManager()
     //textureReferences = nullptr;
 }
 
+Texture2D TextureManager::GetTextureAbsolute(std::string absolutePath)
+{
+    std::string fullPath = std::string(GetWorkingDirectory()) + "/" + absolutePath;
+    return GetTexture(fullPath);
+}
 
 Texture2D TextureManager::GetTexture(std::string path)
 {
     // Texture not yet loaded, load and return
     if(textures->find(path) == textures->end())
     {
-        std::string fullPath = std::string(GetWorkingDirectory()) + "/" + path;
-        Texture2D text = RLAPI::LoadTexture(fullPath.c_str());
+        //std::string fullPath = std::string(GetWorkingDirectory()) + "/" + path;
+        Texture2D text = RLAPI::LoadTexture(path.c_str());
         textures->insert(std::pair{path, text});
         textureReferences->insert(std::pair{path, 1});
         return text;

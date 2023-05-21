@@ -25,6 +25,7 @@ public:
     /// @return The loaded texture
     Texture2D GetTexture(std::string path);
 
+    Texture2D GetTextureAbsolute(std::string absolutePath);
     std::string GetTexturePath(Texture2D texture);
 
     void UnloadAllTextures();

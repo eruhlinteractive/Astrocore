@@ -18,7 +18,7 @@ public:
         Vector2 screenSize = Game::instance().GetScreenSize();
         currentCamera->offset = {screenSize.x/2.0f, screenSize.y/2.0f};
 
-        ambientColor = GRAY;
+        ambientColor = WHITE;
         Light2D* newLight = new Light2D(50.0, 1.0, YELLOW);
         newLight->SetName("testLight");
         newLight->transform.MoveGlobal({10,30.0});
@@ -79,6 +79,7 @@ public:
 
         TileMap* tm  = new TileMap();
         tm->LoadDataTMX("res/tilemap/map.tmx");
+        RegisterEntity(tm);
 
         AnimatedSpriteEntity* animTest = new AnimatedSpriteEntity(
             "animTest",
@@ -106,8 +107,8 @@ public:
         testSprite->ySortOffset = 10;
 
         RegisterEntity(testSprite);
-        RegisterEntity(testSpr);
-        RegisterEntity(animTest);
+        //RegisterEntity(testSpr);
+        //RegisterEntity(animTest);
         
         Entity2D* t = GetEntity("testSprite/testChild");
         std::string path = t->GetPath();
@@ -122,17 +123,17 @@ public:
         InputManager input = InputManager::instance();
 
         AnimatedSpriteEntity* testSprite = (AnimatedSpriteEntity*)FindEntityByName("testSprite");
-        AnimatedSpriteEntity* animTest = (AnimatedSpriteEntity*)GetEntity("animTest");
+        //AnimatedSpriteEntity* animTest = (AnimatedSpriteEntity*)GetEntity("animTest");
         
         if (input.IsActionDown("right"))
         {
             testSprite->transform.MoveLocal({100 * GetFrameTime(),0});
             testSprite->ChangeAnimation("default");
             testSprite->SetFlipped(false, false);
-            if(animTest != nullptr)
-            {
-                 animTest->SetFlipped(false, false);
-            }
+            //if(animTest != nullptr)
+            //{
+            //     animTest->SetFlipped(false, false);
+            //}
            
         }
         else if(input.IsActionDown("left"))
@@ -140,20 +141,20 @@ public:
             testSprite->transform.MoveLocal({-100 * GetFrameTime(),0});
             testSprite->ChangeAnimation("default");
             testSprite->SetFlipped(true, false);
-            if(animTest != nullptr)
-            {
-                animTest->SetFlipped(true, false);
-                //UnRegisterEntity("animTest");
-            }
+            //if(animTest != nullptr)
+            //{
+            //    animTest->SetFlipped(true, false);
+            //    //UnRegisterEntity("animTest");
+            //}
         }
         else
         {
             testSprite->ChangeAnimation("idle");
             //testSprite->SetFlipped(false, false);
-            if(animTest != nullptr)
-            {
-                animTest->SetFlipped(false, false);
-            }
+            //if(animTest != nullptr)
+            //{
+            //    animTest->SetFlipped(false, false);
+            //}
         }
         
 

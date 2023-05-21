@@ -3,6 +3,7 @@
 
 #include "../header/entity.h"
 #include "../header/filemanager.h"
+#include "../header/texturemanager.h"
 
 #include <tmxlite/Map.hpp>
 #include <tmxlite/Layer.hpp>
@@ -26,7 +27,12 @@ public:
     void Draw(float deltaTime);
 
 protected:
-    tmx::Map mapData;
+
+    std::vector<tmx::TileLayer>* tileLayers;
+
+    std::map<std::string, Texture2D> tileSets;
+    std::vector<tmx::Tileset> tileSetData;
+    
     // The draw layer of the lowest 
     int baseDrawLayer = -100;
     int tileSizeX;

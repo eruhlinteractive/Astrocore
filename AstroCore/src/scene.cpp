@@ -186,9 +186,14 @@ void Scene::Draw(float deltaTime)
             else if(e->drawType == LIGHT)
             {
                 lights.push_back((Light2D*)e);
-            }
-            
-        }       
+            }            
+        }    
+
+        // Ignore on-screen for tile map
+        if(e->drawType == TILEMAP)
+        {
+            e->Draw(deltaTime);
+        }   
     }
 
     EndMode2D();
