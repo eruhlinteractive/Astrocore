@@ -9,6 +9,7 @@
 #include <string>
 #include <algorithm>
 #include <regex>
+#include "tilemap.h"
 
 // Custom Blend Modes
 #define RLGL_SRC_ALPHA 0x0302

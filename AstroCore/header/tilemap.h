@@ -18,10 +18,11 @@ class TileMap : public Entity2D
 {
 public:
     TileMap();
-    TileMap(int tileSizeX, int tileSizeY, std::string name);
+    TileMap(std::string name);
     void LoadDataTMX(std::string filePath);
-    ~TileMap(){};
+    ~TileMap();
 
+    void RenderToBufferImage();
     Vector2 GetTileSize();
     void Update(){};
     void Draw(float deltaTime);
@@ -29,14 +30,18 @@ public:
 protected:
 
     std::vector<tmx::TileLayer>* tileLayers;
+    std::vector<tmx::ObjectGroup>* objectLayers;
 
     std::map<std::string, Texture2D> tileSets;
     std::vector<tmx::Tileset> tileSetData;
+    std::map<int, tmx::Tileset::Tile> mapTiles;
     
+    bool isMapInfinite = false;
+    Vector2 mapSize;
+
     // The draw layer of the lowest 
     int baseDrawLayer = -100;
-    int tileSizeX;
-    int tileSizeY;
+    Vector2 tileSize;
 };
 }
 #endif // __TILEMAP_H__

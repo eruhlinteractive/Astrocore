@@ -48,11 +48,14 @@ int main()
         BeginDrawing();
             
         DrawLine(screenWidth / 2, 0, screenWidth/2, screenHeight, GRAY);
-        DrawLine(0, screenHeight/2, screenWidth, screenHeight/2, GRAY);            
-       
-        game->Draw(GetFrameTime());
+        DrawLine(0, screenHeight/2, screenWidth, screenHeight/2, GRAY);
 
+        game->Draw(GetFrameTime());
+        DrawFPS(10,10);    
         EndDrawing();
+       
+        
+        
     }
 
     game->Exit();

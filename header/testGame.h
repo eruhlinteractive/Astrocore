@@ -8,7 +8,7 @@ public:
 
     void InitGame(std::string windowTitle, int screenWidth, int screenHeight)
     {   
-        Game::InitGame(windowTitle, screenWidth, screenHeight);
+        Game::InitGame(windowTitle, screenWidth, screenHeight, 0);
         currentScene = new TestScene();
     }
 };

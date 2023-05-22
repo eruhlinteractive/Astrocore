@@ -144,7 +144,6 @@ void Scene::Update(float deltaTime)
 
 void Scene::Draw(float deltaTime)
 {
-    BeginMode2D(*currentCamera);
     std::vector<Entity2D*> pairs;
     std::vector<Light2D*> lights;
 
@@ -165,6 +164,9 @@ void Scene::Draw(float deltaTime)
         std::sort(pairs.begin(), pairs.end(), SortByLayerIndex);
     }
     
+    BeginMode2D(*currentCamera);
+
+    std::vector<Entity2D*> tileMaps = std::vector<Entity2D*>();
 
     // Draw every entity
     for(Entity2D* e : pairs)
@@ -186,17 +188,25 @@ void Scene::Draw(float deltaTime)
             else if(e->drawType == LIGHT)
             {
                 lights.push_back((Light2D*)e);
-            }            
+            }
+            else if(e->drawType == TILEMAP)
+            {
+                e->Draw(deltaTime);
+                //tileMaps.push_back((TileMap*)e);
+            }
         }    
-
-        // Ignore on-screen for tile map
-        if(e->drawType == TILEMAP)
-        {
-            e->Draw(deltaTime);
-        }   
     }
 
     EndMode2D();
+    //BeginMode2D(*currentCamera);
+
+    //// Ignore on-screen for tile map
+    //for(auto& map: tileMaps)
+    //{
+    //    map->Draw(deltaTime);
+    //}
+
+    //EndMode2D();
 
     // Render lights
     // Based on https://slembcke.github.io/2D-Lighting-Overview

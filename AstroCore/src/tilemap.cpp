@@ -11,11 +11,25 @@ TileMap::TileMap()
     tileLayers = new std::vector<tmx::TileLayer>();
 }
 
-TileMap::TileMap(int tileSizeX, int tileSizeY, std::string name) : TileMap()
+TileMap::TileMap(std::string name) : TileMap()
 {
-    this->tileSizeX = tileSizeX;
-    this->tileSizeY = tileSizeY;
     this->name = name != "" ? name : "TileMap" + std::to_string(entityID);
+}
+
+
+TileMap::~TileMap()
+{
+    // Unload all textures
+    for(auto tilePair : tileSets)
+    {
+        TextureManager::instance().UnloadTexture(tilePair.second);  
+    }
+}
+
+
+void TileMap::RenderToBufferImage()
+{
+    // TODO: Render the image to a buffer
 }
 
 void TileMap::Draw(float deltaTime)
@@ -28,33 +42,27 @@ void TileMap::Draw(float deltaTime)
 
         for(tmx::TileLayer::Tile tile : tiles)
         {
+            // TODO: Optimize the rendering of tilemaps
             int id = tile.ID;
-            auto t = tileSetData[0].getTile(id);
-            //std::cout << std::to_string( int(iterator / 20)) << std::endl;
-            if(t == nullptr)
-            {
-                iterator++;
-                continue;
-            }
+            tmx::Tileset::Tile t = mapTiles[id];
+            std::string imagePath = t.imagePath;
 
             Rectangle srcRect, destRect;
-            Texture2D texture = tileSets[(t->imagePath)];
+            //std::string imagePath = t->imagePath;
+            Texture2D texture = tileSets[imagePath];
 
-            srcRect = (Rectangle){(float)t->imagePosition.x, (float)t->imagePosition.y, (float)t->imageSize.x, (float)t->imageSize.y};
+            srcRect = (Rectangle){(float)t.imagePosition.x, (float)t.imagePosition.y, (float)t.imageSize.x, (float)t.imageSize.y};
             destRect = (Rectangle){
             0,
             0,
-            16,16 };
+            (float)t.imageSize.x, (float)t.imageSize.y };
 
-            Vector2 center = (Vector2){(30.0f * 16.0f) /2.0f, 20 * 16/2.0};
-            //DrawTexturePro(texture, srcRect, destRect, (Vector2){
-            //    (transform.position.x - center.x) + iterator * 16.0f,(transform.position.y - center.y)},0,WHITE);
-            
-            float xPos = int(floor(iterator % 30)); 
-            float yPos = (iterator/ 30);
+            Vector2 center = (Vector2){(30.0f * tileSize.x) /2.0f, (20 * tileSize.y) / 2.0f};
+            float xPos = floor(iterator % (int)mapSize.x); 
+            float yPos = (iterator/ (int)mapSize.x);
 
             //std::cout << std::to_string( yPos) << std::endl;
-            DrawTexturePro(texture, srcRect, destRect, (Vector2){(xPos * -16) + center.x , (yPos * -16) + center.y}, 0, WHITE);
+            DrawTexturePro(texture, srcRect, destRect, (Vector2){(xPos * - tileSize.x) + center.x , (yPos * -tileSize.y) + center.y}, 0, WHITE);
             iterator++;
         }
     }
@@ -69,27 +77,52 @@ void TileMap::LoadDataTMX(std::string filePath)
     std::string fullPath = (std::string)GetWorkingDirectory() + "/" + filePath;
     mapLoader.load(fullPath.c_str());
 
+    isMapInfinite = mapLoader.isInfinite();
+    mapSize = (Vector2){mapLoader.getBounds().width/ mapLoader.getTileSize().x, mapLoader.getBounds().height /mapLoader.getTileSize().y};
+
+    tileSize = (Vector2){(float)mapLoader.getTileSize().x, (float)mapLoader.getTileSize().y};
+
     const auto& layerData = mapLoader.getLayers();
 
     for(auto& layer : layerData)
     {
-        tmx::TileLayer t = (*layer.get()).getLayerAs<tmx::TileLayer>();
+        
         if(layer->getType() == tmx::Layer::Type::Tile)
         {
             tmx::TileLayer tileLayer = (tmx::TileLayer)layer->getLayerAs<tmx::TileLayer>();
             tileLayers->push_back(tileLayer);
-            tmx::TileLayer l = *(tileLayers->begin());
+        }
+        else if(layer->getType() == tmx::Layer::Type::Object)
+        {
+            objectLayers->push_back((tmx::ObjectGroup)layer->getLayerAs<tmx::ObjectGroup>()); 
         }
     }
+    
     const auto& mapTileSets = mapLoader.getTilesets();
 
     for(auto set : mapTileSets)
     {
+        const std::vector<tmx::Tileset::Tile> tilesInSet = set.getTiles();
         tileSetData.push_back(set);
-        std::string imagePath = set.getImagePath();
-        Texture2D image = TextureManager::instance().GetTexture(imagePath);
-        tileSets.insert({imagePath, image});
-        
+
+        // For every unique tile, load any required images
+        for(auto tile : tilesInSet)
+        {
+            if(mapTiles.count(tile.ID + set.getFirstGID()) == 0)
+            {
+                mapTiles.insert({tile.ID + set.getFirstGID(), tile});
+            }
+
+            std::string imagePath = tile.imagePath;
+            if(tileSets.count(imagePath) == 0)
+            {
+                Texture2D image = TextureManager::instance().GetTexture(imagePath);
+                tileSets.insert({imagePath, image});
+            }
+           
+        }
     }
+
+    int x = 0;
 
 }

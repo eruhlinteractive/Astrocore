@@ -77,7 +77,7 @@ public:
         testChild->transform.MoveGlobal({20,0});
 
 
-        TileMap* tm  = new TileMap();
+        TileMap* tm = new TileMap();
         tm->LoadDataTMX("res/tilemap/map.tmx");
         RegisterEntity(tm);
 
