@@ -1,5 +1,9 @@
 #include "../header/scene.h"
 
+// For function timing
+#include <chrono>
+using namespace std::chrono;
+
 using namespace Astrolib;
 
 Scene::Scene()
@@ -146,6 +150,7 @@ void Scene::Draw(float deltaTime)
 {
     std::vector<Entity2D*> pairs;
     std::vector<Light2D*> lights;
+    std::vector<Entity2D*> tileMaps = std::vector<Entity2D*>();
 
     // Create a list of all entities in the scene
     for (auto p : entities)
@@ -165,8 +170,6 @@ void Scene::Draw(float deltaTime)
     }
     
     BeginMode2D(*currentCamera);
-
-    std::vector<Entity2D*> tileMaps = std::vector<Entity2D*>();
 
     // Draw every entity
     for(Entity2D* e : pairs)
@@ -191,8 +194,13 @@ void Scene::Draw(float deltaTime)
             }
             else if(e->drawType == TILEMAP)
             {
-                e->Draw(deltaTime);
+                
+                //auto start = high_resolution_clock::now();
+                ((TileMap*)e)->Draw(deltaTime);
                 //tileMaps.push_back((TileMap*)e);
+                //auto end = high_resolution_clock::now();
+                //auto length = duration_cast<milliseconds>(end - start);
+                //printf("Tilemap rendered in %d milliseconds \n", length.count());
             }
         }    
     }

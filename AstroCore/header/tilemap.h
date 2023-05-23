@@ -32,6 +32,9 @@ protected:
     std::vector<tmx::TileLayer>* tileLayers;
     std::vector<tmx::ObjectGroup>* objectLayers;
 
+    // Vector for the tiles in each layer
+    std::map<std::string, std::vector<tmx::TileLayer::Tile>> layerTiles;
+
     std::map<std::string, Texture2D> tileSets;
     std::vector<tmx::Tileset> tileSetData;
     std::map<int, tmx::Tileset::Tile> mapTiles;
