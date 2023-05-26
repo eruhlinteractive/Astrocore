@@ -22,7 +22,12 @@ public:
     void LoadDataTMX(std::string filePath);
     ~TileMap();
 
-    void RenderToBufferImage();
+    void RenderAllLayers();
+    void RenderLayer(int layerIndex);
+
+    /// @brief Mark a layer to be re-rendered during the next draw call
+    /// @param layerIndex The index of the layer to re-render
+    void RedrawLayer(int layerIndex);
     Vector2 GetTileSize();
     void Update(){};
     void Draw(float deltaTime);
@@ -35,9 +40,12 @@ protected:
     // Vector for the tiles in each layer
     std::map<std::string, std::vector<tmx::TileLayer::Tile>> layerTiles;
 
+    std::vector<RenderTexture2D> frameBuffers;
     std::map<std::string, Texture2D> tileSets;
     std::vector<tmx::Tileset> tileSetData;
     std::map<int, tmx::Tileset::Tile> mapTiles;
+
+    std::vector<int> dirtyLayers;
     
     bool isMapInfinite = false;
     Vector2 mapSize;

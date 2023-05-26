@@ -78,6 +78,7 @@ public:
 
 
         TileMap* tm = new TileMap();
+        tm->SetName("tileMap");
         tm->LoadDataTMX("res/tilemap/map.tmx");
         RegisterEntity(tm);
 
@@ -121,6 +122,12 @@ public:
         Scene::Update(deltaTime);
 
         InputManager input = InputManager::instance();
+
+        TileMap* tm = (TileMap*)FindEntityByName("tileMap");
+
+
+        // TODO: This throws an exception, figure out why
+        //tm->RedrawLayer(0);
 
         AnimatedSpriteEntity* testSprite = (AnimatedSpriteEntity*)FindEntityByName("testSprite");
         //AnimatedSpriteEntity* animTest = (AnimatedSpriteEntity*)GetEntity("animTest");
