@@ -150,12 +150,24 @@ void Scene::Draw(float deltaTime)
 {
     std::vector<Entity2D*> pairs;
     std::vector<Light2D*> lights;
-    std::vector<Entity2D*> tileMaps = std::vector<Entity2D*>();
+    std::vector<Entity2D*> tileMaps;
+
+    // Screen border buffer to prevent pop-ins
+    float rimBuffer = 100.0f * currentCamera->zoom;
 
     // Create a list of all entities in the scene
-    for (auto p : entities)
+    for (std::pair<std::string, Entity2D*> p : entities)
     {
-        pairs.push_back((Entity2D*)p.second);
+        Vector2 screenPos = GetWorldToScreen2D(p.second->GetGlobalPosition(), *currentCamera);
+
+        if(IsOnScreen(screenPos, rimBuffer ) && p.second->drawType != TILEMAP)
+        {
+            pairs.push_back((Entity2D*)p.second);
+        }
+        else if (p.second->drawType == TILEMAP)
+        {
+            tileMaps.push_back((TileMap*)p.second);
+        }        
     }
 
     if(ySortEnabled)
@@ -171,43 +183,38 @@ void Scene::Draw(float deltaTime)
     
     BeginMode2D(*currentCamera);
 
+    for (Entity2D* m : tileMaps)
+    {
+        m->Draw(deltaTime);
+    }
     // Draw every entity
     for(Entity2D* e : pairs)
     {
         // Don't draw if it's off screen
-
-        Vector2 screenPos = GetWorldToScreen2D(e->GetGlobalPosition(), *currentCamera);
-        // Screen border buffer to prevent pop-ins
-        float rimBuffer = 100.0f * currentCamera->zoom;
-        // AABB rect test to tell if we're on screen
-        
-        
-        if(IsOnScreen(screenPos,rimBuffer))
+        if(e->drawType == NORMAL)
         {
-            if(e->drawType == NORMAL)
-            {
-                e->Draw(deltaTime);
-            }
-            else if(e->drawType == LIGHT)
-            {
-                lights.push_back((Light2D*)e);
-            }
-            else if(e->drawType == TILEMAP)
-            {
-                
-                //auto start = high_resolution_clock::now();
-                ((TileMap*)e)->Draw(deltaTime);
-                //tileMaps.push_back((TileMap*)e);
-                //auto end = high_resolution_clock::now();
-                //auto length = duration_cast<milliseconds>(end - start);
-                //printf("Tilemap rendered in %d milliseconds \n", length.count());
-            }
-        }    
+            e->Draw(deltaTime);
+        }
+        else if(e->drawType == LIGHT)
+        {
+            //lights.push_back((Light2D*)e);
+        }
+        else if(e->drawType == TILEMAP)
+        {
+            
+            //auto start = high_resolution_clock::now();
+            ((TileMap*)e)->Draw(deltaTime);
+            //tileMaps.push_back((TileMap*)e);
+            //auto end = high_resolution_clock::now();
+            //auto length = duration_cast<milliseconds>(end - start);
+            //printf("Tilemap rendered in %d milliseconds \n", length.count());
+        }
     }
 
     EndMode2D();
     //BeginMode2D(*currentCamera);
 
+    
     //// Ignore on-screen for tile map
     //for(auto& map: tileMaps)
     //{
@@ -238,6 +245,7 @@ void Scene::Draw(float deltaTime)
     
     //SetTextureFilter(screenSpaceLightMap.texture, TEXTURE_FILTER_BILINEAR);
 
+    
     Rectangle lightSrc, lightDest;
 
     lightSrc = (Rectangle){0,0, (float)GetScreenWidth(), (float)-GetScreenHeight()};

@@ -24,7 +24,6 @@ public:
         SetWindowTitle(windowTitle.c_str());
         SetWindowSize(screenWidth, screenHeight);
         SetTargetFPS(targetFPS); 
-
     }
 
     virtual void CreateScene(){currentScene = new Scene();}

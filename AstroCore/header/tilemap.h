@@ -12,6 +12,18 @@
 
 using namespace Astrolib;
 
+struct StaticTileMin
+{
+    StaticTileMin(Vector2 size, Vector2 pos)
+    {
+        this->imageSize = size;
+        this->imagePos = pos;
+    }
+
+    Vector2 imageSize;
+    Vector2 imagePos;
+};
+
 namespace Astrolib
 {
 class TileMap : public Entity2D
@@ -34,18 +46,24 @@ public:
 
 protected:
 
-    std::vector<tmx::TileLayer>* tileLayers;
-    std::vector<tmx::ObjectGroup>* objectLayers;
+    //std::vector<tmx::TileLayer>* tileLayers;
+    //std::vector<tmx::ObjectGroup>* objectLayers;
+    std::map<int, std::vector<int>> layers;
 
     // Vector for the tiles in each layer
     std::map<std::string, std::vector<tmx::TileLayer::Tile>> layerTiles;
 
-    std::vector<RenderTexture2D> frameBuffers;
+    //std::vector<RenderTexture2D> frameBuffers;
     std::map<std::string, Texture2D> tileSets;
-    std::vector<tmx::Tileset> tileSetData;
+    //std::vector<tmx::Tileset> tileSetData;
+
+    RenderTexture2D mapTextureAtlas;
+
+
     std::map<int, tmx::Tileset::Tile> mapTiles;
 
     std::vector<int> dirtyLayers;
+    std::map<int, StaticTileMin*> staticMapTiles;
     
     bool isMapInfinite = false;
     Vector2 mapSize;
