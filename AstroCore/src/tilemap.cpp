@@ -25,6 +25,8 @@ TileMap::~TileMap()
     {
         TextureManager::instance().UnloadTexture(tilePair.second);  
     }
+    // Unload render texture
+    UnloadRenderTexture(mapTextureAtlas);
 }
 
 
@@ -32,11 +34,13 @@ void TileMap::RenderLayer(int layerIndex)
 {
     // TODO: Cull tile rendering based on what's on screen
     int iterator = 0;
+
     Texture2D texture = mapTextureAtlas.texture;
     Rectangle srcRect, destRect;
-    float xPos, yPos;
+    int xPos, yPos;
     Vector2 center;
 
+    // Render each tile id
     for (int id : layers[layerIndex])
     {
         if (id == 0)
@@ -46,7 +50,7 @@ void TileMap::RenderLayer(int layerIndex)
         }
         
         xPos = floor(iterator % (int)mapSize.x); 
-        yPos = (iterator/ (int)mapSize.x);
+        yPos = floor(iterator/ (int)mapSize.x);
 
         StaticTileMin* tileInfo = staticMapTiles[id];
 
@@ -68,11 +72,10 @@ void TileMap::RenderLayer(int layerIndex)
             (float)tileInfo->imageSize.x,
             (float)tileInfo->imageSize.y};
 
+        
         DrawTexturePro(texture, srcRect, destRect, (Vector2){(xPos * - tileSize.x), (yPos * -tileSize.y)}, 0, WHITE);
         iterator++;
     }
-    //std::cout << iterator << std::endl;
-
 }
 
 void TileMap::RedrawLayer(int layerIndex)
@@ -90,9 +93,14 @@ void TileMap::RenderAllLayers()
 
 void TileMap::Draw(float deltaTime)
 {
+    Vector2 globalPos = GetGlobalPosition();
+    Vector2 center = globalPos;
+    int startXIndex;
+    int endXIndex;
+    int startYIndex;
+    int endYIndex;
+    
     RenderAllLayers();
-
-
 }
 
 /// @brief Load TMX data for a tilemap using the tmxlite library
@@ -124,12 +132,7 @@ void TileMap::LoadDataTMX(std::string filePath)
             {
                 layers[iterator].push_back(t.ID);
             }
-
             iterator++;
-            //layerTiles.insert({tileLayer.getName(), tiles});
-
-            // Initialize frame buffers
-            //frameBuffers.push_back(LoadRenderTexture(mapSize.x * tileSize.x, mapSize.y * tileSize.y));
         }
         //else if(layer->getType() == tmx::Layer::Type::Object)
         //{
@@ -142,6 +145,7 @@ void TileMap::LoadDataTMX(std::string filePath)
     int maxTileWidth = 0;
     int maxTileHeight = 0;
 
+    // Populate array of tiles
     for(auto set : mapTileSets)
     {
         const std::vector<tmx::Tileset::Tile> tilesInSet = set.getTiles();
@@ -196,10 +200,10 @@ void TileMap::LoadDataTMX(std::string filePath)
             // TODO: Fix the rendering of these tiles
 
             Rectangle source = (Rectangle){
-                tile.imagePosition.x , 
-                tile.imagePosition.y, 
-                tile.imageSize.x, 
-                tile.imageSize.y * -1.0
+                (float)tile.imagePosition.x , 
+                (float)tile.imagePosition.y, 
+                (float)tile.imageSize.x, 
+                (float)tile.imageSize.y * -1.0
             };
             
             Rectangle dest = (Rectangle){newX, newY, tile.imageSize.x, tile.imageSize.y};

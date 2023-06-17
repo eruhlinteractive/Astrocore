@@ -16,6 +16,12 @@ Scene::Scene()
     LoadScene();
 }
 
+bool Scene::AddLightToScene(Light2D* light)
+{
+    
+}
+
+
 bool Scene::RegisterEntity(Entity2D* entity)
 {
     std::string name = entity->GetName();
@@ -154,6 +160,7 @@ void Scene::Draw(float deltaTime)
 
     // Screen border buffer to prevent pop-ins
     float rimBuffer = 100.0f * currentCamera->zoom;
+    
 
     // Create a list of all entities in the scene
     for (std::pair<std::string, Entity2D*> p : entities)
@@ -215,11 +222,6 @@ void Scene::Draw(float deltaTime)
     //BeginMode2D(*currentCamera);
 
     
-    //// Ignore on-screen for tile map
-    //for(auto& map: tileMaps)
-    //{
-    //    map->Draw(deltaTime);
-    //}
 
     //EndMode2D();
 

@@ -35,6 +35,7 @@ public:
 
     virtual void Update(float deltaTime);
     void Draw(float deltaTime);
+    bool AddLightToScene(Light2D* light);
 
     bool RegisterEntity(Entity2D* entity);
     bool UnRegisterEntity(std::string name);
@@ -77,6 +78,8 @@ public:
 private:
     /// @brief Top level of the scene graph
     std::map<std::string, Entity2D*> entities;
+    std::map<std::string, Light2D*> lights;
+
     std::string sceneName = "";
     RenderTexture2D screenSpaceLightMap;
 };
