@@ -42,8 +42,7 @@ namespace Astrolib
         Entity2D();
         Entity2D(std::string name);
         Entity2D(std::string name, Vector2 position, Vector2 scale, float rotation);
-        virtual ~Entity2D(){ OnDestroy(); };
-
+        virtual ~Entity2D();
         // Flag operations
 
         void SetTransformFlag(TRANSFORM_FLAGS flag) { transformFlags |= (int)flag; };
@@ -73,8 +72,7 @@ namespace Astrolib
         /// @param delta The time from the current and the last frame
         virtual void Update(float delta);
 
-        
-        virtual void FixedUpdate(float delta);
+        virtual void FixedUpdate(float delta){};
 
         /// @brief Called when the object is de-allocated
         virtual void OnDestroy(){};
