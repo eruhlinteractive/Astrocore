@@ -1,5 +1,5 @@
 #include "../header/scene.h"
-
+#include <iostream>
 // For function timing
 #include <chrono>
 using namespace std::chrono;
@@ -184,7 +184,7 @@ void Scene::Draw(float deltaTime)
             {
                 pairs.push_back(layer);
             }
-            //auto layer = ((TileMap*)p.second)->GetTileLayers()[1];
+            //auto layer = ((TileMap *)p.second)->GetTileLayers()[1];
             //pairs.push_back(layer);
         }
     }
@@ -215,11 +215,10 @@ void Scene::Draw(float deltaTime)
 
         e->Draw(deltaTime, currentCamera);
     }
-    
 
     EndMode2D();
     // BeginMode2D(*currentCamera);
-    return;
+    // return;
     // EndMode2D();
 
     // Render lights
@@ -251,4 +250,7 @@ void Scene::Draw(float deltaTime)
     BeginBlendMode(BLEND_MULTIPLIED);
     DrawTexturePro(screenSpaceLightMap.texture, lightSrc, lightDest, (Vector2){0, 0}, 0, WHITE);
     EndBlendMode();
+
+    std::string val = std::to_string(currentCamera->zoom);
+    DrawText(val.c_str(), 10, 30, 20, DARKGREEN);
 }

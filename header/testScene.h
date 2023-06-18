@@ -41,6 +41,8 @@ public:
 
         std::shared_ptr<InputAction> rotCW = std::make_shared<InputAction>("rotCW",KEY_E);
         std::shared_ptr<InputAction> rotCCW = std::make_shared<InputAction>("rotCCW",KEY_Q);
+        std::shared_ptr<InputAction> zoomIn = std::make_shared<InputAction>("zoomIn", KEY_K);
+        std::shared_ptr<InputAction> zoomOut = std::make_shared<InputAction>("zoomOut", KEY_L);
     
         input.AddInputAction(right);
         input.AddInputAction(left);
@@ -48,6 +50,8 @@ public:
         input.AddInputAction(down);
         input.AddInputAction(rotCW);
         input.AddInputAction(rotCCW);
+        input.AddInputAction(zoomIn);
+        input.AddInputAction(zoomOut);
 
         TextureManager tmInstance = TextureManager::instance();
         Texture2D spriteRun = tmInstance.GetTexture("res/anim_test.png");
@@ -169,6 +173,15 @@ public:
         if(input.IsActionDown("up"))
         {
             testSprite->transform.MoveLocal({0,-50 * GetFrameTime()});
+        }
+
+        if(input.IsActionDown("zoomIn"))
+        {
+            currentCamera->zoom += 1 * deltaTime;
+        }
+        else if (input.IsActionDown("zoomOut"))
+        {
+            currentCamera->zoom -= 1 * deltaTime;
         }
         if(input.IsActionDown("down"))
         {
