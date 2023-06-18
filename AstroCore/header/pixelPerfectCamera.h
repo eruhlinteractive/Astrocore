@@ -17,7 +17,7 @@ namespace Astrolib
             worldSpaceCamera = new Camera2D();
             worldSpaceCamera->zoom = 1.0;
             screenSpaceCamera->zoom = 1.0;
-            SetRenderWidth(480);
+            SetRenderResolution(GetScreenWidth(), GetScreenHeight());
         }
 
         ~PixelPerfectCamera2D()
@@ -35,25 +35,14 @@ namespace Astrolib
         {
             screenSpaceCamera->target = target;
 
-            // Update non-position parameters
-            screenSpaceCamera->zoom = zoom;
-            worldSpaceCamera->zoom = zoom;
-
-            // Update non-position parameters
-            //screenSpaceCamera->offset = {offset.x, offset.y};
-            //worldSpaceCamera->offset = {-1.0 * offset.x, -1.0 * offset.y};
-            
-
             Vector2 newOffset = (Vector2){offset.x /samplingRatio, offset.y / samplingRatio };
 
-            worldSpaceCamera->target.x = (int)screenSpaceCamera->target.x;
+            worldSpaceCamera->target.x = int(screenSpaceCamera->target.x);
             screenSpaceCamera->target.x -= worldSpaceCamera->target.x;
-            
             screenSpaceCamera->target.x *= samplingRatio;
 
-            worldSpaceCamera->target.y = (int)screenSpaceCamera->target.y;
+            worldSpaceCamera->target.y = int(screenSpaceCamera->target.y);
             screenSpaceCamera->target.y -= worldSpaceCamera->target.y;
-           
             screenSpaceCamera->target.y *= samplingRatio;
 
             worldSpaceCamera->target.y -= newOffset.y;
@@ -71,11 +60,11 @@ namespace Astrolib
             return screenSpaceCamera;
         }
 
-        void SetRenderWidth(float newRenderWidth)
+        void SetRenderResolution(float newRenderWidth, float newRenderHeight)
         {
             screenDimensions = (Vector2){(float)GetRenderWidth(), (float)GetRenderHeight()};
-            samplingRatio = screenDimensions.x / newRenderWidth;
-            virtualResolution = (Vector2){(float)screenDimensions.x / samplingRatio, (float)screenDimensions.y / samplingRatio};
+            samplingRatio = (float)screenDimensions.x / (float)newRenderWidth;
+            virtualResolution = (Vector2){(float)newRenderWidth, (float)screenDimensions.y/ samplingRatio};
 
         
             // Re-initialize render texture
@@ -92,10 +81,22 @@ namespace Astrolib
         void Draw(float deltaTime, Camera2D *camera) override
         {
             BeginMode2D(*screenSpaceCamera);
-            SetTextureFilter(renderTexture.texture, RL_TEXTURE_FILTER_MIP_NEAREST);
-            DrawTexturePro(renderTexture.texture, sourceRect, destRect, {0,0}, 0.0f, WHITE);
-            //DrawRectangleLines(screenSpaceCamera->target.x, screenSpaceCamera->target.y,screenDimensions.x, screenDimensions.y, RED);
+            SetTextureFilter(renderTexture.texture, TEXTURE_FILTER_POINT);
+
+            // Calculate sub-pixel offsets
+            //float offsetX = fmodf(screenSpaceCamera->target.x, 1.0f);
+            //float offsetY = fmodf(screenSpaceCamera->target.y, 1.0f);;
+
+            DrawTexturePro(renderTexture.texture, sourceRect, destRect, {0, 0}, 0.0f, WHITE);
             EndMode2D();
+             
+            std::string posText = std::to_string(screenSpaceCamera->target.x) + "," + std::to_string(screenSpaceCamera->target.y);
+            DrawText(posText.c_str(), 10, 60, 20, RED);
+
+            std::string wposText = std::to_string(worldSpaceCamera->target.x) + "," + std::to_string(worldSpaceCamera->target.y);
+            DrawText(wposText.c_str(), 10, 85, 20, BLUE);
+            //DrawRectangleLines(screenSpaceCamera->target.x, screenSpaceCamera->target.y,screenDimensions.x, screenDimensions.y, RED);
+           
         }
  
     private:

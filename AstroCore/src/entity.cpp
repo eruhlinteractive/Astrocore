@@ -59,7 +59,7 @@ Vector2 Entity2D::GetGlobalPosition()
             transform.position.y * cos(parentRotation) + transform.position.x * sin(parentRotation),
         };
 
-        return {parentGlobal.x + rotatedPos.x, parentGlobal.y + rotatedPos.y};
+        return (Vector2){parentGlobal.x + rotatedPos.x, parentGlobal.y + rotatedPos.y};
         //return GetPosition();
     }
     else

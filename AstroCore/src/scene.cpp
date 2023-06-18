@@ -274,9 +274,7 @@ void Scene::Draw(float deltaTime)
         
         BeginDrawing();
         //ClearBackground(RAYWHITE);
-
         currentCamera->Draw(deltaTime, currentCamera->GetCamera());
-    
     }
     
     /*

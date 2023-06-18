@@ -13,48 +13,48 @@ AnimatedSpriteEntity::AnimatedSpriteEntity()
 }
 
 /// @brief Initialize a static sprite entity
-/// @param origin 
-/// @param spriteSize 
-/// @param spriteSrcPath 
+/// @param origin
+/// @param spriteSize
+/// @param spriteSrcPath
 AnimatedSpriteEntity::AnimatedSpriteEntity(std::string name, Vector2 origin, Vector2 frameSize, Texture2D sprite, string defaultAnimName) : AnimatedSpriteEntity()
 {
     Init();
-    
-    //this->spriteSrcPath = spriteSrcPath;
-    SpriteAnimation* anim = new SpriteAnimation();
+
+    // this->spriteSrcPath = spriteSrcPath;
+    SpriteAnimation *anim = new SpriteAnimation();
 
     anim->spriteTexture = sprite;
     anim->origin = origin;
     anim->frameSize = frameSize;
     anim->framesWide = 1;
-    if(name != "")
+    if (name != "")
     {
         this->name = name;
     }
 
-    animStates->insert(pair<string, SpriteAnimation*>(defaultAnimName, anim));
+    animStates->insert(pair<string, SpriteAnimation *>(defaultAnimName, anim));
     currentAnimationName = defaultAnimName;
     currentAnim = anim;
 }
 
 AnimatedSpriteEntity::AnimatedSpriteEntity(std::string name, Vector2 origin, Vector2 frameSize, Texture2D sprite, int framesWide, int frameCount, int animFps)
-: AnimatedSpriteEntity(name, origin, frameSize, sprite)
+    : AnimatedSpriteEntity(name, origin, frameSize, sprite)
 {
-    SpriteAnimation* anim = (*animStates)[currentAnimationName];
+    SpriteAnimation *anim = (*animStates)[currentAnimationName];
     anim->framesWide = framesWide;
     anim->animFPS = animFps;
     anim->frameMax = frameCount;
 }
 
-AnimatedSpriteEntity::AnimatedSpriteEntity(std::string name, SpriteAnimation* defaultAnimation, string animationName): AnimatedSpriteEntity()
+AnimatedSpriteEntity::AnimatedSpriteEntity(std::string name, SpriteAnimation *defaultAnimation, string animationName) : AnimatedSpriteEntity()
 {
     Init();
-    if(name != "")
+    if (name != "")
     {
         this->name = name;
     }
-   
-    animStates->insert(pair<string, SpriteAnimation*>(animationName, defaultAnimation));
+
+    animStates->insert(pair<string, SpriteAnimation *>(animationName, defaultAnimation));
     currentAnimationName = animationName;
 }
 
@@ -63,12 +63,12 @@ AnimatedSpriteEntity::AnimatedSpriteEntity(std::string name, SpriteAnimation* de
 /// @brief Add an animation to the lists of animations for this sprite
 /// @param animationName The name of the animation to add
 /// @param anim A pointer to the aniamtion
-void AnimatedSpriteEntity::AddAnimation(string animationName, SpriteAnimation* anim)
+void AnimatedSpriteEntity::AddAnimation(string animationName, SpriteAnimation *anim)
 {
     // If it doesn't already exist in the animtion states
-    if(animStates->find(animationName) == animStates->end())
+    if (animStates->find(animationName) == animStates->end())
     {
-        animStates->insert(pair<string, SpriteAnimation*>(animationName, anim));
+        animStates->insert(pair<string, SpriteAnimation *>(animationName, anim));
     }
 }
 
@@ -77,13 +77,13 @@ void AnimatedSpriteEntity::AddAnimation(string animationName, SpriteAnimation* a
 void AnimatedSpriteEntity::RemoveAnimation(string animationName)
 {
     // If the animation exists in the list of animations
-    if(animStates->find(animationName) != animStates->end())
+    if (animStates->find(animationName) != animStates->end())
     {
-        SpriteAnimation* anim = (*animStates)[animationName];
+        SpriteAnimation *anim = (*animStates)[animationName];
         animStates->erase(animationName);
 
         delete anim;
-        anim =nullptr;
+        anim = nullptr;
     }
 }
 
@@ -91,8 +91,8 @@ void AnimatedSpriteEntity::RemoveAnimation(string animationName)
 /// @param animationName The name of the animation to switch to
 void AnimatedSpriteEntity::ChangeAnimation(string animationName)
 {
-    
-    if(animStates->find(animationName) != animStates->end() && animationName != currentAnimationName)
+
+    if (animStates->find(animationName) != animStates->end() && animationName != currentAnimationName)
     {
         currentAnimationName = animationName;
         currentAnim = (*animStates)[animationName];
@@ -105,12 +105,12 @@ void AnimatedSpriteEntity::ChangeAnimation(string animationName)
 
 AnimatedSpriteEntity::~AnimatedSpriteEntity()
 {
-    for(auto anim = animStates->begin(); anim != animStates->end(); ++anim)
+    for (auto anim = animStates->begin(); anim != animStates->end(); ++anim)
     {
         // Unload all textures
-        SpriteAnimation* sAnim = anim->second;
+        SpriteAnimation *sAnim = anim->second;
 
-        if(sAnim != nullptr)
+        if (sAnim != nullptr)
         {
             Texture2D s = sAnim->spriteTexture;
             TextureManager::instance().UnloadTexture(s);
@@ -126,7 +126,7 @@ AnimatedSpriteEntity::~AnimatedSpriteEntity()
 
 void AnimatedSpriteEntity::Init()
 {
-    animStates = new std::map<string,SpriteAnimation*>();
+    animStates = new std::map<string, SpriteAnimation *>();
 }
 
 Rectangle AnimatedSpriteEntity::GetSpriteRect()
@@ -135,23 +135,24 @@ Rectangle AnimatedSpriteEntity::GetSpriteRect()
     return (Rectangle){pos.x, pos.y, currentAnim->frameSize.x, currentAnim->frameSize.y};
 }
 
-
 /// @brief Draw the animated sprite, incrementing the frame counter
-/// @param frameTime 
-void AnimatedSpriteEntity::Draw(float deltaTime, Camera2D* camera)
+/// @param frameTime
+void AnimatedSpriteEntity::Draw(float deltaTime, Camera2D *camera)
 {
     Rectangle srcRect, destRect;
     float srcPosX, srcPosY;
 
-    if(isPlaying) animAcc += deltaTime;
+    if (isPlaying)
+        animAcc += deltaTime;
 
-    if(animAcc >= 1.0/(float)currentAnim->animFPS)
+    if (animAcc >= 1.0 / (float)currentAnim->animFPS)
     {
         currentAnim->currentFrame++;
-        if(currentAnim->currentFrame >= currentAnim->frameMax) currentAnim->currentFrame = 0;
+        if (currentAnim->currentFrame >= currentAnim->frameMax)
+            currentAnim->currentFrame = 0;
         animAcc = 0.0;
     }
-    
+
     srcPosX = currentAnim->currentFrame % currentAnim->framesWide * currentAnim->frameSize.x;
     srcPosY = (int)(currentAnim->currentFrame / currentAnim->framesWide) * currentAnim->frameSize.y;
 
@@ -160,9 +161,10 @@ void AnimatedSpriteEntity::Draw(float deltaTime, Camera2D* camera)
 
     // Animated sprite
 
-    srcRect = (Rectangle){srcPosX,srcPosY, spriteFlip.x * currentAnim->frameSize.x, spriteFlip.y * currentAnim->frameSize.y};
-    destRect = (Rectangle){globalPos.x, globalPos.y, currentAnim->frameSize.x * transform.scale.x, currentAnim->frameSize.x * transform.scale.y};
+    srcRect = (Rectangle){srcPosX, srcPosY, spriteFlip.x * currentAnim->frameSize.x, spriteFlip.y * currentAnim->frameSize.y};
+    destRect = (Rectangle){round(globalPos.x), round(globalPos.y), currentAnim->frameSize.x * transform.scale.x, currentAnim->frameSize.x * transform.scale.y};
 
-    //DrawTexture(spriteText,positionX,positionY,WHITE);
-    DrawTexturePro(currentAnim->spriteTexture, srcRect, destRect, {currentAnim->origin.x * transform.scale.x ,currentAnim->origin.y * transform.scale.y}, GetGlobalRotation() * (180.0/PI), WHITE);
+    // SetTextureFilter(currentAnim->spriteTexture, TEXTURE_FILTER_POINT);
+    // DrawTexture(spriteText,positionX,positionY,WHITE);
+    DrawTexturePro(currentAnim->spriteTexture, srcRect, destRect, {round(currentAnim->origin.x * transform.scale.x), round(currentAnim->origin.y * transform.scale.y)}, GetGlobalRotation() * (180.0 / PI), WHITE);
 }

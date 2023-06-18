@@ -2,7 +2,9 @@
 #define __TESTSCENE_H__
 
 #include "../AstroCore/astrocore.h"
+
 using namespace Astrolib;
+
 
 class TestScene : public Scene
 {
@@ -19,6 +21,7 @@ public:
 
         Vector2 screenSize = Game::instance().GetScreenSize();
         pixelCamera->offset = {screenSize.x/2.0f, screenSize.y/2.0f};
+        pixelCamera->SetRenderResolution(320, 240);
 
         ambientColor = WHITE;
         Light2D* newLight = new Light2D(50.0, 1.0, YELLOW);
@@ -62,27 +65,27 @@ public:
 
         AnimatedSpriteEntity* testSprite = new AnimatedSpriteEntity(
             "testSprite",
-            {25,18}, 
-            {50,37},
+            {8,8}, 
+            {16,16},
             spriteRun,
-            6,
-            6,
+            4,
+            4,
             8
             );
 
         SpriteEntity* testSpr = new SpriteEntity(beuh, {212,180}, {106,90});
         testSpr->transform.MoveGlobal({10,10});
-        testSpr->transform.Scale((Vector2){0.2f, 0.2f});
+        //testSpr->transform.Scale((Vector2){0.5f, 0.5f});
 
 
-        SpriteAnimation* idleAnim = new SpriteAnimation(spriteIdle, 4, 6, 4, {25,18}, {50,37});
+        SpriteAnimation* idleAnim = new SpriteAnimation(spriteIdle, 4, 6, 4, {8,8}, {16,16});
 
         testSprite->AddAnimation("idle", idleAnim);
 
         AnimatedSpriteEntity* testChild = new AnimatedSpriteEntity("testChild", {24,24}, {48,48}, spriteIdle);
         testChild->transform.MoveGlobal({20,0});
 
-
+        
         TileMap* tm = new TileMap();
         tm->SetName("tileMap");
         tm->LoadDataTMX("res/tilemap/map.tmx");
@@ -100,7 +103,7 @@ public:
             );
 
         testChild->transform.scale = (Vector2){0.5,0.5};
-        animTest->transform.scale = (Vector2){1,1};
+        //animTest->transform.scale = (Vector2){1,1};
 
         //testChild->MoveGlobal({0,50});
         //testChild->SetPosition({100,0});
@@ -129,6 +132,23 @@ public:
 
         Scene::Update(deltaTime);
 
+        AnimatedSpriteEntity* testSprite = (AnimatedSpriteEntity*)FindEntityByName("testSprite");
+        Vector2 targetPos = testSprite->GetGlobalPosition();
+        
+        //float testX = lerp(targetPos.x, currentCamera->target.x, deltaTime);
+        //float testY = lerp(targetPos.y, currentCamera->target.y, deltaTime);
+        //testSprite->transform.position = (Vector2){int(testSprite->transform.position.x), int(testSprite->transform.position.y)};
+        currentCamera->target = targetPos;
+
+        //float cameraX = (sinf(GetTime())* 50.0f) - 10.0f;
+        //float cameraY = cosf(GetTime())* 30.0f;
+        //currentCamera->target = {cameraX , cameraY};
+
+    }
+
+    void FixedUpdate(float deltaTime)
+    {
+
         InputManager input = InputManager::instance();
 
         TileMap* tm = (TileMap*)FindEntityByName("tileMap");
@@ -142,7 +162,7 @@ public:
         
         if (input.IsActionDown("right"))
         {
-            testSprite->transform.MoveLocal({100 * GetFrameTime(),0});
+            testSprite->transform.MoveLocal({1,0});
             testSprite->ChangeAnimation("default");
             testSprite->SetFlipped(false, false);
             //if(animTest != nullptr)
@@ -153,7 +173,7 @@ public:
         }
         else if(input.IsActionDown("left"))
         {
-            testSprite->transform.MoveLocal({-100 * GetFrameTime(),0});
+            testSprite->transform.MoveLocal({-1,0});
             testSprite->ChangeAnimation("default");
             testSprite->SetFlipped(true, false);
             //if(animTest != nullptr)
@@ -175,7 +195,7 @@ public:
 
         if(input.IsActionDown("up"))
         {
-            testSprite->transform.MoveLocal({0,-50 * deltaTime});
+            testSprite->transform.MoveLocal({0, -1.0});
         }
 
         if(input.IsActionDown("zoomIn"))
@@ -188,7 +208,7 @@ public:
         }
         if(input.IsActionDown("down"))
         {
-            testSprite->transform.MoveLocal({0, 50 * deltaTime});
+            testSprite->transform.MoveLocal({0, 1});
         }
         if(input.IsActionDown("rotCW"))
         {
@@ -199,18 +219,12 @@ public:
             testSprite->transform.RotateDegrees(-30 * deltaTime);
         }
         
-        Vector2 targetPos = testSprite->GetGlobalPosition();
-        
-        testSprite->transform.position = (Vector2){int(testSprite->transform.position.x), int(testSprite->transform.position.y)};
-        currentCamera->target = targetPos;
-
-        //float cameraX = (sinf(GetTime())*50.0f) - 10.0f;
-        //float cameraY = cosf(GetTime())*30.0f;
-        //currentCamera->target = {cameraX , cameraY};
-
     }
 
-    
+    // Algebraically simplified algorithm
+    static float lerp (float a, float b, float f) {
+        return a + f * (b - a);
+    }
 
 };
 #endif // __TESTSCENE_H__
