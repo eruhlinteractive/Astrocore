@@ -32,7 +32,7 @@ public:
     void PauseAnimation(){isPlaying = false;};
     void PlayAnimation(){isPlaying = true;};
     string GetCurrentAnimation(){return currentAnimationName;};
-    void Draw(float frameTime, Vector2 cameraPosition) override;
+    void Draw(float deltaTime, Camera2D* camera) override;
     void Init();
 
     bool IsFlippedH(){return (spriteFlip.x == -1);};

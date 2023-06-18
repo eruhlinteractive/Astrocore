@@ -184,6 +184,8 @@ void Scene::Draw(float deltaTime)
             {
                 pairs.push_back(layer);
             }
+            //auto layer = ((TileMap*)p.second)->GetTileLayers()[1];
+            //pairs.push_back(layer);
         }
     }
 
@@ -211,7 +213,7 @@ void Scene::Draw(float deltaTime)
     for (Entity2D *e : pairs)
     {
 
-        e->Draw(deltaTime, currentCamera->target);
+        e->Draw(deltaTime, currentCamera);
     }
     
 

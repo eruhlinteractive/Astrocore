@@ -87,7 +87,7 @@ namespace Astrolib
             return drawLayer;
         };
 
-        virtual void Draw(float deltaTime, Vector2 cameraPosition) = 0;
+        virtual void Draw(float deltaTime, Camera2D* camera) = 0;
 
         /// @brief The offset used for Y position-based sorting
         float ySortOffset = 0;

@@ -1,4 +1,5 @@
 #include "../header/tilemapLayer.h"
+#include <iostream>
 using namespace Astrolib;
 
 
@@ -16,7 +17,7 @@ TileMapLayer::TileMapLayer(std::vector<int>* tileIndexes,
     this->tileSize = tileSize;
 }
 
-void TileMapLayer::Draw(float deltaTime, Vector2 cameraPosition)
+void TileMapLayer::Draw(float deltaTime, Camera2D* camera)
 {
     int iterator = 0;
 
@@ -25,7 +26,10 @@ void TileMapLayer::Draw(float deltaTime, Vector2 cameraPosition)
     Vector2 center;
     Texture2D* texture = tileAtlas;
     //std::vector<int> indexes = *tileIndexes;
-
+    int drawn = 0;
+    Vector2 screenSize = {GetRenderWidth(), GetRenderHeight()};
+    Vector2 globalPos = GetGlobalPosition();
+    const Vector2 padding = (Vector2){tileSize.x * 2.0, tileSize.y * 2.0};
     // Render each tile id
     for (int id : *tileIndexes)
     {
@@ -34,15 +38,41 @@ void TileMapLayer::Draw(float deltaTime, Vector2 cameraPosition)
             iterator++;
             continue;
         }
-        
-        xPos = floor(iterator % (int)mapSize.x); 
-        yPos = floor(iterator/ (int)mapSize.x);
-        StaticTileMin* tileInfo = mapTileInfo->at(id);
 
+        StaticTileMin* tileInfo = mapTileInfo->at(id);
         if(tileInfo == nullptr)
         {
+            iterator++;
             continue;
         }
+
+        xPos = floor(iterator % (int)mapSize.x); 
+        yPos = floor(iterator/ (int)mapSize.x);
+        
+        Vector2 worldPos = (Vector2){(xPos * tileSize.x) + globalPos.x, (yPos * tileSize.y) + globalPos.y};
+
+        
+        Vector2 screenSpaceCoords = GetWorldToScreen2D(worldPos, *camera);
+
+        Rectangle tileRect = (Rectangle){screenSpaceCoords.x, screenSpaceCoords.y, tileInfo->imageSize.x * 2.0, tileInfo->imageSize.y * 2.0};
+        
+
+        Vector2 ss = GetScreenToWorld2D({tileRect.x, tileRect.y}, *camera);
+        Rectangle debugRect = (Rectangle){(xPos * tileSize.x), (yPos * tileSize.y), tileInfo->imageSize.x, tileInfo->imageSize.y};
+
+        // AABB test against screen boundaries
+        bool isOnScreen = tileRect.x + tileRect.width > 0 &&
+            tileRect.x - tileRect.width - padding.x < screenSize.x &&
+            tileRect.y + tileRect.height + padding.y > 0 &&
+            tileRect.y - tileRect.height - padding.y < screenSize.y;
+
+        if(!isOnScreen)
+        {
+            iterator++;
+            continue;
+        }
+
+        
 
         srcRect = (Rectangle){
             tileInfo->imagePos.x,
@@ -59,7 +89,10 @@ void TileMapLayer::Draw(float deltaTime, Vector2 cameraPosition)
 
         
         DrawTexturePro(*texture, srcRect, destRect, (Vector2){(xPos * - tileSize.x), (yPos * -tileSize.y)}, 0, WHITE);
+        //DrawRectangleLinesEx(debugRect, 1, RED);
         iterator++;
+        drawn++;
     }
+    //std::cout << drawn << std::endl;
 
 }

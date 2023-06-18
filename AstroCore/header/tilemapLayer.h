@@ -28,7 +28,7 @@ namespace Astrolib
         Vector2 mapSize;
         Vector2 tileSize;
 
-        void Draw(float deltaTime, Vector2 cameraPosition) override;
+        void Draw(float deltaTime, Camera2D* camera) override;
     };
     
 }

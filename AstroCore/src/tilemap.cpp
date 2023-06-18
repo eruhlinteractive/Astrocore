@@ -116,7 +116,7 @@ void TileMap::SetDrawLayerForMapLayer(int layerIndex, int newLayerDrawIndex)
 }
 
 
-void TileMap::Draw(float deltaTime, Vector2 cameraPosition)
+void TileMap::Draw(float deltaTime, Camera2D* camera)
 {
     Vector2 globalPos = GetGlobalPosition();
     int startXIndex;

@@ -21,7 +21,7 @@ namespace Astrolib
         SpriteEntity(Texture2D spriteTexture, Vector2 frameSize, Vector2 origin);
         ~SpriteEntity();
 
-        void Draw(float frameTime, Vector2 cameraPosition) override;
+        void Draw(float deltaTime, Camera2D* camera) override;
         bool IsFlippedH() { return (spriteFlip.x == -1); };
         bool IsFlippedV() { return (spriteFlip.y == -1); };
         void SetFlipped(bool hFlipped, bool vFlipped)

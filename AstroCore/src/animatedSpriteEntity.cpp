@@ -131,12 +131,12 @@ void AnimatedSpriteEntity::Init()
 
 /// @brief Draw the animated sprite, incrementing the frame counter
 /// @param frameTime 
-void AnimatedSpriteEntity::Draw(float frameTime, Vector2 cameraPosition)
+void AnimatedSpriteEntity::Draw(float deltaTime, Camera2D* camera)
 {
     Rectangle srcRect, destRect;
     float srcPosX, srcPosY;
 
-    if(isPlaying) animAcc += frameTime;
+    if(isPlaying) animAcc += deltaTime;
 
     if(animAcc >= 1.0/(float)currentAnim->animFPS)
     {

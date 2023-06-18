@@ -30,7 +30,7 @@ namespace Astrolib
         void SetDrawLayerForMapLayer(int layerIndex, int newSortIndex);
         Vector2 GetTileSize();
         void Update(){};
-        void Draw(float deltaTime, Vector2 cameraPosition) override;
+        void Draw(float deltaTime, Camera2D* camera) override;
         std::vector<TileMapLayer*> GetTileLayers(){ return tileLayers;};
 
     protected:
