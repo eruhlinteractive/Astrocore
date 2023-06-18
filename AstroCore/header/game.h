@@ -21,15 +21,15 @@ namespace Astrolib
         {
             std::string debugMessage = "";
 
-            // IDK if this even works with CMake ¯\_(ツ)_/¯
-            #if __DEBUG__
-                debugMessage = " (Debug)";
-            #else
-                debugMessage = " (Release)";
-            #endif
+// IDK if this even works with CMake ¯\_(ツ)_/¯
+#if __DEBUG__
+            debugMessage = " (Debug)";
+#else
+            debugMessage = " (Release)";
+#endif
 
             InitWindow(screenWidth, screenHeight, "Astrolib Game");
-            SetWindowTitle(( windowTitle + debugMessage).c_str());
+            SetWindowTitle((windowTitle + debugMessage).c_str());
             SetWindowSize(screenWidth, screenHeight);
             SetTargetFPS(targetFPS);
         }
@@ -55,19 +55,20 @@ namespace Astrolib
         void DrawUI();
 
         virtual void Update(float deltaTime) { currentScene->Update(GetFrameTime()); };
+        virtual void FixedUpdate(float deltaTime) { currentScene->FixedUpdate(deltaTime); };
         virtual void Draw(float deltaTime)
         {
             currentScene->Draw(GetFrameTime());
         };
 
-        Scene* GetCurrentScene()
+        Scene *GetCurrentScene()
         {
             return currentScene;
         }
 
         Vector2 GetScreenSize()
         {
-            return (Vector2){(float)GetScreenWidth(), (float)GetScreenHeight()};
+            return (Vector2){(float)GetRenderWidth(), (float)GetRenderHeight()};
         }
 
         virtual void Exit()
@@ -86,7 +87,7 @@ namespace Astrolib
         }
 
     protected:
-        Scene* currentScene;
+        Scene *currentScene;
 
     private:
         bool ySortEnabled = true;

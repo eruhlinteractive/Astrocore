@@ -36,6 +36,7 @@ namespace Astrolib
         virtual void UnloadScene(){};
 
         virtual void Update(float deltaTime);
+        virtual void FixedUpdate(float deltaTime);
         void Draw(float deltaTime);
         bool AddLightToScene(Light2D *light);
 

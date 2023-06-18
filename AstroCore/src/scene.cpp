@@ -161,6 +161,14 @@ void Scene::Update(float deltaTime)
     }
 }
 
+void Scene::FixedUpdate(float deltaTime)
+{
+    for(std::pair<std::string, Entity2D *> p : entities)
+    {
+        p.second->FixedUpdate(deltaTime);
+    }
+}
+
 void Scene::Draw(float deltaTime)
 {
     std::vector<Entity2D *> pairs;

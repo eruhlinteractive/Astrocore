@@ -73,6 +73,9 @@ namespace Astrolib
         /// @param delta The time from the current and the last frame
         virtual void Update(float delta);
 
+        
+        virtual void FixedUpdate(float delta);
+
         /// @brief Called when the object is de-allocated
         virtual void OnDestroy(){};
 

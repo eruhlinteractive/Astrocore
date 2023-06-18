@@ -34,6 +34,9 @@ int main()
     int screenWidth = 1280;
     int screenHeight = 720;
 
+    const float FIXED_UPDATE_RATE= 1.0/ 60.0;
+    float fixedUpdateTimer = 0.0f;
+
     game->InitGame("Astrolib", 1280, 720);
 
     std::cout << GetWorkingDirectory() << std::endl;
@@ -51,6 +54,13 @@ int main()
         DrawLine(0, screenHeight/2, screenWidth, screenHeight/2, GRAY);
 
         game->Draw(GetFrameTime());
+
+        fixedUpdateTimer += GetFrameTime();
+        while(fixedUpdateTimer > FIXED_UPDATE_RATE)
+        {
+            fixedUpdateTimer -= FIXED_UPDATE_RATE;
+            game->FixedUpdate(FIXED_UPDATE_RATE);
+        }
         DrawFPS(10,10);    
         EndDrawing();
        
