@@ -23,7 +23,7 @@ enum TRANSFORM_FLAGS
     SCL_UNIQUE = 1 << 2  // 4
 };
 
-// Draw type, defines when the entity is drawn
+// Draw type, defines when/how the entity is drawn
 enum ENTITY_TYPE
 {
     BASE,
@@ -42,7 +42,7 @@ namespace Astrolib
         Entity2D();
         Entity2D(std::string name);
         Entity2D(std::string name, Vector2 position, Vector2 scale, float rotation);
-        virtual ~Entity2D();
+        virtual ~Entity2D(){ OnDestroy(); };
 
         // Flag operations
 
