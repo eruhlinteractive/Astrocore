@@ -37,7 +37,7 @@ bool Scene::RegisterEntity(Entity2D *entity)
         entities.insert(std::pair{name, entity});
 
         // Add to specialized lists
-        if (entity->GetType() == SPRITE)
+        if (entity->GetType() == SPRITE || entity->GetType() == TILEMAP)
         {
             drawableEntities.insert(std::pair{name, entity});
         }
@@ -176,6 +176,15 @@ void Scene::Draw(float deltaTime)
         {
             pairs.push_back((Entity2D *)p.second);
         }
+
+        // Append layers of a tilemap to be sorted in order
+        else if (p.second->GetType() == TILEMAP)
+        {
+            for(auto layer : ((TileMap*)p.second)->GetTileLayers())
+            {
+                pairs.push_back(layer);
+            }
+        }
     }
 
     // Sort pair list
@@ -203,32 +212,12 @@ void Scene::Draw(float deltaTime)
     {
 
         e->Draw(deltaTime, currentCamera->target);
-
-        // Don't draw if it's off screen
-        // if(e->drawType == NORMAL)
-        //{
-        //    e->Draw(deltaTime);
-        //}
-        // else if(e->drawType == LIGHT)
-        //{
-        //    //lights.push_back((Light2D*)e);
-        //}
-        // else if(e->drawType == TILEMAP)
-        //{
-        //
-        //    //auto start = high_resolution_clock::now();
-        //    ((TileMap*)e)->Draw(deltaTime, currentCamera->target);
-        //    //tileMaps.push_back((TileMap*)e);
-        //    //auto end = high_resolution_clock::now();
-        //    //auto length = duration_cast<milliseconds>(end - start);
-        //    //printf("Tilemap rendered in %d milliseconds \n", length.count());
-        //}
     }
     
 
     EndMode2D();
     // BeginMode2D(*currentCamera);
-
+    return;
     // EndMode2D();
 
     // Render lights

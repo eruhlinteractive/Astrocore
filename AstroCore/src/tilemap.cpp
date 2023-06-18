@@ -5,10 +5,11 @@ using namespace Astrolib;
 
 TileMap::TileMap()
 {
+    type = TILEMAP;
     name = "TileMap" + std::to_string(entityID);
     drawLayer = baseDrawLayer;
     tileSets = std::map<std::string, Texture2D>();
-    staticMapTiles = std::map<int, StaticTileMin*>();
+    staticMapTiles = new std::map<int, StaticTileMin*>();
     //tileLayers = new std::vector<tmx::TileLayer>();
 }
 
@@ -37,9 +38,11 @@ void TileMap::RenderLayer(int layerIndex)
     Rectangle srcRect, destRect;
     int xPos, yPos;
     Vector2 center;
-
+    TileMapLayer* layer = tileLayers[layerIndex];
+    std::vector<int> indexes = *(layer->tileIndexes);
+    
     // Render each tile id
-    for (int id : layers[layerIndex])
+    for (int id : indexes)
     {
         if (id == 0)
         {
@@ -50,7 +53,7 @@ void TileMap::RenderLayer(int layerIndex)
         xPos = floor(iterator % (int)mapSize.x); 
         yPos = floor(iterator/ (int)mapSize.x);
 
-        StaticTileMin* tileInfo = staticMapTiles[id];
+        StaticTileMin* tileInfo = staticMapTiles->at(id);
 
         if(tileInfo == nullptr)
         {
@@ -74,11 +77,26 @@ void TileMap::RenderLayer(int layerIndex)
         DrawTexturePro(texture, srcRect, destRect, (Vector2){(xPos * - tileSize.x), (yPos * -tileSize.y)}, 0, WHITE);
         iterator++;
     }
+    
 }
 
-void TileMap::RedrawLayer(int layerIndex)
+
+void TileMap::SetupLayers()
 {
-    dirtyLayers.push_back(layerIndex);
+    int iterator = 0;
+    for(auto layerIndexes : layers)
+    {
+        TileMapLayer* newLayer = new TileMapLayer(
+            layerIndexes.second,
+            &(mapTextureAtlas.texture),
+            staticMapTiles,
+            mapSize,
+            tileSize
+        );
+
+        tileLayers.push_back(newLayer);
+    }
+
 }
 
 void TileMap::RenderAllLayers()
@@ -88,6 +106,15 @@ void TileMap::RenderAllLayers()
         RenderLayer(i);
     }
 }
+
+
+void TileMap::SetDrawLayerForMapLayer(int layerIndex, int newLayerDrawIndex)
+{
+    assert(layerIndex < tileLayers.size() && " Layer index is out of bounds");
+    TileMapLayer* layer = tileLayers[layerIndex];
+    layer->drawLayer = newLayerDrawIndex;
+}
+
 
 void TileMap::Draw(float deltaTime, Vector2 cameraPosition)
 {
@@ -124,10 +151,11 @@ void TileMap::LoadDataTMX(std::string filePath)
             tmx::TileLayer tileLayer = (tmx::TileLayer)layer->getLayerAs<tmx::TileLayer>();
             //tileLayers->push_back(tileLayer);
             std::vector<tmx::TileLayer::Tile> tiles = tileLayer.getTiles();
+            layers[iterator] = new std::vector<int>();
 
             for(auto t : tiles)
             {
-                layers[iterator].push_back(t.ID);
+                (layers[iterator])->push_back(t.ID);
             }
             iterator++;
         }
@@ -180,16 +208,18 @@ void TileMap::LoadDataTMX(std::string filePath)
     int newX = 0;
     int newY = 0;
 
-    for (int i = 1; i < mapTiles.size(); i++)
+    for (std::pair p : mapTiles)
     {
-       
-        tmx::Tileset::Tile tile = mapTiles[i];
-        if(staticMapTiles.count(i) > 0)
+    
+        tmx::Tileset::Tile tile = p.second;
+        //std::cout << i << endl;
+        if(staticMapTiles->count(p.first) > 0)
         {
            continue;
         }
 
         std::string path = tile.imagePath;
+        std::cout << path << endl;
         Texture2D image = TextureManager::instance().GetTexture(path);
 
         if(path != "")
@@ -219,7 +249,8 @@ void TileMap::LoadDataTMX(std::string filePath)
         );
 
         // Store updated coordinates
-        staticMapTiles.insert({i, newTile});
+        
+        staticMapTiles->insert({p.first, newTile});
         newX += tile.imageSize.x;
     }
     EndTextureMode();
@@ -235,4 +266,5 @@ void TileMap::LoadDataTMX(std::string filePath)
     */
 
     //RenderAllLayers();
+    SetupLayers();
 }

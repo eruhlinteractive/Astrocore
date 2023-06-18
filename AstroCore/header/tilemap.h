@@ -9,19 +9,8 @@
 #include <tmxlite/Layer.hpp>
 #include <tmxlite/TileLayer.hpp>
 #include <tmxlite/ObjectGroup.hpp>
-#include "interfaces.h"
-
-struct StaticTileMin
-{
-    StaticTileMin(Vector2 size, Vector2 pos)
-    {
-        this->imageSize = size;
-        this->imagePos = pos;
-    }
-
-    Vector2 imageSize;
-    Vector2 imagePos;
-};
+#include "structs.h"
+#include "tilemapLayer.h"
 
 namespace Astrolib
 {
@@ -37,17 +26,16 @@ namespace Astrolib
         void RenderAllLayers();
         void RenderLayer(int layerIndex);
 
-        /// @brief Mark a layer to be re-rendered during the next draw call
-        /// @param layerIndex The index of the layer to re-render
-        void RedrawLayer(int layerIndex);
+        void SetupLayers();        
+        void SetDrawLayerForMapLayer(int layerIndex, int newSortIndex);
         Vector2 GetTileSize();
         void Update(){};
         void Draw(float deltaTime, Vector2 cameraPosition) override;
+        std::vector<TileMapLayer*> GetTileLayers(){ return tileLayers;};
 
     protected:
-        // std::vector<TileMapLayer>* tileLayers;
-
-        std::map<int, std::vector<int>> layers;
+        std::vector<TileMapLayer*> tileLayers;
+        std::map<int, std::vector<int>*> layers;
 
         // Vector for the tiles in each layer
         std::map<std::string, std::vector<tmx::TileLayer::Tile>> layerTiles;
@@ -58,8 +46,7 @@ namespace Astrolib
 
         std::map<int, tmx::Tileset::Tile> mapTiles;
 
-        std::vector<int> dirtyLayers;
-        std::map<int, StaticTileMin *> staticMapTiles;
+        std::map<int, StaticTileMin *>* staticMapTiles;
 
         // TODO: Add support for infinite tilemaps
         bool isMapInfinite = false;

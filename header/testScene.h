@@ -81,6 +81,7 @@ public:
         tm->SetName("tileMap");
         tm->LoadDataTMX("res/tilemap/map.tmx");
         RegisterEntity(tm);
+        //tm->SetDrawLayerForMapLayer(1, 100);
 
         AnimatedSpriteEntity* animTest = new AnimatedSpriteEntity(
             "animTest",

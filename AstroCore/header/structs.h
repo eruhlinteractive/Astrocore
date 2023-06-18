@@ -141,4 +141,15 @@ typedef struct Transform2D
     }
 } Transform2D;
 };
+
+typedef struct StaticTileMin
+{
+    StaticTileMin(Vector2 size, Vector2 pos)
+    {
+        this->imageSize = size;
+        this->imagePos = pos;
+    }
+    Vector2 imageSize;
+    Vector2 imagePos;
+} StaticTileMin;
 #endif
