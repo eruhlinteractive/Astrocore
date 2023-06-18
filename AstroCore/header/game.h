@@ -26,10 +26,14 @@ public:
         SetTargetFPS(targetFPS); 
     }
 
-    virtual void CreateScene(){currentScene = new Scene();}
+    virtual void CreateScene()
+    {
+        currentScene = new Scene();
+    }
 
     /// @brief Update the current world
-    virtual void Update(){
+    virtual void Update()
+    {
         currentScene->Update(GetFrameTime());
     };
     
@@ -48,9 +52,15 @@ public:
         currentScene->Draw(GetFrameTime());
     };
 
-    Scene* currentScene;
+    Scene* GetCurrentScene()
+    {
+        return currentScene;
+    }
 
-    Vector2 GetScreenSize(){return (Vector2){ (float)GetScreenWidth(), (float)GetScreenHeight()};}
+    Vector2 GetScreenSize()
+    {
+        return (Vector2){ (float)GetScreenWidth(), (float)GetScreenHeight()};
+    }
 
     virtual void Exit(){
         delete currentScene;
@@ -66,8 +76,12 @@ public:
         return INSTANCE;
     }
 
+protected:
+    Scene* currentScene;
+
 private:
     bool ySortEnabled = true;
+    
 };
 }
 

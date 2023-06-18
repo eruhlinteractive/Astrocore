@@ -1,11 +1,9 @@
 #include "../header/tilemap.h"
 #include <iostream>
 
-
 TileMap::TileMap()
 {
     name = "TileMap" + std::to_string(entityID);
-    drawType = TILEMAP;
     drawLayer = baseDrawLayer;
     tileSets = std::map<std::string, Texture2D>();
     staticMapTiles = std::map<int, StaticTileMin*>();
@@ -91,10 +89,9 @@ void TileMap::RenderAllLayers()
     }
 }
 
-void TileMap::Draw(float deltaTime)
+void TileMap::Draw(float deltaTime, Vector2 cameraPosition)
 {
     Vector2 globalPos = GetGlobalPosition();
-    Vector2 center = globalPos;
     int startXIndex;
     int endXIndex;
     int startYIndex;

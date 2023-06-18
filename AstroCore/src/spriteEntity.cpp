@@ -19,7 +19,7 @@ SpriteEntity::~SpriteEntity()
 }
 
 
-void SpriteEntity::Draw(float deltaTime)
+void SpriteEntity::Draw(float deltaTime, Vector2 cameraPosition)
 {
     // Update destination rect
     Rectangle srcRect, destRect;

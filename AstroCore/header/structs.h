@@ -4,6 +4,8 @@
 #ifndef STRUCTS_H
 #define STRUCTS_H
 
+namespace Astrolib
+{
 /// @brief A struct representing a single input event (i.e an 'E' key press or 'A' button press on a controller)
 typedef struct InputEvent
 {
@@ -138,5 +140,5 @@ typedef struct Transform2D
         this->rotation = std::fmod(rotation, (2.0f * M_PI));
     }
 } Transform2D;
-
+};
 #endif

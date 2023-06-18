@@ -4,6 +4,7 @@
 #include <string>
 #include "structs.h"
 #include <map>
+#include "interfaces.h"
 
 #ifndef ANIMATED_SPRITE_ENTITY_H
 #define ANIMATED_SPRITE_ENTITY_H
@@ -17,7 +18,7 @@ class AnimatedSpriteEntity: public Entity2D
 {
 
 public:
-    AnimatedSpriteEntity(){ name = "AnimatedSpriteEntity" + std::to_string(entityID);};
+    AnimatedSpriteEntity();
     AnimatedSpriteEntity(std::string name, Vector2 origin, Vector2 frameSize, Texture2D sprite, string defaultAnimName = "default");
     AnimatedSpriteEntity(std::string name, Vector2 origin, Vector2 frameSize, Texture2D sprite, int framesWide, int frameCount, int animFps);
     AnimatedSpriteEntity(std::string name, SpriteAnimation* defaultAnimation, string animationName);
@@ -31,18 +32,22 @@ public:
     void PauseAnimation(){isPlaying = false;};
     void PlayAnimation(){isPlaying = true;};
     string GetCurrentAnimation(){return currentAnimationName;};
-    virtual void Draw(float frameTime);
+    void Draw(float frameTime, Vector2 cameraPosition) override;
     void Init();
 
     bool IsFlippedH(){return (spriteFlip.x == -1);};
     bool IsFlippedV(){return (spriteFlip.y == -1);};
     void SetFlipped(bool hFlipped, bool vFlipped)
     { spriteFlip.y = vFlipped ? -1:1; spriteFlip.x = hFlipped ? -1:1;};
+
     /// @brief Flip the sprite horizontally (local)
     void FlipH(){spriteFlip.x *= -1;};
+    
     /// @brief Flip the sprite vertically (local)
     void FlipV(){spriteFlip.y *= -1;};
 
+
+    // TODO: Implement Rule of Three
     ~AnimatedSpriteEntity();
 
 private:

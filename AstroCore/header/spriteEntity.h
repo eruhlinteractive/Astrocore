@@ -1,38 +1,45 @@
 #include "entity.h"
 #include "structs.h"
 #include "texturemanager.h"
-
+#include "interfaces.h"
 
 #ifndef SPRITE_ENTITY_H
 #define SPRITE_ENTITY_H
 
 namespace Astrolib
 {
+    class SpriteEntity : public Entity2D
+    {
 
-class SpriteEntity: public Entity2D
-{
-    
-public:
-    SpriteEntity(Sprite* sprite);
-    SpriteEntity(Texture2D spriteTexture, Vector2 frameSize, Vector2 origin);
-    ~SpriteEntity();
-    
-    void Draw(float frameTime);
-    bool IsFlippedH(){return (spriteFlip.x == -1);};
-    bool IsFlippedV(){return (spriteFlip.y == -1);};
-    void SetFlipped(bool hFlipped, bool vFlipped)
+    public:
+        SpriteEntity()
+        {
+            type = SPRITE;
+            name = "SpriteEntity" + std::to_string(entityID);
+        };
+        SpriteEntity(Sprite *sprite);
+        SpriteEntity(Texture2D spriteTexture, Vector2 frameSize, Vector2 origin);
+        ~SpriteEntity();
 
-    { spriteFlip.y = vFlipped ? -1:1; spriteFlip.x = hFlipped ? -1:1;};
+        void Draw(float frameTime, Vector2 cameraPosition) override;
+        bool IsFlippedH() { return (spriteFlip.x == -1); };
+        bool IsFlippedV() { return (spriteFlip.y == -1); };
+        void SetFlipped(bool hFlipped, bool vFlipped)
 
-    /// @brief Flip the sprite horizontally (local)
-    void FlipH(){spriteFlip.x *= -1;};
-    
-    /// @brief Flip the sprite vertically (local)
-    void FlipV(){spriteFlip.y *= -1;};
+        {
+            spriteFlip.y = vFlipped ? -1 : 1;
+            spriteFlip.x = hFlipped ? -1 : 1;
+        };
 
-protected:
-    Vector2 spriteFlip = {1,1};
-    Sprite* sprite;
-};
+        /// @brief Flip the sprite horizontally (local)
+        void FlipH() { spriteFlip.x *= -1; };
+
+        /// @brief Flip the sprite vertically (local)
+        void FlipV() { spriteFlip.y *= -1; };
+
+    protected:
+        Vector2 spriteFlip = {1, 1};
+        Sprite *sprite;
+    };
 }
-#endif //SPRITE_ENTITY_H
+#endif // SPRITE_ENTITY_H

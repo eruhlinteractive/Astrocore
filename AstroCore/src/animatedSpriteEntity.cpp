@@ -5,6 +5,13 @@
 using namespace Astrolib;
 
 #pragma region Constructors
+
+AnimatedSpriteEntity::AnimatedSpriteEntity()
+{
+    type = SPRITE;
+    name = "AnimatedSpriteEntity" + std::to_string(entityID);
+}
+
 /// @brief Initialize a static sprite entity
 /// @param origin 
 /// @param spriteSize 
@@ -124,7 +131,7 @@ void AnimatedSpriteEntity::Init()
 
 /// @brief Draw the animated sprite, incrementing the frame counter
 /// @param frameTime 
-void AnimatedSpriteEntity::Draw(float frameTime)
+void AnimatedSpriteEntity::Draw(float frameTime, Vector2 cameraPosition)
 {
     Rectangle srcRect, destRect;
     float srcPosX, srcPosY;

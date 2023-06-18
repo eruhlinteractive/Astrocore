@@ -13,6 +13,8 @@ public:
     float distance;
     float brightness;
     Color color;
+
+    void Draw(float deltaTime, Vector2 cameraPosition) override {};
 };
 }
 

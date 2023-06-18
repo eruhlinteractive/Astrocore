@@ -4,7 +4,9 @@ using namespace Astrolib;
 
 Light2D::Light2D()
 {
-    drawType = LIGHT;
+    this->distance = 1.0;
+    this->brightness = 1.0;
+    this->color = WHITE;
 }
 
 

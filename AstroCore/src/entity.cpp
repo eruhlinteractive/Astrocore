@@ -11,9 +11,12 @@ int Entity2D::entityCount = 0;
 #pragma region Constructors
 Entity2D::Entity2D()
 {
+    type = BASE;
     transform = Transform2D();
-    entityID = entityCount;
-    entityCount++;
+
+    // Set id and increment entity count
+    entityID = entityCount++;
+    
     name = "Entity2D" + std::to_string(entityID);
     Init();
 }
@@ -173,11 +176,6 @@ void Entity2D::SetParent(Entity2D* newParent)
     parentEntity = newParent;
     parentEntity->AddChild(this);
 }
-
-
-void Entity2D::Draw(float deltaTime)
-{}
-
 
 /// @brief Add and entity as a child of this entity
 /// @param newChild The new child to add to this entity

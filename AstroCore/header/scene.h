@@ -10,6 +10,8 @@
 #include <algorithm>
 #include <regex>
 #include "tilemap.h"
+#include "interfaces.h"
+#include <typeinfo>
 
 // Custom Blend Modes
 #define RLGL_SRC_ALPHA 0x0302
@@ -24,7 +26,6 @@ class Scene
 public:
     Scene();
     ~Scene();
-
 
     //Scene(std::string name){};
     Entity2D* FindEntityByName(std::string name);
@@ -78,7 +79,9 @@ public:
 private:
     /// @brief Top level of the scene graph
     std::map<std::string, Entity2D*> entities;
+    std::map<std::string, Entity2D*> drawableEntities;
     std::map<std::string, Light2D*> lights;
+    std::map<std::string, TileMap*> tileMaps;
 
     std::string sceneName = "";
     RenderTexture2D screenSpaceLightMap;

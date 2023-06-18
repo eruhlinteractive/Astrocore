@@ -9,6 +9,7 @@
 #include <tmxlite/Layer.hpp>
 #include <tmxlite/TileLayer.hpp>
 #include <tmxlite/ObjectGroup.hpp>
+#include "interfaces.h"
 
 using namespace Astrolib;
 
@@ -42,7 +43,7 @@ public:
     void RedrawLayer(int layerIndex);
     Vector2 GetTileSize();
     void Update(){};
-    void Draw(float deltaTime);
+    void Draw(float deltaTime, Vector2 cameraPosition) override;
 
 protected:
 
