@@ -11,3 +11,5 @@
 #include "header/light2D.h"
 #include "header/filemanager.h"
 #include "header/tilemap.h"
+#include "header/pixelPerfectCamera.h"
+#include "header/cameraEntity.h"

@@ -13,6 +13,8 @@
 #include "interfaces.h"
 #include <typeinfo>
 #include "raylib.h"
+#include "cameraEntityBase.h"
+#include "pixelPerfectCamera.h"
 
 // Custom Blend Modes
 #define RLGL_SRC_ALPHA 0x0302
@@ -43,7 +45,7 @@ namespace Astrolib
         bool RegisterEntity(Entity2D *entity);
         bool UnRegisterEntity(std::string name);
 
-        Camera2D *currentCamera;
+        CameraEntityBase *currentCamera;
 
         Color ambientColor = WHITE;
         bool ySortEnabled = true;

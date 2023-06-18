@@ -29,7 +29,9 @@ enum ENTITY_TYPE
     BASE,
     SPRITE,
     TILEMAP,
-    LIGHT
+    LIGHT,
+    CAMERA,
+    PIXELCAMERA,
 };
 
 namespace Astrolib

@@ -12,13 +12,15 @@ public:
 
     void LoadScene()
     {
-        currentCamera->zoom = 2.0f;
-        currentCamera->rotation = 0.0f;
+        PixelPerfectCamera2D* pixelCamera = new PixelPerfectCamera2D();
+        currentCamera = pixelCamera;
+
+        RegisterEntity(pixelCamera);
 
         Vector2 screenSize = Game::instance().GetScreenSize();
-        currentCamera->offset = {screenSize.x/2.0f, screenSize.y/2.0f};
+        pixelCamera->offset = {screenSize.x/2.0f, screenSize.y/2.0f};
 
-        ambientColor = GRAY;
+        ambientColor = WHITE;
         Light2D* newLight = new Light2D(50.0, 1.0, YELLOW);
         newLight->SetName("testLight");
         newLight->transform.MoveGlobal({10,30.0});
@@ -124,6 +126,7 @@ public:
 
     void Update(float deltaTime)
     {
+
         Scene::Update(deltaTime);
 
         InputManager input = InputManager::instance();
@@ -172,7 +175,7 @@ public:
 
         if(input.IsActionDown("up"))
         {
-            testSprite->transform.MoveLocal({0,-50 * GetFrameTime()});
+            testSprite->transform.MoveLocal({0,-50 * deltaTime});
         }
 
         if(input.IsActionDown("zoomIn"))
@@ -185,18 +188,25 @@ public:
         }
         if(input.IsActionDown("down"))
         {
-            testSprite->transform.MoveLocal({0, 50 * GetFrameTime()});
+            testSprite->transform.MoveLocal({0, 50 * deltaTime});
         }
         if(input.IsActionDown("rotCW"))
         {
-            testSprite->transform.RotateDegrees(30 * GetFrameTime());
+            testSprite->transform.RotateDegrees(30 * deltaTime);
         }
         if(input.IsActionDown("rotCCW"))
         {
-            testSprite->transform.RotateDegrees(-30 * GetFrameTime());
+            testSprite->transform.RotateDegrees(-30 * deltaTime);
         }
         
-        currentCamera->target = testSprite->GetGlobalPosition();
+        Vector2 targetPos = testSprite->GetGlobalPosition();
+        
+        testSprite->transform.position = (Vector2){int(testSprite->transform.position.x), int(testSprite->transform.position.y)};
+        currentCamera->target = targetPos;
+
+        //float cameraX = (sinf(GetTime())*50.0f) - 10.0f;
+        //float cameraY = cosf(GetTime())*30.0f;
+        //currentCamera->target = {cameraX , cameraY};
 
     }
 

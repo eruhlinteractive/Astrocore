@@ -44,28 +44,21 @@ int main()
     // Main game loop
     while (!WindowShouldClose())    // Detect window close button or ESC key
     {
+        //ClearBackground(RAYWHITE);
+        // Run Update()
         game->Update(GetFrameTime());
 
-        ClearBackground(RAYWHITE);
-        
-        BeginDrawing();
-            
-        DrawLine(screenWidth / 2, 0, screenWidth/2, screenHeight, GRAY);
-        DrawLine(0, screenHeight/2, screenWidth, screenHeight/2, GRAY);
-
-        game->Draw(GetFrameTime());
-
+        // Run FixedUpdate()
         fixedUpdateTimer += GetFrameTime();
         while(fixedUpdateTimer > FIXED_UPDATE_RATE)
         {
             fixedUpdateTimer -= FIXED_UPDATE_RATE;
             game->FixedUpdate(FIXED_UPDATE_RATE);
         }
-        DrawFPS(10,10);    
-        EndDrawing();
-       
-        
-        
+        //DrawLine(screenWidth / 2, 0, screenWidth/2, screenHeight, GRAY);
+        //DrawLine(0, screenHeight/2, screenWidth, screenHeight/2, GRAY);
+        ClearBackground(WHITE);
+        game->Draw(GetFrameTime());
     }
 
     game->Exit();

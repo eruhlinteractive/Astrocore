@@ -199,9 +199,10 @@ void TileMap::LoadDataTMX(std::string filePath)
 
     // Render atlas texture
     
+    
     // Create horizontal render texture to act as a tile atlas
+    
     mapTextureAtlas = LoadRenderTexture(maxTileWidth * mapTiles.size(), maxTileHeight);
-
     BeginDrawing();
 
     BeginTextureMode(mapTextureAtlas);
@@ -256,6 +257,10 @@ void TileMap::LoadDataTMX(std::string filePath)
     EndTextureMode();
     EndDrawing();
 
+    // Disable wrapping to prevent artifacts
+    // https://gamedev.stackexchange.com/questions/74420/seamless-tilemap-rendering-borderless-adjacent-images
+    SetTextureWrap(mapTextureAtlas.texture, TEXTURE_WRAP_CLAMP);
+    SetTextureFilter(mapTextureAtlas.texture, TEXTURE_FILTER_POINT);
     /*
     for(std::pair<std::string, Texture2D> tile_pair : tileSets)
     {

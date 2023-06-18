@@ -44,8 +44,8 @@ void TileMapLayer::Draw(float deltaTime, Camera2D *camera)
             continue;
         }
 
-        xPos = floor(iterator % (int)mapSize.x);
-        yPos = floor(iterator / (int)mapSize.x);
+        xPos = int(iterator % (int)mapSize.x);
+        yPos = int(iterator / (int)mapSize.y);
 
         // AABB test against screen boundaries, and perform "frustum culling'
         Vector2 worldPos = (Vector2){(xPos * tileSize.x) + globalPos.x, (yPos * tileSize.y) + globalPos.y};
@@ -60,12 +60,12 @@ void TileMapLayer::Draw(float deltaTime, Camera2D *camera)
         //Rectangle debugRect = (Rectangle){ss.x, ss.y, tileInfo->imageSize.x, tileInfo->imageSize.y};
 
         
-        bool isOnScreen =
-            tileRect.x + tileRect.width > 0 &&
-            tileRect.x < screenSize.x &&
-            tileRect.y + tileRect.height > 0 &&
-            tileRect.y < screenSize.y;
-
+        //bool isOnScreen =
+        //    tileRect.x + tileRect.width > 0 &&
+        //    tileRect.x < screenSize.x &&
+        //    tileRect.y + tileRect.height > 0 &&
+        //    tileRect.y < screenSize.y;
+        bool isOnScreen = true;
         if (!isOnScreen)
         {
             iterator++;
@@ -85,7 +85,7 @@ void TileMapLayer::Draw(float deltaTime, Camera2D *camera)
             (float)tileInfo->imageSize.x,
             (float)tileInfo->imageSize.y};
 
-        DrawTexturePro(*texture, srcRect, destRect, (Vector2){(xPos * -tileSize.x), (yPos * -tileSize.y)}, 0, WHITE);
+        DrawTexturePro(*texture, srcRect, destRect, (Vector2){(int)(xPos * -tileSize.x), (int)(yPos * -tileSize.y)}, 0, WHITE);
         //DrawRectangleLinesEx(debugRect, 1, RED);
         iterator++;
         //drawn++;

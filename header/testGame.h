@@ -10,5 +10,6 @@ public:
     {   
         Game::InitGame(windowTitle, screenWidth, screenHeight, 0);
         currentScene = new TestScene();
+        
     }
 };

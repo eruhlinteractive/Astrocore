@@ -9,7 +9,7 @@ using namespace Astrolib;
 Scene::Scene()
 {
     entities = std::map<std::string, Entity2D *>();
-    currentCamera = new Camera2D();
+
     // screenSpaceLightMap = LoadRenderTexture();
     screenSpaceLightMap = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
     ambientColor = WHITE;
@@ -44,7 +44,7 @@ bool Scene::RegisterEntity(Entity2D *entity)
 
         else if (entity->GetType() == LIGHT)
         {
-            lights.insert(std::pair{name, (Light2D*)entity});
+            lights.insert(std::pair{name, (Light2D *)entity});
         }
 
         return true;
@@ -68,10 +68,7 @@ Scene::~Scene()
         delete e.second;
         e.second = nullptr;
     }
-
     UnloadRenderTexture(screenSpaceLightMap);
-    delete currentCamera;
-    currentCamera = nullptr;
 }
 
 bool Scene::UnRegisterEntity(std::string name)
@@ -163,7 +160,7 @@ void Scene::Update(float deltaTime)
 
 void Scene::FixedUpdate(float deltaTime)
 {
-    for(std::pair<std::string, Entity2D *> p : entities)
+    for (std::pair<std::string, Entity2D *> p : entities)
     {
         p.second->FixedUpdate(deltaTime);
     }
@@ -179,10 +176,10 @@ void Scene::Draw(float deltaTime)
     // Create a list of all entities in the scene
     for (std::pair<std::string, Entity2D *> p : drawableEntities)
     {
-        Vector2 screenPos = GetWorldToScreen2D(p.second->GetGlobalPosition(), *currentCamera);
+        Vector2 screenPos = GetWorldToScreen2D(p.second->GetGlobalPosition(), *currentCamera->GetCamera());
 
         // TODO: Update this to a proper AABB test
-        if (IsOnScreen(currentCamera, p.second->GetSpriteRect()) && p.second->GetType() != TILEMAP)
+        if (IsOnScreen(currentCamera->GetCamera(), p.second->GetSpriteRect()) && p.second->GetType() != TILEMAP)
         {
             pairs.push_back((Entity2D *)p.second);
         }
@@ -190,12 +187,12 @@ void Scene::Draw(float deltaTime)
         // Append layers of a tilemap to be sorted in order
         else if (p.second->GetType() == TILEMAP)
         {
-            for(auto layer : ((TileMap*)p.second)->GetTileLayers())
+            for (auto layer : ((TileMap *)p.second)->GetTileLayers())
             {
                 pairs.push_back(layer);
             }
-            //auto layer = ((TileMap *)p.second)->GetTileLayers()[1];
-            //pairs.push_back(layer);
+            // auto layer = ((TileMap *)p.second)->GetTileLayers()[1];
+            // pairs.push_back(layer);
         }
     }
 
@@ -211,26 +208,44 @@ void Scene::Draw(float deltaTime)
         std::sort(pairs.begin(), pairs.end(), SortByLayerIndex);
     }
 
-    BeginMode2D(*currentCamera);
+    
 
-    /*
-    for (Entity2D *m : tileMaps)
+    if (currentCamera->GetType() == PIXELCAMERA)
     {
-        m->Draw(deltaTime);
+        RenderTexture2D text = *(((PixelPerfectCamera2D *)currentCamera)->GetRenderTexture());
+        BeginTextureMode(text);
+        ClearBackground(RAYWHITE);
+
+
+        DrawLine(GetRenderWidth() / 2, 0, GetRenderWidth()/2, GetRenderHeight(), GRAY);
+        DrawLine(0, GetRenderHeight()/2, GetRenderWidth(), GetRenderHeight()/2, GRAY);
+        //ClearBackground(RAYWHITE);
     }
-    */
-    // Draw every entity
+    else
+    {
+        BeginDrawing();
+    }
+    
+    
+    
+    Camera2D cam = *(currentCamera->GetCamera());
+    BeginMode2D(cam);
+  
     for (Entity2D *e : pairs)
     {
-
-        e->Draw(deltaTime, currentCamera);
+        e->Draw(deltaTime, &cam );
     }
 
     EndMode2D();
 
+    if (currentCamera->GetType() == PIXELCAMERA)
+    {
+        EndTextureMode();
+    }
     // Render lights
     // Based on https://slembcke.github.io/2D-Lighting-Overview
 
+    /*
     // Clear background
     BeginTextureMode(screenSpaceLightMap);
     ClearBackground(ambientColor);
@@ -241,23 +256,37 @@ void Scene::Draw(float deltaTime)
     {
         Light2D *light = lightPair.second;
         Vector2 pos = light->GetGlobalPosition();
-        Vector2 screenPos = GetWorldToScreen2D(light->GetGlobalPosition(), *currentCamera);
+        Vector2 screenPos = GetWorldToScreen2D(light->GetGlobalPosition(), *currentCamera->GetCamera());
         DrawCircleGradient(screenPos.x, screenPos.y, light->distance * currentCamera->zoom, light->color, ColorAlpha(light->color, 0.0));
     }
     EndBlendMode();
     EndTextureMode();
-
-    SetTextureFilter(screenSpaceLightMap.texture, TEXTURE_FILTER_BILINEAR);
+    
+    
 
     Rectangle lightSrc, lightDest;
 
     lightSrc = (Rectangle){0, 0, (float)GetScreenWidth(), (float)-GetScreenHeight()};
     lightDest = (Rectangle){0, 0, (float)GetScreenWidth(), (float)GetScreenHeight()};
+    */
+    if (currentCamera->GetType() == PIXELCAMERA)
+    {
+        
+        BeginDrawing();
+        //ClearBackground(RAYWHITE);
 
+        currentCamera->Draw(deltaTime, currentCamera->GetCamera());
+    
+    }
+    
+    /*
     BeginBlendMode(BLEND_MULTIPLIED);
     DrawTexturePro(screenSpaceLightMap.texture, lightSrc, lightDest, (Vector2){0, 0}, 0, WHITE);
     EndBlendMode();
-
+    */
     std::string val = std::to_string(currentCamera->zoom);
     DrawText(val.c_str(), 10, 30, 20, DARKGREEN);
+    DrawFPS(10,10); 
+   
+    EndDrawing();
 }
