@@ -1,6 +1,8 @@
 #include "../header/tilemap.h"
 #include <iostream>
 
+using namespace Astrolib;
+
 TileMap::TileMap()
 {
     name = "TileMap" + std::to_string(entityID);
@@ -15,7 +17,6 @@ TileMap::TileMap(std::string name) : TileMap()
     this->name = name != "" ? name : "TileMap" + std::to_string(entityID);
 }
 
-
 TileMap::~TileMap()
 {
     // Unload all textures
@@ -26,7 +27,6 @@ TileMap::~TileMap()
     // Unload render texture
     UnloadRenderTexture(mapTextureAtlas);
 }
-
 
 void TileMap::RenderLayer(int layerIndex)
 {

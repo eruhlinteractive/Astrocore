@@ -29,10 +29,8 @@ enum ENTITY_TYPE
     BASE,
     SPRITE,
     TILEMAP,
-    LIGHT,
+    LIGHT
 };
-
-using namespace Astrolib;
 
 namespace Astrolib
 {
@@ -63,7 +61,7 @@ namespace Astrolib
         int GetEntityID() { return entityID; }
         // Functions
 
-        ENTITY_TYPE GetType(){return type;}
+        ENTITY_TYPE GetType() { return type; }
 
         /// @brief Called when the object is initialized
         virtual void Init(){};

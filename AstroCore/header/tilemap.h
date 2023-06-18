@@ -11,8 +11,6 @@
 #include <tmxlite/ObjectGroup.hpp>
 #include "interfaces.h"
 
-using namespace Astrolib;
-
 struct StaticTileMin
 {
     StaticTileMin(Vector2 size, Vector2 pos)
@@ -27,51 +25,49 @@ struct StaticTileMin
 
 namespace Astrolib
 {
-class TileMap : public Entity2D
-{
-public:
-    TileMap();
-    TileMap(std::string name);
-    void LoadDataTMX(std::string filePath);
-    ~TileMap();
+    class TileMap : public Entity2D
+    {
+    public:
+        TileMap();
+        TileMap(std::string name);
+        void LoadDataTMX(std::string filePath);
+        ~TileMap();
 
-    void RenderAllLayers();
-    void RenderLayer(int layerIndex);
+        // Game::GetCurrentScene();
+        void RenderAllLayers();
+        void RenderLayer(int layerIndex);
 
-    /// @brief Mark a layer to be re-rendered during the next draw call
-    /// @param layerIndex The index of the layer to re-render
-    void RedrawLayer(int layerIndex);
-    Vector2 GetTileSize();
-    void Update(){};
-    void Draw(float deltaTime, Vector2 cameraPosition) override;
+        /// @brief Mark a layer to be re-rendered during the next draw call
+        /// @param layerIndex The index of the layer to re-render
+        void RedrawLayer(int layerIndex);
+        Vector2 GetTileSize();
+        void Update(){};
+        void Draw(float deltaTime, Vector2 cameraPosition) override;
 
-protected:
+    protected:
+        // std::vector<TileMapLayer>* tileLayers;
 
-    //std::vector<tmx::TileLayer>* tileLayers;
-    //std::vector<tmx::ObjectGroup>* objectLayers;
-    std::map<int, std::vector<int>> layers;
+        std::map<int, std::vector<int>> layers;
 
-    // Vector for the tiles in each layer
-    std::map<std::string, std::vector<tmx::TileLayer::Tile>> layerTiles;
+        // Vector for the tiles in each layer
+        std::map<std::string, std::vector<tmx::TileLayer::Tile>> layerTiles;
 
-    //std::vector<RenderTexture2D> frameBuffers;
-    std::map<std::string, Texture2D> tileSets;
-    //std::vector<tmx::Tileset> tileSetData;
+        std::map<std::string, Texture2D> tileSets;
 
-    RenderTexture2D mapTextureAtlas;
+        RenderTexture2D mapTextureAtlas;
 
+        std::map<int, tmx::Tileset::Tile> mapTiles;
 
-    std::map<int, tmx::Tileset::Tile> mapTiles;
+        std::vector<int> dirtyLayers;
+        std::map<int, StaticTileMin *> staticMapTiles;
 
-    std::vector<int> dirtyLayers;
-    std::map<int, StaticTileMin*> staticMapTiles;
-    
-    bool isMapInfinite = false;
-    Vector2 mapSize;
+        // TODO: Add support for infinite tilemaps
+        bool isMapInfinite = false;
+        Vector2 mapSize;
 
-    // The draw layer of the lowest 
-    int baseDrawLayer = -100;
-    Vector2 tileSize;
-};
+        // The draw layer of the lowest
+        int baseDrawLayer = -100;
+        Vector2 tileSize;
+    };
 }
 #endif // __TILEMAP_H__
