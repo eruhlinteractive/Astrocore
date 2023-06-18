@@ -41,9 +41,10 @@ bool Scene::RegisterEntity(Entity2D *entity)
         {
             drawableEntities.insert(std::pair{name, entity});
         }
+
         else if (entity->GetType() == LIGHT)
         {
-            lights.insert(std::pair{name, (Light2D *)entity});
+            lights.insert(std::pair{name, (Light2D*)entity});
         }
 
         return true;
@@ -172,7 +173,8 @@ void Scene::Draw(float deltaTime)
     {
         Vector2 screenPos = GetWorldToScreen2D(p.second->GetGlobalPosition(), *currentCamera);
 
-        if (IsOnScreen(screenPos, rimBuffer) && p.second->GetType() != TILEMAP)
+        // TODO: Update this to a proper AABB test
+        if (IsOnScreen(currentCamera, p.second->GetSpriteRect()) && p.second->GetType() != TILEMAP)
         {
             pairs.push_back((Entity2D *)p.second);
         }
@@ -217,9 +219,6 @@ void Scene::Draw(float deltaTime)
     }
 
     EndMode2D();
-    // BeginMode2D(*currentCamera);
-    // return;
-    // EndMode2D();
 
     // Render lights
     // Based on https://slembcke.github.io/2D-Lighting-Overview

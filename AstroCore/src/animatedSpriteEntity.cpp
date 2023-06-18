@@ -129,6 +129,13 @@ void AnimatedSpriteEntity::Init()
     animStates = new std::map<string,SpriteAnimation*>();
 }
 
+Rectangle AnimatedSpriteEntity::GetSpriteRect()
+{
+    Vector2 pos = GetGlobalPosition();
+    return (Rectangle){pos.x, pos.y, currentAnim->frameSize.x, currentAnim->frameSize.y};
+}
+
+
 /// @brief Draw the animated sprite, incrementing the frame counter
 /// @param frameTime 
 void AnimatedSpriteEntity::Draw(float deltaTime, Camera2D* camera)

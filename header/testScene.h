@@ -18,7 +18,7 @@ public:
         Vector2 screenSize = Game::instance().GetScreenSize();
         currentCamera->offset = {screenSize.x/2.0f, screenSize.y/2.0f};
 
-        ambientColor = WHITE;
+        ambientColor = GRAY;
         Light2D* newLight = new Light2D(50.0, 1.0, YELLOW);
         newLight->SetName("testLight");
         newLight->transform.MoveGlobal({10,30.0});

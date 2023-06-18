@@ -87,7 +87,11 @@ namespace Astrolib
             return drawLayer;
         };
 
-        virtual void Draw(float deltaTime, Camera2D* camera) = 0;
+        /// @brief Get the sprite rectangle, or a zero-sized rectangle if no sprite is set
+        /// @return The Rectangle bounding box of the sprite
+        virtual Rectangle GetSpriteRect() { return (Rectangle){transform.position.x, transform.position.y, 0, 0}; };
+
+        virtual void Draw(float deltaTime, Camera2D *camera) = 0;
 
         /// @brief The offset used for Y position-based sorting
         float ySortOffset = 0;

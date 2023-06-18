@@ -19,8 +19,17 @@ namespace Astrolib
         /// @brief Initialize Runtime
         virtual void InitGame(std::string windowTitle, int screenWidth, int screenHeight, int targetFPS = 60)
         {
-            InitWindow(screenWidth, screenHeight, "Astrolib Dev");
-            SetWindowTitle(windowTitle.c_str());
+            std::string debugMessage = "";
+
+            // IDK if this even works with CMake ¯\_(ツ)_/¯
+            #if __DEBUG__
+                debugMessage = " (Debug)";
+            #else
+                debugMessage = " (Release)";
+            #endif
+
+            InitWindow(screenWidth, screenHeight, "Astrolib Game");
+            SetWindowTitle(( windowTitle + debugMessage).c_str());
             SetWindowSize(screenWidth, screenHeight);
             SetTargetFPS(targetFPS);
         }

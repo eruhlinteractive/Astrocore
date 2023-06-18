@@ -34,7 +34,7 @@ int main()
     int screenWidth = 1280;
     int screenHeight = 720;
 
-    game->InitGame("Astrolib Dev", 1280, 720);
+    game->InitGame("Astrolib", 1280, 720);
 
     std::cout << GetWorkingDirectory() << std::endl;
    

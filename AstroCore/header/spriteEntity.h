@@ -22,6 +22,8 @@ namespace Astrolib
         ~SpriteEntity();
 
         void Draw(float deltaTime, Camera2D* camera) override;
+        Rectangle GetSpriteRect() override;
+        
         bool IsFlippedH() { return (spriteFlip.x == -1); };
         bool IsFlippedV() { return (spriteFlip.y == -1); };
         void SetFlipped(bool hFlipped, bool vFlipped)

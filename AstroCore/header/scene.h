@@ -69,14 +69,30 @@ namespace Astrolib
         }
 
         /// @brief Check if the entity at screenPosition is visible on screen
-        /// @param screenPosition The position of the object on the screen
-        /// @param buffer The padding size used to prevent pop-in near the edge of the screen
+        /// @param camera The camera that is currently rendering the screen
+        /// @param entityRect The rectangle of the entity
         /// @return True if the AABB check passes and the object is visible on screen
-        static bool IsOnScreen(Vector2 screenPosition, float buffer = 0.2)
+        static bool IsOnScreen(Camera2D *camera, Rectangle entityRect)
         {
-            Vector2 size = (Vector2){(float)GetScreenWidth(), (float)GetScreenHeight()};
-            return (screenPosition.x - buffer <= size.x && screenPosition.x + buffer >= 0.0) &&
-                   (screenPosition.y - buffer <= size.y && screenPosition.y + buffer >= 0.0);
+            Vector2 screenSize = {GetRenderWidth(), GetRenderHeight()};
+            Vector2 screenSpaceCoords = GetWorldToScreen2D({entityRect.x, entityRect.y}, *camera);
+
+            Rectangle tileRect = (Rectangle){
+                screenSpaceCoords.x,
+                screenSpaceCoords.y,
+                entityRect.width * camera->zoom,
+                entityRect.height * camera->zoom };
+
+            // Vector2 ss = GetScreenToWorld2D({tileRect.x, tileRect.y}, *camera);
+            // Rectangle debugRect = (Rectangle){ss.x, ss.y, tileInfo->imageSize.x, tileInfo->imageSize.y};
+
+            bool isOnScreen =
+                tileRect.x + tileRect.width > 0 &&
+                tileRect.x < screenSize.x &&
+                tileRect.y + tileRect.height > 0 &&
+                tileRect.y < screenSize.y;
+
+            return isOnScreen;
         }
 
     private:
@@ -84,7 +100,7 @@ namespace Astrolib
         std::map<std::string, Entity2D *> entities;
         std::map<std::string, Entity2D *> drawableEntities;
         std::map<std::string, Light2D *> lights;
-        
+
         std::string sceneName = "";
         RenderTexture2D screenSpaceLightMap;
     };
