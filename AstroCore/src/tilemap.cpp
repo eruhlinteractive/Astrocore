@@ -202,7 +202,7 @@ void TileMap::LoadDataTMX(std::string filePath)
     
     // Create horizontal render texture to act as a tile atlas
     
-    mapTextureAtlas = LoadRenderTexture(maxTileWidth * mapTiles.size(), maxTileHeight);
+    mapTextureAtlas = LoadRenderTexture(maxTileWidth * mapTiles.size() + 3 * mapTiles.size(), maxTileHeight);
     BeginDrawing();
 
     BeginTextureMode(mapTextureAtlas);
@@ -220,7 +220,7 @@ void TileMap::LoadDataTMX(std::string filePath)
         }
 
         std::string path = tile.imagePath;
-        std::cout << path << endl;
+        //std::cout << path << endl;
         Texture2D image = TextureManager::instance().GetTexture(path);
 
         if(path != "")
@@ -252,7 +252,7 @@ void TileMap::LoadDataTMX(std::string filePath)
         // Store updated coordinates
         
         staticMapTiles->insert({p.first, newTile});
-        newX += tile.imageSize.x;
+        newX += tile.imageSize.x + 3;
     }
     EndTextureMode();
     EndDrawing();

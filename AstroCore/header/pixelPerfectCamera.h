@@ -37,16 +37,16 @@ namespace Astrolib
 
             Vector2 newOffset = (Vector2){offset.x /samplingRatio, offset.y / samplingRatio };
 
-            worldSpaceCamera->target.x = int(screenSpaceCamera->target.x);
+            worldSpaceCamera->target.x = round(screenSpaceCamera->target.x);
             screenSpaceCamera->target.x -= worldSpaceCamera->target.x;
             screenSpaceCamera->target.x *= samplingRatio;
 
-            worldSpaceCamera->target.y = int(screenSpaceCamera->target.y);
+            worldSpaceCamera->target.y = round(screenSpaceCamera->target.y);
             screenSpaceCamera->target.y -= worldSpaceCamera->target.y;
             screenSpaceCamera->target.y *= samplingRatio;
 
-            worldSpaceCamera->target.y -= newOffset.y;
-            worldSpaceCamera->target.x -= newOffset.x;
+            worldSpaceCamera->offset.y = newOffset.y;
+            worldSpaceCamera->offset.x = newOffset.x;
         }
 
         RenderTexture2D* GetRenderTexture(){ return &renderTexture; };
@@ -70,6 +70,9 @@ namespace Astrolib
             // Re-initialize render texture
             UnloadRenderTexture(renderTexture);
             renderTexture = LoadRenderTexture(virtualResolution.x, virtualResolution.y);
+
+            // Update PPU used for movement/rendering
+            Entity2D::pixelsPerUnit = samplingRatio;
 
 
             // The target's height is flipped (in the source Rectangle), due to OpenGL reasons
@@ -95,15 +98,18 @@ namespace Astrolib
 
             std::string wposText = std::to_string(worldSpaceCamera->target.x) + "," + std::to_string(worldSpaceCamera->target.y);
             DrawText(wposText.c_str(), 10, 85, 20, BLUE);
-            //DrawRectangleLines(screenSpaceCamera->target.x, screenSpaceCamera->target.y,screenDimensions.x, screenDimensions.y, RED);
+
+            
+            DrawRectangleLines(200, 200, 1 * samplingRatio, 1 * samplingRatio, RED);
+            DrawRectangleLines(210, 200, 1, 1 , RED);
            
         }
- 
+        
     private:
 
         RenderTexture2D renderTexture;
         Vector2 screenDimensions;
-        float samplingRatio = 1.0;
+        float samplingRatio;
         Vector2 virtualResolution;
         Camera2D *worldSpaceCamera;
         Camera2D *screenSpaceCamera;

@@ -28,6 +28,9 @@ void TileMapLayer::Draw(float deltaTime, Camera2D *camera)
     int drawn = 0;
     Vector2 screenSize = {GetRenderWidth(), GetRenderHeight()};
     Vector2 globalPos = GetGlobalPosition();
+    SetTextureWrap(*tileAtlas, RL_TEXTURE_WRAP_CLAMP);
+    SetTextureFilter(*tileAtlas, TEXTURE_FILTER_POINT);
+
     // Render each tile id
     for (int id : *tileIndexes)
     {
@@ -51,6 +54,7 @@ void TileMapLayer::Draw(float deltaTime, Camera2D *camera)
         Vector2 worldPos = (Vector2){(xPos * tileSize.x) + globalPos.x, (yPos * tileSize.y) + globalPos.y};
         Vector2 screenSpaceCoords = GetWorldToScreen2D(worldPos, * camera);
         Rectangle tileRect = (Rectangle){
+
             screenSpaceCoords.x,
             screenSpaceCoords.y,
             tileInfo->imageSize.x * camera->zoom,
@@ -82,8 +86,8 @@ void TileMapLayer::Draw(float deltaTime, Camera2D *camera)
         destRect = (Rectangle){
             0,
             0,
-            (float)tileInfo->imageSize.x,
-            (float)tileInfo->imageSize.y};
+            (float)tileInfo->imageSize.x * 1.1,
+            (float)tileInfo->imageSize.y * 1.1};
 
         DrawTexturePro(*texture, srcRect, destRect, (Vector2){(xPos * -tileSize.x), (yPos * -tileSize.y)}, 0, WHITE);
         //DrawRectangleLinesEx(debugRect, 1, RED);

@@ -118,7 +118,7 @@ namespace Astrolib
 
         void SetParent(Entity2D *parent);
         Transform2D transform;
-
+        inline static int pixelsPerUnit = 1.0;
     protected:
         ENTITY_TYPE type;
         bool isReady = false;

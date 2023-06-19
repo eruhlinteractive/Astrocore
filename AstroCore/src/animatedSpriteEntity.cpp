@@ -158,13 +158,11 @@ void AnimatedSpriteEntity::Draw(float deltaTime, Camera2D *camera)
 
     // Update destination rect
     Vector2 globalPos = this->GetGlobalPosition();
-
     // Animated sprite
 
     srcRect = (Rectangle){srcPosX, srcPosY, spriteFlip.x * currentAnim->frameSize.x, spriteFlip.y * currentAnim->frameSize.y};
-    destRect = (Rectangle){round(globalPos.x), round(globalPos.y), currentAnim->frameSize.x * transform.scale.x, currentAnim->frameSize.x * transform.scale.y};
+    destRect = (Rectangle){globalPos.x, globalPos.y, currentAnim->frameSize.x * transform.scale.x, currentAnim->frameSize.x * transform.scale.y};
 
-    // SetTextureFilter(currentAnim->spriteTexture, TEXTURE_FILTER_POINT);
     // DrawTexture(spriteText,positionX,positionY,WHITE);
-    DrawTexturePro(currentAnim->spriteTexture, srcRect, destRect, {round(currentAnim->origin.x * transform.scale.x), round(currentAnim->origin.y * transform.scale.y)}, GetGlobalRotation() * (180.0 / PI), WHITE);
+    DrawTexturePro(currentAnim->spriteTexture, srcRect, destRect, {currentAnim->origin.x * transform.scale.x, currentAnim->origin.y * transform.scale.y}, GetGlobalRotation() * (180.0 / PI), WHITE);
 }
