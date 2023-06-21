@@ -12,15 +12,15 @@ public:
 
     void LoadScene()
     {
-        PixelPerfectCamera2D *pixelCamera = new PixelPerfectCamera2D();
+        CameraEntity *pixelCamera = new CameraEntity();
         currentCamera = pixelCamera;
 
         RegisterEntity(pixelCamera);
 
         Vector2 screenSize = Game::instance().GetScreenSize();
         pixelCamera->offset = {screenSize.x / 2.0f, screenSize.y / 2.0f};
-        pixelCamera->SetRenderResolution(320, 180);
-        //pixelCamera->zoom = 4.0;
+        //pixelCamera->SetRenderResolution(320, 180);
+        pixelCamera->zoom = 4.0;
 
         ambientColor = WHITE;
         Light2D *newLight = new Light2D(50.0, 1.0, YELLOW);
@@ -96,7 +96,7 @@ public:
             6,
             20);
 
-        testChild->transform.scale = (Vector2){0.5, 0.5};
+        //testChild->transform.scale = (Vector2){0.5, 0.5};
         // animTest->transform.scale = (Vector2){1,1};
 
         // testChild->MoveGlobal({0,50});
@@ -104,7 +104,7 @@ public:
         testSprite->AddChild(testChild);
         // testSprite->AddChild(testLight2);
 
-        animTest->transform.scale = (Vector2){5, 5};
+        //animTest->transform.scale = (Vector2){5, 5};
         // animTest->MoveGlobal({screenWidth/4.0f ,screenHeight/4.0f });
         // testSprite->MoveGlobal({screenWidth/2.0f ,screenHeight/2.0f });
         // testSprite->RotateDeg(45);
@@ -143,7 +143,7 @@ public:
         }
         else if (input.IsActionDown("left"))
         {
-            testSprite->transform.MoveLocal({-1, 0});
+            testSprite->transform.MoveLocal({-50 * deltaTime, 0});
             testSprite->ChangeAnimation("default");
             testSprite->SetFlipped(true, false);
             // if(animTest != nullptr)
@@ -164,7 +164,7 @@ public:
 
         if (input.IsActionDown("up"))
         {
-            testSprite->transform.MoveLocal({0, -1.0});
+            testSprite->transform.MoveLocal({0, -50.0f * deltaTime});
         }
 
         if (input.IsActionDown("zoomIn"))
@@ -177,7 +177,7 @@ public:
         }
         if (input.IsActionDown("down"))
         {
-            testSprite->transform.MoveLocal({0, 1});
+            testSprite->transform.MoveLocal({0, 50.0f * deltaTime});
         }
         if (input.IsActionDown("rotCW"))
         {
@@ -188,16 +188,30 @@ public:
             testSprite->transform.RotateDegrees(-30 * deltaTime);
         }
 
-        Vector2 targetPos = testSprite->GetGlobalPosition();
-        float targetX = lerp(currentCamera->target.x, targetPos.x, deltaTime * 10.0);
-        float targetY = lerp(currentCamera->target.y, targetPos.y, deltaTime * 10.0);
+        
+        //std::cout << std::to_string(targetPos.x) + "," +  std::to_string(targetPos.y) << endl;
+        //currentCamera->target = targetPos;
+    }
 
+    void LateUpdate(float deltaTime)
+    {
+        Scene::LateUpdate(deltaTime);
+
+        AnimatedSpriteEntity *testSprite = (AnimatedSpriteEntity *)FindEntityByName("testSprite");
+        Vector2 targetPos = testSprite->GetGlobalPosition();
+        //float x = cos(GetTime()) * 10.0;
+        //float y = sin(GetTime()) * 10.0;
+        float targetX = lerp(currentCamera->target.x, targetPos.x, deltaTime * 8.0);
+        float targetY = lerp(currentCamera->target.y, targetPos.y, deltaTime * 8.0);
+        //currentCamera->target = targetPos;
         currentCamera->target = {targetX, targetY};
+
+        
     }
 
     void FixedUpdate(float deltaTime)
     {
-
+        // TODO: Add class code here
         
     }
 

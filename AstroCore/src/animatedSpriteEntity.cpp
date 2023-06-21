@@ -158,11 +158,29 @@ void AnimatedSpriteEntity::Draw(float deltaTime, Camera2D *camera)
 
     // Update destination rect
     Vector2 globalPos = this->GetGlobalPosition();
+    //globalPos = (Vector2){GetNearestMultiple(floor(globalPos.x), 1.0/Entity2D::pixelsPerUnit), GetNearestMultiple(floor(globalPos.y), 1.0/Entity2D::pixelsPerUnit)};
     // Animated sprite
-
+    SetTextureFilter(currentAnim->spriteTexture, TEXTURE_FILTER_POINT);
+    transform.scale = (Vector2){1.0,1.0};
     srcRect = (Rectangle){srcPosX, srcPosY, spriteFlip.x * currentAnim->frameSize.x, spriteFlip.y * currentAnim->frameSize.y};
     destRect = (Rectangle){globalPos.x, globalPos.y, currentAnim->frameSize.x * transform.scale.x, currentAnim->frameSize.x * transform.scale.y};
 
-    // DrawTexture(spriteText,positionX,positionY,WHITE);
-    DrawTexturePro(currentAnim->spriteTexture, srcRect, destRect, {currentAnim->origin.x * transform.scale.x, currentAnim->origin.y * transform.scale.y}, GetGlobalRotation() * (180.0 / PI), WHITE);
+    // DrawTexture(currentAnim->spriteTexture, srcPosX, srcPosY, WHITE);
+    //  DrawTexture(spriteText,positionX,positionY,WHITE);
+    
+    DrawTexturePro(currentAnim->spriteTexture,
+                   srcRect,
+                   destRect,
+                   {currentAnim->origin.x * transform.scale.x, currentAnim->origin.y * transform.scale.y},
+                   GetGlobalRotation() * (180.0 / PI),
+                   WHITE);
+    
+
+    //DrawTexturePro(currentAnim->spriteTexture,
+    //               srcRect,
+    //               destRect,
+    //               {0,0},
+    //               GetGlobalRotation() * (180.0 / PI),
+    //               WHITE);
+    DrawRectangleLines(destRect.x, destRect.y, 1, 1, RED);
 }

@@ -74,6 +74,10 @@ namespace Astrolib
         /// @param delta The time from the current and the last frame
         virtual void Update(float delta);
 
+        /// @brief Called after every entity has had Update() called on them
+        /// @param delta Time elapsed since the last frame
+        virtual void LateUpdate(float delta){};
+
         virtual void FixedUpdate(float delta){};
 
         /// @brief Called when the object is de-allocated
@@ -119,6 +123,18 @@ namespace Astrolib
         void SetParent(Entity2D *parent);
         Transform2D transform;
         inline static int pixelsPerUnit = 1.0;
+
+        
+        float GetNearestMultiple(float value, float multiple)
+	    {
+		    float rem = fmodf(value, multiple);
+		    float result = value - rem;
+		    if (rem > (multiple / 2))
+		    	result += multiple;
+    
+		    return result;
+	    }
+
     protected:
         ENTITY_TYPE type;
         bool isReady = false;

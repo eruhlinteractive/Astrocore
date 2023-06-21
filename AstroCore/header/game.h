@@ -45,6 +45,11 @@ namespace Astrolib
             currentScene->Update(GetFrameTime());
         };
 
+        virtual void LateUpdate()
+        {
+            currentScene->LateUpdate(GetFrameTime());
+        };
+
         /// @brief Draw's the world using worldCamera
         virtual void DrawWorld()
         {

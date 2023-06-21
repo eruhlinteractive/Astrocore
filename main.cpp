@@ -47,7 +47,7 @@ int main()
         //ClearBackground(RAYWHITE);
         // Run Update()
         game->Update(GetFrameTime());
-
+        game->LateUpdate();
         // Run FixedUpdate()
         fixedUpdateTimer += GetFrameTime();
         while(fixedUpdateTimer > FIXED_UPDATE_RATE)

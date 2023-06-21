@@ -45,8 +45,8 @@ namespace Astrolib
             screenSpaceCamera->target.y -= worldSpaceCamera->target.y;
             screenSpaceCamera->target.y *= samplingRatio;
 
-            worldSpaceCamera->offset.y = newOffset.y;
-            worldSpaceCamera->offset.x = newOffset.x;
+            //worldSpaceCamera->offset.y = newOffset.y;
+            //worldSpaceCamera->offset.x = newOffset.x;
         }
 
         RenderTexture2D* GetRenderTexture(){ return &renderTexture; };

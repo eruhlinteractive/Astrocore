@@ -158,6 +158,14 @@ void Scene::Update(float deltaTime)
     }
 }
 
+void Scene::LateUpdate(float deltaTime)
+{
+    for (auto e : entities)
+    {
+        e.second->LateUpdate(deltaTime);
+    }
+}
+
 void Scene::FixedUpdate(float deltaTime)
 {
     for (std::pair<std::string, Entity2D *> p : entities)
