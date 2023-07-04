@@ -64,12 +64,12 @@ void TileMapLayer::Draw(float deltaTime, Camera2D *camera)
         //Rectangle debugRect = (Rectangle){ss.x, ss.y, tileInfo->imageSize.x, tileInfo->imageSize.y};
 
         
-        //bool isOnScreen =
-        //    tileRect.x + tileRect.width > 0 &&
-        //    tileRect.x < screenSize.x &&
-        //    tileRect.y + tileRect.height > 0 &&
-        //    tileRect.y < screenSize.y;
-        bool isOnScreen = true;
+        bool isOnScreen =
+            tileRect.x + tileRect.width > 0 &&
+            tileRect.x < screenSize.x &&
+            tileRect.y + tileRect.height > 0 &&
+            tileRect.y < screenSize.y;
+        //bool isOnScreen = true;
         if (!isOnScreen)
         {
             iterator++;
@@ -86,10 +86,10 @@ void TileMapLayer::Draw(float deltaTime, Camera2D *camera)
         destRect = (Rectangle){
             0,
             0,
-            (float)tileInfo->imageSize.x * 1.1,
-            (float)tileInfo->imageSize.y * 1.1};
+            (float)tileInfo->imageSize.x * 1.01,
+            (float)tileInfo->imageSize.y * 1.01};
 
-        DrawTexturePro(*texture, srcRect, destRect, (Vector2){(xPos * -tileSize.x), (yPos * -tileSize.y)}, 0, WHITE);
+        DrawTexturePro(*texture, srcRect, destRect, (Vector2){int(xPos * -tileSize.x), int(yPos * -tileSize.y)}, 0, WHITE);
         //DrawRectangleLinesEx(debugRect, 1, RED);
         iterator++;
         //drawn++;

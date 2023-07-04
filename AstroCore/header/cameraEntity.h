@@ -27,8 +27,16 @@ namespace Astrolib
 
         void Update(float deltaTime) override
         {
+            //camera->target = target;
+            //camera->target = (Vector2){target.x, target.y};
+            //camera->offset = offset;
+            //camera->zoom = zoom;
+        }
+
+        void LateUpdate(float deltaTime) override
+        {
             camera->target = target;
-            camera->target = (Vector2){floor(target.x), floor(target.y)};
+            camera->target = (Vector2){target.x, target.y};
             camera->offset = offset;
             camera->zoom = zoom;
         }

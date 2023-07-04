@@ -11,6 +11,6 @@ public:
         SetConfigFlags(FLAG_WINDOW_RESIZABLE);
         Game::InitGame(windowTitle, screenWidth, screenHeight, 0);
         currentScene = new TestScene();
-        //SetTargetFPS(144);
+        //SetTargetFPS(60);
     }
 };

@@ -154,7 +154,7 @@ void Scene::Update(float deltaTime)
 {
     for (auto e : entities)
     {
-        e.second->Update(deltaTime);
+        e.second->Update(deltaTime);        
     }
 }
 
@@ -225,8 +225,8 @@ void Scene::Draw(float deltaTime)
         ClearBackground(RAYWHITE);
 
 
-        DrawLine(GetRenderWidth() / 2, 0, GetRenderWidth()/2, GetRenderHeight(), GRAY);
-        DrawLine(0, GetRenderHeight()/2, GetRenderWidth(), GetRenderHeight()/2, GRAY);
+        //DrawLine(GetRenderWidth() / 2, 0, GetRenderWidth()/2, GetRenderHeight(), GRAY);
+        //DrawLine(0, GetRenderHeight()/2, GetRenderWidth(), GetRenderHeight()/2, GRAY);
         //ClearBackground(RAYWHITE);
     }
     else

@@ -39,11 +39,11 @@ namespace Astrolib
             worldSpaceCamera->offset = newOffset;
 
 
-            worldSpaceCamera->target.x = round(screenSpaceCamera->target.x);
+            worldSpaceCamera->target.x = int(screenSpaceCamera->target.x);
             screenSpaceCamera->target.x -= worldSpaceCamera->target.x;
             screenSpaceCamera->target.x *= samplingRatio.x;
 
-            worldSpaceCamera->target.y = round(screenSpaceCamera->target.y);
+            worldSpaceCamera->target.y = int(screenSpaceCamera->target.y);
             screenSpaceCamera->target.y -= worldSpaceCamera->target.y;
             screenSpaceCamera->target.y *= samplingRatio.y;
         }
@@ -99,9 +99,11 @@ namespace Astrolib
             std::string wposText = std::to_string(worldSpaceCamera->target.x) + "," + std::to_string(worldSpaceCamera->target.y);
             DrawText(wposText.c_str(), 10, 85, 20, BLUE);
 
-            
-           //DrawRectangleLines(200, 200, 1 * samplingRatio.x, 1 * samplingRatio.y, RED);
+           
+           DrawRectangleLines(200, 200, 1 * samplingRatio.x, 1 * samplingRatio.y, RED);
            //DrawRectangleLines(210, 200, 1, 1 , RED);
+
+           DrawRectangleLines(screenSpaceCamera->target.x, screenSpaceCamera->target.y ,destRect.width, destRect.height, RED);
            
         }
         

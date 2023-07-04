@@ -12,15 +12,15 @@ public:
 
     void LoadScene()
     {
-        PixelPerfectCamera2D *pixelCamera = new PixelPerfectCamera2D();
+        CameraEntity *pixelCamera = new CameraEntity();
         currentCamera = pixelCamera;
 
         RegisterEntity(pixelCamera);
 
         Vector2 screenSize = Game::instance().GetScreenSize();
         pixelCamera->offset = {screenSize.x / 2.0f, screenSize.y / 2.0f};
-        pixelCamera->SetRenderResolution(320, 180);
-        //pixelCamera->zoom = 4.0;
+        //pixelCamera->SetRenderResolution(320, 180);
+        pixelCamera->zoom = 4.0;
 
         ambientColor = WHITE;
         Light2D *newLight = new Light2D(50.0, 1.0, YELLOW);

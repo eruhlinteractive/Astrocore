@@ -162,9 +162,9 @@ void AnimatedSpriteEntity::Draw(float deltaTime, Camera2D *camera)
     Vector2 globalPos = this->GetGlobalPosition();
     //globalPos = (Vector2){GetNearestMultiple(floor(globalPos.x), 1.0/Entity2D::pixelsPerUnit), GetNearestMultiple(floor(globalPos.y), 1.0/Entity2D::pixelsPerUnit)};
     // Animated sprite
-    SetTextureFilter(currentAnim->spriteTexture, TEXTURE_FILTER_POINT);
+    //SetTextureFilter(currentAnim->spriteTexture, TEXTURE_FILTER_POINT);
     srcRect = (Rectangle){srcPosX, srcPosY, spriteFlip.x * currentAnim->frameSize.x, spriteFlip.y * currentAnim->frameSize.y};
-    destRect = (Rectangle){round(globalPos.x), round(globalPos.y), currentAnim->frameSize.x * transform.scale.x, currentAnim->frameSize.x * transform.scale.y};
+    destRect = (Rectangle){globalPos.x, globalPos.y, currentAnim->frameSize.x * transform.scale.x, currentAnim->frameSize.x * transform.scale.y};
     // DrawTexture(currentAnim->spriteTexture, srcPosX, srcPosY, WHITE);
     //  DrawTexture(spriteText,positionX,positionY,WHITE);
     
