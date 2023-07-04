@@ -46,7 +46,9 @@ int main()
     {
         //ClearBackground(RAYWHITE);
         // Run Update()
+        float x = GetFrameTime();
         game->Update(GetFrameTime());
+
         game->LateUpdate();
         // Run FixedUpdate()
         fixedUpdateTimer += GetFrameTime();
@@ -55,8 +57,7 @@ int main()
             fixedUpdateTimer -= FIXED_UPDATE_RATE;
             game->FixedUpdate(FIXED_UPDATE_RATE);
         }
-        //DrawLine(screenWidth / 2, 0, screenWidth/2, screenHeight, GRAY);
-        //DrawLine(0, screenHeight/2, screenWidth, screenHeight/2, GRAY);
+        
         ClearBackground(WHITE);
         game->Draw(GetFrameTime());
     }

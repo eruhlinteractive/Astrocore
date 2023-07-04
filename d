@@ -48,5 +48,10 @@
   "directory": "/mnt/ChungusL/GitHubRepos/raylib-farmer/build",
   "command": "/usr/bin/g++ -g -o AstroCore/CMakeFiles/astrocore.dir/src/filemanager.cpp.o -c /mnt/ChungusL/GitHubRepos/raylib-farmer/AstroCore/src/filemanager.cpp",
   "file": "/mnt/ChungusL/GitHubRepos/raylib-farmer/AstroCore/src/filemanager.cpp"
+},
+{
+  "directory": "/mnt/ChungusL/GitHubRepos/raylib-farmer/build",
+  "command": "/usr/bin/g++ -g -o AstroCore/CMakeFiles/astrocore.dir/src/tilemapLayer.cpp.o -c /mnt/ChungusL/GitHubRepos/raylib-farmer/AstroCore/src/tilemapLayer.cpp",
+  "file": "/mnt/ChungusL/GitHubRepos/raylib-farmer/AstroCore/src/tilemapLayer.cpp"
 }
 ]

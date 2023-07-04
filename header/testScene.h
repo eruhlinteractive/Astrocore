@@ -12,15 +12,15 @@ public:
 
     void LoadScene()
     {
-        CameraEntity *pixelCamera = new CameraEntity();
+        PixelPerfectCamera2D *pixelCamera = new PixelPerfectCamera2D();
         currentCamera = pixelCamera;
 
         RegisterEntity(pixelCamera);
 
         Vector2 screenSize = Game::instance().GetScreenSize();
         pixelCamera->offset = {screenSize.x / 2.0f, screenSize.y / 2.0f};
-        //pixelCamera->SetRenderResolution(320, 180);
-        pixelCamera->zoom = 4.0;
+        pixelCamera->SetRenderResolution(320, 180);
+        //pixelCamera->zoom = 4.0;
 
         ambientColor = WHITE;
         Light2D *newLight = new Light2D(50.0, 1.0, YELLOW);
@@ -57,29 +57,26 @@ public:
         input.AddInputAction(zoomOut);
 
         TextureManager tmInstance = TextureManager::instance();
-        Texture2D spriteRun = tmInstance.GetTexture("res/anim_test.png");
+        Texture2D spriteRun = tmInstance.GetTexture("res/character_walk.png");
         Texture2D spriteIdle = tmInstance.GetTexture("res/idle_test.png");
         Texture2D beuh = tmInstance.GetTexture("res/beuh.png");
 
-        AnimatedSpriteEntity *testSprite = new AnimatedSpriteEntity(
-            "testSprite",
-            {8, 8},
-            {16, 16},
-            spriteRun,
-            4,
-            4,
-            8);
+        SpriteAnimation *idleAnim = new SpriteAnimation(spriteIdle, 4, 6, 4, {8, 8}, {16, 16});
+        SpriteAnimation *runHorizAnim = new SpriteAnimation(spriteRun, 4, 6, 4, {0, 48}, {8, 8}, {16, 16});
+        SpriteAnimation *runUpAnim = new SpriteAnimation(spriteRun, 4, 6, 4, {0, 32}, {8, 8}, {16, 16});
+        SpriteAnimation *runDownAnim = new SpriteAnimation(spriteRun, 4, 6, 4, {0, 0}, {8, 8}, {16, 16});
+
+        AnimatedSpriteEntity *testAnimSprite = new AnimatedSpriteEntity("testSprite", idleAnim, "idle");
+        testAnimSprite->AddAnimation("runHoriz", runHorizAnim);
+        testAnimSprite->AddAnimation("runUp", runUpAnim);
+        testAnimSprite->AddAnimation("runDown", runDownAnim);
 
         SpriteEntity *testSpr = new SpriteEntity(beuh, {212, 180}, {106, 90});
         testSpr->transform.MoveGlobal({10, 10});
         // testSpr->transform.Scale((Vector2){0.5f, 0.5f});
 
-        SpriteAnimation *idleAnim = new SpriteAnimation(spriteIdle, 4, 6, 4, {8, 8}, {16, 16});
-
-        testSprite->AddAnimation("idle", idleAnim);
-
-        AnimatedSpriteEntity *testChild = new AnimatedSpriteEntity("testChild", {24, 24}, {48, 48}, spriteIdle);
-        testChild->transform.MoveGlobal({20, 0});
+        //AnimatedSpriteEntity *testChild = new AnimatedSpriteEntity("testChild", {24, 24}, {48, 48}, spriteIdle);
+        //testChild->transform.MoveGlobal({20, 0});
 
         TileMap *tm = new TileMap();
         tm->SetName("tileMap");
@@ -87,21 +84,21 @@ public:
         RegisterEntity(tm);
         // tm->SetDrawLayerForMapLayer(1, 100);
 
-        AnimatedSpriteEntity *animTest = new AnimatedSpriteEntity(
-            "animTest",
-            {25, 18},
-            {50, 37},
-            spriteRun,
-            6,
-            6,
-            20);
-
+        //AnimatedSpriteEntity *animTest = new AnimatedSpriteEntity(
+        //    "animTest",
+        //    {25, 18},
+        //    {50, 37},
+        //    spriteRun,
+        //    6,
+        //    6,
+        //    20);
+//
         //testChild->transform.scale = (Vector2){0.5, 0.5};
         // animTest->transform.scale = (Vector2){1,1};
 
         // testChild->MoveGlobal({0,50});
         // testChild->SetPosition({100,0});
-        testSprite->AddChild(testChild);
+        //testAnSprite->AddChild(testChild);
         // testSprite->AddChild(testLight2);
 
         //animTest->transform.scale = (Vector2){5, 5};
@@ -109,16 +106,16 @@ public:
         // testSprite->MoveGlobal({screenWidth/2.0f ,screenHeight/2.0f });
         // testSprite->RotateDeg(45);
 
-        testSprite->ySortOffset = 10;
+        //testSprite->ySortOffset = 10;
 
-        RegisterEntity(testSprite);
+        RegisterEntity(testAnimSprite);
         // RegisterEntity(testSpr);
         // RegisterEntity(animTest);
 
-        Entity2D *t = GetEntity("testSprite/testChild");
-        std::string path = t->GetPath();
-        t = GetEntity(path);
-        std::string name = t->GetName();
+        //Entity2D *t = GetEntity("testSprite/testChild");
+        //std::string path = t->GetPath();
+        //t = GetEntity(path);
+        //std::string name = t->GetName();
     };
 
     void Update(float deltaTime)
@@ -134,7 +131,7 @@ public:
         if (input.IsActionDown("right"))
         {
             testSprite->transform.MoveLocal({50 * deltaTime, 0});
-            testSprite->ChangeAnimation("default");
+            testSprite->ChangeAnimation("runHoriz");
             testSprite->SetFlipped(false, false);
             // if(animTest != nullptr)
             //{
@@ -144,13 +141,25 @@ public:
         else if (input.IsActionDown("left"))
         {
             testSprite->transform.MoveLocal({-50 * deltaTime, 0});
-            testSprite->ChangeAnimation("default");
+            testSprite->ChangeAnimation("runHoriz");
             testSprite->SetFlipped(true, false);
             // if(animTest != nullptr)
             //{
             //     animTest->SetFlipped(true, false);
             //     //UnRegisterEntity("animTest");
             // }
+        }
+        else if (input.IsActionDown("up"))
+        {
+            testSprite->transform.MoveLocal({0, -50.0f * deltaTime});
+            testSprite->SetFlipped(false, false);
+            testSprite->ChangeAnimation("runUp");
+        }
+        else if (input.IsActionDown("down"))
+        {
+            testSprite->transform.MoveLocal({0, 50.0f * deltaTime});
+             testSprite->SetFlipped(false, false);
+            testSprite->ChangeAnimation("runDown");
         }
         else
         {
@@ -162,10 +171,7 @@ public:
             // }
         }
 
-        if (input.IsActionDown("up"))
-        {
-            testSprite->transform.MoveLocal({0, -50.0f * deltaTime});
-        }
+        
 
         if (input.IsActionDown("zoomIn"))
         {
@@ -175,10 +181,7 @@ public:
         {
             currentCamera->zoom -= 1 * deltaTime;
         }
-        if (input.IsActionDown("down"))
-        {
-            testSprite->transform.MoveLocal({0, 50.0f * deltaTime});
-        }
+        
         if (input.IsActionDown("rotCW"))
         {
             testSprite->transform.RotateDegrees(30 * deltaTime);

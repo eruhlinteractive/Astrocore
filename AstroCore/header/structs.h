@@ -38,6 +38,7 @@ typedef struct SpriteAnimation
 {
     SpriteAnimation()
     {
+        startPos = (Vector2){0,0};
         frameMax = 0;
         currentFrame = 1;
         animFPS = 10;
@@ -45,10 +46,10 @@ typedef struct SpriteAnimation
         origin = {0,0};
         frameSize = {0,0};
     };
-    
     SpriteAnimation(Texture2D sprite, int frameCount, int animFPS, int framesWide, Vector2 origin, Vector2 frameSize)
     {
         spriteTexture = sprite;
+        this->startPos = (Vector2){0,0};
         frameMax = frameCount;
         currentFrame = 0;
         this->animFPS = animFPS;
@@ -56,14 +57,36 @@ typedef struct SpriteAnimation
         this->origin = origin;
         this->frameSize = frameSize;
     };
+    
+    SpriteAnimation(Texture2D sprite, int frameCount, int animFPS, int framesWide, Vector2 startPos, Vector2 origin, Vector2 frameSize):
+    SpriteAnimation(sprite, frameCount, animFPS, framesWide, origin, frameSize)
+    {
+        this->startPos = startPos;
+    };
 
+    /// @brief The texture to draw from
     Texture2D spriteTexture;
+
+    /// @brief How many frames are in the animation
     int frameMax = 0;
+
+    /// @brief Currently rendered frame
     int currentFrame = 1;
+
+    /// @brief Framerate of the animation
     int animFPS = 10;
+
+    /// @brief How many frames of this animation exist horizontally
     int framesWide = 1;
+
+    /// @brief Center of the frame dimensions (i.e for a 16x16 sprite, origin would be 8,8)
     Vector2 origin;
+
+    /// @brief The size of each frame
     Vector2 frameSize;
+
+    /// @brief The start position (top left) of the first sprite
+    Vector2 startPos;
 } SpriteAnimation;
 
 typedef struct Transform2D

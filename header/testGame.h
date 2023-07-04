@@ -8,7 +8,7 @@ public:
 
     void InitGame(std::string windowTitle, int screenWidth, int screenHeight)
     {   
-        //SetConfigFlags(FLAG_WINDOW_RESIZABLE);
+        SetConfigFlags(FLAG_WINDOW_RESIZABLE);
         Game::InitGame(windowTitle, screenWidth, screenHeight, 0);
         currentScene = new TestScene();
         //SetTargetFPS(144);

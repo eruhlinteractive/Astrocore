@@ -16,7 +16,7 @@ AnimatedSpriteEntity::AnimatedSpriteEntity()
 /// @param origin
 /// @param spriteSize
 /// @param spriteSrcPath
-AnimatedSpriteEntity::AnimatedSpriteEntity(std::string name, Vector2 origin, Vector2 frameSize, Texture2D sprite, string defaultAnimName) : AnimatedSpriteEntity()
+AnimatedSpriteEntity::AnimatedSpriteEntity(std::string name, Vector2 startPos, Vector2 origin, Vector2 frameSize, Texture2D sprite, string defaultAnimName) : AnimatedSpriteEntity()
 {
     Init();
 
@@ -27,6 +27,7 @@ AnimatedSpriteEntity::AnimatedSpriteEntity(std::string name, Vector2 origin, Vec
     anim->origin = origin;
     anim->frameSize = frameSize;
     anim->framesWide = 1;
+    anim->startPos = startPos;
     if (name != "")
     {
         this->name = name;
@@ -37,8 +38,8 @@ AnimatedSpriteEntity::AnimatedSpriteEntity(std::string name, Vector2 origin, Vec
     currentAnim = anim;
 }
 
-AnimatedSpriteEntity::AnimatedSpriteEntity(std::string name, Vector2 origin, Vector2 frameSize, Texture2D sprite, int framesWide, int frameCount, int animFps)
-    : AnimatedSpriteEntity(name, origin, frameSize, sprite)
+AnimatedSpriteEntity::AnimatedSpriteEntity(std::string name, Vector2 startPos, Vector2 origin, Vector2 frameSize, Texture2D sprite, int framesWide, int frameCount, int animFps)
+    : AnimatedSpriteEntity(name, startPos, origin, frameSize, sprite)
 {
     SpriteAnimation *anim = (*animStates)[currentAnimationName];
     anim->framesWide = framesWide;
@@ -56,6 +57,7 @@ AnimatedSpriteEntity::AnimatedSpriteEntity(std::string name, SpriteAnimation *de
 
     animStates->insert(pair<string, SpriteAnimation *>(animationName, defaultAnimation));
     currentAnimationName = animationName;
+    currentAnim = defaultAnimation;
 }
 
 #pragma endregion
@@ -153,18 +155,16 @@ void AnimatedSpriteEntity::Draw(float deltaTime, Camera2D *camera)
         animAcc = 0.0;
     }
 
-    srcPosX = currentAnim->currentFrame % currentAnim->framesWide * currentAnim->frameSize.x;
-    srcPosY = (int)(currentAnim->currentFrame / currentAnim->framesWide) * currentAnim->frameSize.y;
+    srcPosX = currentAnim->currentFrame % currentAnim->framesWide * currentAnim->frameSize.x + currentAnim->startPos.x;
+    srcPosY = (int)(currentAnim->currentFrame / currentAnim->framesWide) * currentAnim->frameSize.y + currentAnim->startPos.y;
 
     // Update destination rect
     Vector2 globalPos = this->GetGlobalPosition();
     //globalPos = (Vector2){GetNearestMultiple(floor(globalPos.x), 1.0/Entity2D::pixelsPerUnit), GetNearestMultiple(floor(globalPos.y), 1.0/Entity2D::pixelsPerUnit)};
     // Animated sprite
     SetTextureFilter(currentAnim->spriteTexture, TEXTURE_FILTER_POINT);
-    transform.scale = (Vector2){1.0,1.0};
     srcRect = (Rectangle){srcPosX, srcPosY, spriteFlip.x * currentAnim->frameSize.x, spriteFlip.y * currentAnim->frameSize.y};
-    destRect = (Rectangle){globalPos.x, globalPos.y, currentAnim->frameSize.x * transform.scale.x, currentAnim->frameSize.x * transform.scale.y};
-
+    destRect = (Rectangle){round(globalPos.x), round(globalPos.y), currentAnim->frameSize.x * transform.scale.x, currentAnim->frameSize.x * transform.scale.y};
     // DrawTexture(currentAnim->spriteTexture, srcPosX, srcPosY, WHITE);
     //  DrawTexture(spriteText,positionX,positionY,WHITE);
     
@@ -182,5 +182,5 @@ void AnimatedSpriteEntity::Draw(float deltaTime, Camera2D *camera)
     //               {0,0},
     //               GetGlobalRotation() * (180.0 / PI),
     //               WHITE);
-    DrawRectangleLines(destRect.x, destRect.y, 1, 1, RED);
+    DrawRectangleLines(round(destRect.x), round(destRect.y), 1, 1, RED);
 }
