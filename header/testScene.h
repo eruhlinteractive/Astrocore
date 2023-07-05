@@ -198,25 +198,30 @@ public:
 
     void LateUpdate(float deltaTime)
     {
-        Scene::LateUpdate(deltaTime);
+       
 
         AnimatedSpriteEntity *testSprite = (AnimatedSpriteEntity *)FindEntityByName("testSprite");
         Vector2 targetPos = testSprite->GetGlobalPosition();
-        //float x = cos(GetTime()) * 10.0;
-        //float y = sin(GetTime()) * 10.0;
+        float x = cos(GetTime()) * 30.0;
+        float y = sin(GetTime()) * 30.0;
         float targetX = lerp(currentCamera->target.x, targetPos.x, deltaTime * 8.0);
         float targetY = lerp(currentCamera->target.y, targetPos.y, deltaTime * 8.0);
         //currentCamera->target = targetPos;
+
         currentCamera->target = {targetX, targetY};
+        //currentCamera->target.x += deltaTime * 30.0f;
+        //currentCamera->target.y += deltaTime * 40.0f;
+        //currentCamera->LateUpdate(deltaTime);
+        Scene::LateUpdate(deltaTime);
 
         
     }
 
-    void FixedUpdate(float deltaTime)
-    {
-        // TODO: Add class code here
-        
-    }
+    //void FixedUpdate(float deltaTime)
+    //{
+    //    // TODO: Add class code here
+    //    
+    //}
 
     // Algebraically simplified algorithm
     static float lerp(float a, float b, float f)

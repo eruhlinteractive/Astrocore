@@ -122,14 +122,25 @@ namespace Astrolib
 
         void SetParent(Entity2D *parent);
         Transform2D transform;
-        inline static int pixelsPerUnit = 1.0;
+        inline static float pixelsPerUnit = 1.0f;
 
         
         float GetNearestMultiple(float value, float multiple)
 	    {
+            if(multiple == 0)
+            {
+                return value;
+            }
+
 		    float rem = fmodf(value, multiple);
+
+            if(rem == 0)
+            {
+                return value;
+            }
 		    float result = value - rem;
-		    if (rem > (multiple / 2))
+
+		    if (rem > (multiple / 2.0f))
 		    	result += multiple;
     
 		    return result;

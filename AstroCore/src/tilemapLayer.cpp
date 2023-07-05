@@ -86,10 +86,11 @@ void TileMapLayer::Draw(float deltaTime, Camera2D *camera)
         destRect = (Rectangle){
             0,
             0,
-            (float)tileInfo->imageSize.x * 1.01,
-            (float)tileInfo->imageSize.y * 1.01};
+            (float)tileInfo->imageSize.x * 1.001f,
+            (float)tileInfo->imageSize.y * 1.001f};
 
-        DrawTexturePro(*texture, srcRect, destRect, (Vector2){int(xPos * -tileSize.x), int(yPos * -tileSize.y)}, 0, WHITE);
+
+        DrawTexturePro(*texture, srcRect, destRect, (Vector2){xPos * -tileSize.x, yPos * -tileSize.y}, 0, WHITE);
         //DrawRectangleLinesEx(debugRect, 1, RED);
         iterator++;
         //drawn++;

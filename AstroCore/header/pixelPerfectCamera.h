@@ -8,6 +8,7 @@ namespace Astrolib
     class PixelPerfectCamera2D : public CameraEntityBase
     {
     public:
+        Vector2 targetPos = {0,0};
         PixelPerfectCamera2D()
         {
             type = PIXELCAMERA;
@@ -31,21 +32,21 @@ namespace Astrolib
             screenSpaceCamera = nullptr;
         }
 
-        void Update(float deltaTime) override
+        void LateUpdate(float deltaTime) override
         {
             screenSpaceCamera->target = target;
-
-            Vector2 newOffset = (Vector2){offset.x / samplingRatio.x, offset.y / samplingRatio.y };
+            targetPos = target;
+            Vector2 newOffset = (Vector2){offset.x / samplingRatio, offset.y / samplingRatio };
             worldSpaceCamera->offset = newOffset;
 
-
-            worldSpaceCamera->target.x = int(screenSpaceCamera->target.x);
+        
+            worldSpaceCamera->target.x = (int)screenSpaceCamera->target.x;
             screenSpaceCamera->target.x -= worldSpaceCamera->target.x;
-            screenSpaceCamera->target.x *= samplingRatio.x;
+            //screenSpaceCamera->target.x *= samplingRatio;
 
             worldSpaceCamera->target.y = int(screenSpaceCamera->target.y);
             screenSpaceCamera->target.y -= worldSpaceCamera->target.y;
-            screenSpaceCamera->target.y *= samplingRatio.y;
+            //screenSpaceCamera->target.y *= samplingRatio;
         }
 
         RenderTexture2D* GetRenderTexture(){ return &renderTexture; };
@@ -62,30 +63,29 @@ namespace Astrolib
         void SetRenderResolution(float newRenderWidth, float newRenderHeight)
         {
             screenDimensions = (Vector2){(float)GetRenderWidth(), (float)GetRenderHeight()};
-            samplingRatio.x = (float)screenDimensions.x / (float)newRenderWidth;
-            samplingRatio.y = (float)screenDimensions.y / (float)newRenderHeight;
+            samplingRatio = (float)screenDimensions.x / (float)newRenderWidth;
             virtualResolution = (Vector2){(float)newRenderWidth, newRenderHeight};
 
         
             // Re-initialize render texture
             UnloadRenderTexture(renderTexture);
             renderTexture = LoadRenderTexture(virtualResolution.x, virtualResolution.y);
+            //SetTextureFilter(renderTexture.texture, TEXTURE_FILTER_POINT);
 
             // Update PPU used for movement/rendering
-            Entity2D::pixelsPerUnit = 1.0 / (float)16;
+            Entity2D::pixelsPerUnit = 1.0f / samplingRatio;
 
 
             // The target's height is flipped (in the source Rectangle), due to OpenGL reasons
             sourceRect = {0.0f, 0.0f, (float)renderTexture.texture.width, -(float)renderTexture.texture.height};
-            destRect = {-samplingRatio.x, -samplingRatio.y, screenDimensions.x + (samplingRatio.x * 2), screenDimensions.y + (samplingRatio.y * 2)};
+            destRect = {-samplingRatio, -samplingRatio, screenDimensions.x + samplingRatio*2.0f, screenDimensions.y + samplingRatio*2.0f};
         }
 
         // Draws the rendered texture to the screen
         void Draw(float deltaTime, Camera2D *camera) override
         {
-            BeginMode2D(*screenSpaceCamera);
-            SetTextureFilter(renderTexture.texture, TEXTURE_FILTER_POINT);
-
+            BeginMode2D(*screenSpaceCamera); 
+            
             // Calculate sub-pixel offsets
             //float offsetX = fmodf(screenSpaceCamera->target.x, 1.0f);
             //float offsetY = fmodf(screenSpaceCamera->target.y, 1.0f);;
@@ -93,14 +93,17 @@ namespace Astrolib
             DrawTexturePro(renderTexture.texture, sourceRect, destRect, {0, 0}, 0.0f, WHITE);
             EndMode2D();
              
-            std::string posText = "Target:" + std::to_string(screenSpaceCamera->target.x) + "," + std::to_string(screenSpaceCamera->target.y);
+            std::string posText = "Target:" + std::to_string(targetPos.x) + "," + std::to_string(targetPos.y);
             DrawText(posText.c_str(), 10, 60, 20, RED);
 
-            std::string wposText = std::to_string(worldSpaceCamera->target.x) + "," + std::to_string(worldSpaceCamera->target.y);
+            std::string wposText = std::to_string(screenSpaceCamera->target.x) + "," + std::to_string(screenSpaceCamera->target.y);
             DrawText(wposText.c_str(), 10, 85, 20, BLUE);
 
+            std::string vrestText = "VRes: " + std::to_string(virtualResolution.x) + "," + std::to_string(virtualResolution.y);
+            DrawText(vrestText.c_str(), 10, 105, 20, BLUE);
+
            
-           DrawRectangleLines(200, 200, 1 * samplingRatio.x, 1 * samplingRatio.y, RED);
+           DrawRectangleLines(200, 200, 1 * samplingRatio, 1 * samplingRatio, RED);
            //DrawRectangleLines(210, 200, 1, 1 , RED);
 
            DrawRectangleLines(screenSpaceCamera->target.x, screenSpaceCamera->target.y ,destRect.width, destRect.height, RED);
@@ -111,7 +114,7 @@ namespace Astrolib
 
         RenderTexture2D renderTexture;
         Vector2 screenDimensions;
-        Vector2 samplingRatio;
+        float samplingRatio;
         Vector2 virtualResolution;
         Camera2D *worldSpaceCamera;
         Camera2D *screenSpaceCamera;
