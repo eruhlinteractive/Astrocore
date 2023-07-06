@@ -18,9 +18,7 @@ public:
         RegisterEntity(pixelCamera);
 
         Vector2 screenSize = Game::instance().GetScreenSize();
-        pixelCamera->offset = {screenSize.x / 2.0f, screenSize.y / 2.0f};
-        //pixelCamera->SetRenderResolution(320, 180);
-        pixelCamera->zoom = 4.0;
+        pixelCamera->SetRenderDimensions(320, 180);
 
         ambientColor = WHITE;
         Light2D *newLight = new Light2D(50.0, 1.0, YELLOW);

@@ -217,38 +217,45 @@ void Scene::Draw(float deltaTime)
 
     
 
-    if (currentCamera->GetType() == PIXELCAMERA)
-    {
-        RenderTexture2D text = *(((PixelPerfectCamera2D *)currentCamera)->GetRenderTexture());
-        BeginTextureMode(text);
-        ClearBackground(RAYWHITE);
+    //if (currentCamera->GetType() == PIXELCAMERA)
+    //{
+    //    RenderTexture2D text = *(((PixelPerfectCamera2D *)currentCamera)->GetRenderTexture());
+    //    BeginTextureMode(text);
+    //    ClearBackground(RAYWHITE);
 
 
-        //DrawLine(GetRenderWidth() / 2, 0, GetRenderWidth()/2, GetRenderHeight(), GRAY);
-        //DrawLine(0, GetRenderHeight()/2, GetRenderWidth(), GetRenderHeight()/2, GRAY);
-        //ClearBackground(RAYWHITE);
-    }
-    else
-    {
-        BeginDrawing();
-    }
+    //    //DrawLine(GetRenderWidth() / 2, 0, GetRenderWidth()/2, GetRenderHeight(), GRAY);
+    //    //DrawLine(0, GetRenderHeight()/2, GetRenderWidth(), GetRenderHeight()/2, GRAY);
+    //    //ClearBackground(RAYWHITE);
+    //}
+    //else
+    //{
+    //    BeginDrawing();
+    //}
     
+   
+    currentCamera->BeginDrawing();
+    ClearBackground(WHITE);
     
-    
-    Camera2D cam = *(currentCamera->GetCamera());
-    BeginMode2D(cam);
+    //Camera2D cam = *(currentCamera->GetCamera());
+    //BeginMode2D(cam);
   
     for (Entity2D *e : pairs)
     {
-        e->Draw(deltaTime, &cam );
+        e->Draw(deltaTime, currentCamera->GetCamera());
     }
 
-    EndMode2D();
+    currentCamera->EndDrawing();
 
-    if (currentCamera->GetType() == PIXELCAMERA)
-    {
-        EndTextureMode();
-    }
+
+    BeginDrawing();
+    currentCamera->Draw(deltaTime, currentCamera->GetCamera());
+   // EndMode2D();
+
+    //if (currentCamera->GetType() == PIXELCAMERA)
+    //{
+    //    EndTextureMode();
+    //}
     // Render lights
     // Based on https://slembcke.github.io/2D-Lighting-Overview
 
@@ -276,13 +283,13 @@ void Scene::Draw(float deltaTime)
     lightSrc = (Rectangle){0, 0, (float)GetScreenWidth(), (float)-GetScreenHeight()};
     lightDest = (Rectangle){0, 0, (float)GetScreenWidth(), (float)GetScreenHeight()};
     */
-    if (currentCamera->GetType() == PIXELCAMERA)
-    {
-        
-        BeginDrawing();
-        //ClearBackground(RAYWHITE);
-        currentCamera->Draw(deltaTime, currentCamera->GetCamera());
-    }
+    //if (currentCamera->GetType() == PIXELCAMERA)
+    //{
+    //    
+    //    BeginDrawing();
+    //    //ClearBackground(RAYWHITE);
+    //    currentCamera->Draw(deltaTime, currentCamera->GetCamera());
+    //}
     
     /*
     BeginBlendMode(BLEND_MULTIPLIED);

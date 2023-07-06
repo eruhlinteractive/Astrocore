@@ -19,7 +19,8 @@ namespace Astrolib
         {
             if(eventName == "windowResized")
             {
-               offset = (Vector2){GetRenderWidth()/2.0f, GetRenderHeight()/ 2.0f};
+               //offset = (Vector2){GetRenderWidth()/2.0f, GetRenderHeight()/ 2.0f};
+               UpdateDestinationRectSize();
             }
         }
 
@@ -40,7 +41,7 @@ namespace Astrolib
         {
             return camera;
         }
-
+        
         void Update(float deltaTime) override
         {
             //camera->target = target;
@@ -53,12 +54,13 @@ namespace Astrolib
         {
             camera->target = target;
             camera->target = (Vector2){target.x, target.y};
-            camera->offset = offset;
+            
+            camera->offset = {offset.x + GetRenderCenter().x, offset.y + GetRenderCenter().y};
             camera->zoom = zoom;
         }
 
         // Only declared to satisfy the pure virtual function
-        void Draw(float deltaTime, Camera2D *camera) override {}
+        //void Draw(float deltaTime, Camera2D *camera) override {}
 
     private:
         Camera2D* camera;
