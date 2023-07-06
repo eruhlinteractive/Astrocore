@@ -11,10 +11,9 @@ using namespace std;
 
 namespace Astrolib
 {
-    class Game
+    class Game : public Signaler
     {
     public:
-        Game(){};
 
         /// @brief Initialize Runtime
         virtual void InitGame(std::string windowTitle, int screenWidth, int screenHeight, int targetFPS = 60)
@@ -31,19 +30,13 @@ namespace Astrolib
             InitWindow(screenWidth, screenHeight, "Astrolib Game");
             SetWindowTitle((windowTitle + debugMessage).c_str());
             SetWindowSize(screenWidth, screenHeight);
-            SetTargetFPS(targetFPS);
+            //SetTargetFPS(targetFPS);
         }
 
         virtual void CreateScene()
         {
             currentScene = new Scene();
         }
-
-        /// @brief Update the current world
-        virtual void Update()
-        {
-            currentScene->Update(GetFrameTime());
-        };
 
         virtual void LateUpdate()
         {
@@ -59,7 +52,14 @@ namespace Astrolib
         /// @brief Draw in screen space
         void DrawUI();
 
-        virtual void Update(float deltaTime) { currentScene->Update(GetFrameTime()); };
+        virtual void Update(float deltaTime)
+        {
+            if (IsWindowResized())
+            {
+                SendEvent("windowResized");
+            }
+            currentScene->Update(GetFrameTime());
+        };
         virtual void FixedUpdate(float deltaTime) { currentScene->FixedUpdate(deltaTime); };
         virtual void Draw(float deltaTime)
         {
@@ -70,7 +70,16 @@ namespace Astrolib
         {
             return currentScene;
         }
+        void SetCurrentScene(Scene* newScene)
+        {
+            currentScene = newScene;
+        }
 
+        void SetConfigFlag(unsigned int flag)
+        {
+            SetConfigFlags(flag);
+        }
+        
         Vector2 GetScreenSize()
         {
             return (Vector2){(float)GetRenderWidth(), (float)GetRenderHeight()};
@@ -85,16 +94,25 @@ namespace Astrolib
             CloseWindow();
         };
 
-        static Game &instance()
+        static Game& instance()
         {
-            static Game INSTANCE;
-            return INSTANCE;
+            if(!Game::created)
+            {
+                Game::INSTANCE = new Game();
+                Game::created = true;
+            }
+           
+            return *INSTANCE;
         }
+
 
     protected:
         Scene *currentScene;
+        Game(){};
 
     private:
+        inline static Game* INSTANCE;
+        inline static bool created;
         bool ySortEnabled = true;
     };
 }

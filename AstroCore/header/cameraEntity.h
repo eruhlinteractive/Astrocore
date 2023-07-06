@@ -8,10 +8,26 @@ namespace Astrolib
     class CameraEntity : public CameraEntityBase
     {
     public:
-        CameraEntity()
+
+        void Init() override
+        {
+            Game::instance().AddObserver((Observer*)this, "windowResized");
+        }
+
+
+        void OnNotify(const Observer *observer, std::string eventName) override
+        {
+            if(eventName == "windowResized")
+            {
+               offset = (Vector2){GetRenderWidth()/2.0f, GetRenderHeight()/ 2.0f};
+            }
+        }
+
+        CameraEntity() : CameraEntityBase()
         {
             camera = new Camera2D();
             type = CAMERA;
+            Init();
         }
 
         ~CameraEntity()

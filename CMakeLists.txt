@@ -11,7 +11,6 @@ add_subdirectory(AstroCore)
 target_include_directories(${PROJECT_NAME} 
     PUBLIC header
     PUBLIC include
-    
 )
 
 target_link_directories(${PROJECT_NAME}

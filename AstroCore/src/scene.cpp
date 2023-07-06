@@ -46,7 +46,6 @@ bool Scene::RegisterEntity(Entity2D *entity)
         {
             lights.insert(std::pair{name, (Light2D *)entity});
         }
-
         return true;
     }
 

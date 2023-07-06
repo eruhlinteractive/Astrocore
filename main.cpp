@@ -29,8 +29,8 @@
 
 int main()
 {
-
-    TestGame* game = new TestGame();
+    SetConfigFlags(FLAG_WINDOW_RESIZABLE);
+    Game* game = &Game::instance();
     int screenWidth = 1280;
     int screenHeight = 720;
 
@@ -38,6 +38,7 @@ int main()
     float fixedUpdateTimer = 0.0f;
 
     game->InitGame("Astrolib", 1280, 720);
+    game->SetCurrentScene(new TestScene());
 
     std::cout << GetWorkingDirectory() << std::endl;
    

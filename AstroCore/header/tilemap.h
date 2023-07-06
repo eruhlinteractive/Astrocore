@@ -4,7 +4,7 @@
 #include "../header/entity.h"
 #include "../header/filemanager.h"
 #include "../header/texturemanager.h"
-
+#include <tmxlite/Config.hpp>
 #include <tmxlite/Map.hpp>
 #include <tmxlite/Layer.hpp>
 #include <tmxlite/TileLayer.hpp>

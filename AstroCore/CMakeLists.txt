@@ -10,9 +10,9 @@ src/tilemap.cpp
 src/filemanager.cpp
 src/tilemapLayer.cpp
 )
-
 target_include_directories(${PROJECT_NAME}
-    PUBLIC include
+    PRIVATE include
+    PRIVATE include/tmxlite
     PUBLIC header
 )
 

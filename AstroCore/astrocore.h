@@ -13,3 +13,4 @@
 #include "header/tilemap.h"
 #include "header/pixelPerfectCamera.h"
 #include "header/cameraEntity.h"
+#include "game.h"

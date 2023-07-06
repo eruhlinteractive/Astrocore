@@ -3,6 +3,7 @@
 #include <memory>
 #include <string>
 #include "structs.h"
+#include "interfaces.h"
 
 #ifndef __ENTITY2D_H__
 #define __ENTITY2D_H__
@@ -36,7 +37,7 @@ enum ENTITY_TYPE
 
 namespace Astrolib
 {
-    class Entity2D
+    class Entity2D : public Observer, Signaler
     {
     public:
         // Constructors
