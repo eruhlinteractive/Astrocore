@@ -13,6 +13,7 @@ Scene::Scene()
     // screenSpaceLightMap = LoadRenderTexture();
     screenSpaceLightMap = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
     ambientColor = WHITE;
+    root = new Entity2D(this->sceneName + "_root");
     LoadScene();
 }
 
@@ -67,6 +68,8 @@ Scene::~Scene()
         delete e.second;
         e.second = nullptr;
     }
+    delete root;
+    root = nullptr;
     UnloadRenderTexture(screenSpaceLightMap);
 }
 

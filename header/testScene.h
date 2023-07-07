@@ -200,12 +200,13 @@ public:
 
         AnimatedSpriteEntity *testSprite = (AnimatedSpriteEntity *)FindEntityByName("testSprite");
         Vector2 targetPos = testSprite->GetGlobalPosition();
-        float x = cos(GetTime()) * 30.0;
-        float y = sin(GetTime()) * 30.0;
-        float targetX = lerp(currentCamera->target.x, targetPos.x, deltaTime * 8.0);
-        float targetY = lerp(currentCamera->target.y, targetPos.y, deltaTime * 8.0);
+        float x = cos(GetTime());
+        float y = sin(GetTime());
+        float targetX = lerp(currentCamera->target.x, targetPos.x, deltaTime * 80.0);
+        float targetY = lerp(currentCamera->target.y, targetPos.y, deltaTime * 80.0);
         //currentCamera->target = targetPos;
 
+        
         currentCamera->target = {targetX, targetY};
         //currentCamera->target.x += deltaTime * 30.0f;
         //currentCamera->target.y += deltaTime * 40.0f;

@@ -16,27 +16,39 @@ Entity2D::Entity2D()
 
     // Set id and increment entity count
     entityID = entityCount++;
-    
+
     name = "Entity2D" + std::to_string(entityID);
     Init();
 }
 
 Entity2D::Entity2D(std::string name) : Entity2D()
 {
-    this->name = name; 
+    this->name = name;
 }
 
-Entity2D::Entity2D(std::string name, Vector2 startPosition, Vector2 startScale, float startRotation): Entity2D(name)
+Entity2D::Entity2D(std::string name, Vector2 startPosition, Vector2 startScale, float startRotation) : Entity2D(name)
 {
     transform = Transform2D(startPosition, startRotation, startScale);
     Init();
 }
 
-
 Entity2D::~Entity2D()
 {
     OnDestroy();
+
+    // Remove child from parent
+    if (parentEntity != nullptr)
+    {
+        parentEntity->RemoveChild(this);
+    }
+    // Delete children entities
+    for (Entity2D *entity : *(children.get()))
+    {
+        delete entity;
+        entity = nullptr;
+    }
 }
+
 #pragma endregion
 
 #pragma region Transformation Functions
@@ -45,22 +57,21 @@ Entity2D::~Entity2D()
 /// @return A Vector2 representing the world coordinates
 Vector2 Entity2D::GetGlobalPosition()
 {
-    if(this->parentEntity != nullptr)
+    if (this->parentEntity != nullptr)
     {
-        
+
         Vector2 parentGlobal = parentEntity->GetGlobalPosition();
-        // Apply parent's rotation to position 
+        // Apply parent's rotation to position
         // https://academo.org/demos/rotation-about-point/
         float parentRotation = parentEntity->GetGlobalRotation();
 
-        Vector2 rotatedPos = (Vector2)
-        {
+        Vector2 rotatedPos = (Vector2){
             transform.position.x * cos(parentRotation) - transform.position.y * sin(parentRotation),
             transform.position.y * cos(parentRotation) + transform.position.x * sin(parentRotation),
         };
 
         return (Vector2){parentGlobal.x + rotatedPos.x, parentGlobal.y + rotatedPos.y};
-        //return GetPosition();
+        // return GetPosition();
     }
     else
     {
@@ -73,7 +84,7 @@ Vector2 Entity2D::GetGlobalPosition()
 /// @return The rotation in degrees
 float Entity2D::GetGlobalRotationDeg()
 {
-    return (GetGlobalRotation() * (180.0/M_PI));
+    return (GetGlobalRotation() * (180.0 / M_PI));
 }
 
 /// @brief Get the rotation of this entity in global space in radians
@@ -82,7 +93,7 @@ float Entity2D::GetGlobalRotation()
 {
     float globalRot = transform.rotation;
 
-    if(parentEntity != nullptr)
+    if (parentEntity != nullptr)
     {
         globalRot = transform.rotation + parentEntity->GetGlobalRotation();
         globalRot = std::fmod(globalRot, (2.0f * M_PI));
@@ -97,7 +108,7 @@ float Entity2D::GetGlobalRotation()
 /// @param deltaTime The time since the previous frame
 void Entity2D::Update(float deltaTime)
 {
-    if(!isReady)
+    if (!isReady)
     {
         Ready();
     }
@@ -107,7 +118,7 @@ void Entity2D::Update(float deltaTime)
 
 /// @brief Get the parent of this object
 /// @return The raw ptr to the object, or nullptr if it doesn't exist
-Entity2D* Entity2D::GetParent()
+Entity2D *Entity2D::GetParent()
 {
     return parentEntity;
 }
@@ -116,15 +127,16 @@ std::string Entity2D::GetPath()
 {
     std::string path = GetName();
 
-    Entity2D* current = GetParent();
-    while(current != nullptr)
+    Entity2D *current = GetParent();
+
+    while (current != nullptr)
     {
         path = current->GetName() + "/" + path;
         current = current->GetParent();
     }
+    
     return path;
 }
-
 
 /// @brief Get the amount of children this entity has
 /// @return Int of how many child entities this entity has
@@ -136,11 +148,11 @@ int Entity2D::GetChildCount()
 /// @brief Get a child of this node by name
 /// @param name The name of the child to get
 /// @return The pointer to the entity
-Entity2D* Entity2D::GetChild(std::string name)
+Entity2D *Entity2D::GetChild(std::string name)
 {
-    for(Entity2D* child : *children)
+    for (Entity2D *child : *children)
     {
-        if(child->GetName() == name)
+        if (child->GetName() == name)
         {
             return child;
         }
@@ -152,9 +164,9 @@ Entity2D* Entity2D::GetChild(std::string name)
 /// @brief Get the child ptr of a child at a specific index
 /// @param index The index of the child in the vector
 /// @return A pointer to the child entity
-Entity2D* Entity2D::GetChildAtIndex(int index)
+Entity2D *Entity2D::GetChildAtIndex(int index)
 {
-    if(children->size() < index)
+    if (children->size() < index)
     {
         return (*children)[index];
     }
@@ -165,10 +177,10 @@ Entity2D* Entity2D::GetChildAtIndex(int index)
 
 /// @brief Set the parent of this entity
 /// @param newParent The note to set as the new parent
-void Entity2D::SetParent(Entity2D* newParent)
+void Entity2D::SetParent(Entity2D *newParent)
 {
     // Remove as child from previous parent before updating
-    if(parentEntity != nullptr)
+    if (parentEntity != nullptr)
     {
         parentEntity->RemoveChild(this);
     }
@@ -179,36 +191,35 @@ void Entity2D::SetParent(Entity2D* newParent)
 
 /// @brief Add and entity as a child of this entity
 /// @param newChild The new child to add to this entity
-void Entity2D::AddChild(Entity2D* newChild)
+void Entity2D::AddChild(Entity2D *newChild)
 {
-    //std::cout << children->size() << std::endl;
-    if(newChild->GetParent() != this)
+    // std::cout << children->size() << std::endl;
+    if (newChild->GetParent() != this)
     {
         // TODO: Swap parents, or throw error
-        Entity2D* currentParent = newChild->GetParent();
+        Entity2D *currentParent = newChild->GetParent();
 
-        if(currentParent != nullptr)
+        if (currentParent != nullptr)
         {
             currentParent->RemoveChild(newChild);
         }
     }
-    if(!HasChild(newChild))
+    if (!HasChild(newChild))
     {
         children->push_back(newChild);
         newChild->SetParent(this);
     }
 }
 
-std::vector<Entity2D*> Entity2D::GetChildren()
+std::vector<Entity2D *> Entity2D::GetChildren()
 {
     return *children;
 }
 
-
 /// @brief Checks if the entity is a child of this entity
 /// @param childToCheck The potential child in question
 /// @return True if the entity is a child, otherwise false
-bool Entity2D::HasChild(Entity2D* childToCheck)
+bool Entity2D::HasChild(Entity2D *childToCheck)
 {
     auto index = find(children->begin(), children->end(), childToCheck);
     return index != children->end();
@@ -216,10 +227,10 @@ bool Entity2D::HasChild(Entity2D* childToCheck)
 
 /// @brief Removes the entity as a child of this entity
 /// @param childToRemove The child that should be removed from this entity
-void Entity2D::RemoveChild(Entity2D* childToRemove)
+void Entity2D::RemoveChild(Entity2D *childToRemove)
 {
     auto index = find(children->begin(), children->end(), childToRemove);
-    if(index != children->end())
+    if (index != children->end())
     {
         children->erase(index);
         childToRemove->SetParent(nullptr);

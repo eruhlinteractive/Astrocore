@@ -41,7 +41,6 @@ namespace Astrolib
     {
     public:
         // Constructors
-
         Entity2D();
         Entity2D(std::string name);
         Entity2D(std::string name, Vector2 position, Vector2 scale, float rotation);
@@ -99,7 +98,7 @@ namespace Astrolib
         /// @return The Rectangle bounding box of the sprite
         virtual Rectangle GetSpriteRect() { return (Rectangle){transform.position.x, transform.position.y, 0, 0}; };
 
-        virtual void Draw(float deltaTime, Camera2D *camera) = 0;
+        virtual void Draw(float deltaTime, Camera2D *camera){};
 
         /// @brief The offset used for Y position-based sorting
         float ySortOffset = 0;

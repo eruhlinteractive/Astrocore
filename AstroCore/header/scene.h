@@ -51,6 +51,11 @@ namespace Astrolib
         Color ambientColor = WHITE;
         bool ySortEnabled = true;
 
+        Entity2D* GetRoot()
+        {
+            return root;
+        }
+
         /// @brief Sorts two pairs in the map based on their draw index
         /// @param p1 The first pair
         /// @param p2 The second pair
@@ -100,6 +105,7 @@ namespace Astrolib
         }
 
     private:
+        Entity2D* root;
         /// @brief Top level of the scene graph
         std::map<std::string, Entity2D *> entities;
         std::map<std::string, Entity2D *> drawableEntities;
