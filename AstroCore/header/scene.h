@@ -15,6 +15,8 @@
 #include "raylib.h"
 #include "cameraEntityBase.h"
 #include "pixelPerfectCamera.h"
+#include "../include/box2d/box2d.h"
+
 
 // Custom Blend Modes
 #define RLGL_SRC_ALPHA 0x0302

@@ -18,7 +18,7 @@ target_link_directories(${PROJECT_NAME}
     PRIVATE src
  )
 
-target_link_libraries(${PROJECT_NAME} astrocore raylib tmxlite)
+target_link_libraries(${PROJECT_NAME} astrocore raylib box2d tmxlite)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})

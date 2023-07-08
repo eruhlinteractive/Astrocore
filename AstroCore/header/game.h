@@ -3,6 +3,7 @@
 #include <map>
 #include "../include/raylib.h"
 #include <string>
+#include "../include/box2d/box2d.h"
 
 #ifndef __GAME__
 #define __GAME__
@@ -14,7 +15,6 @@ namespace Astrolib
     class Game : public Signaler
     {
     public:
-
         /// @brief Initialize Runtime
         virtual void InitGame(std::string windowTitle, int screenWidth, int screenHeight, int targetFPS = 60)
         {
@@ -30,7 +30,7 @@ namespace Astrolib
             InitWindow(screenWidth, screenHeight, "Astrolib Game");
             SetWindowTitle((windowTitle + debugMessage).c_str());
             SetWindowSize(screenWidth, screenHeight);
-            //SetTargetFPS(targetFPS);
+            // SetTargetFPS(targetFPS);
         }
 
         virtual void CreateScene()
@@ -60,7 +60,12 @@ namespace Astrolib
             }
             currentScene->Update(GetFrameTime());
         };
-        virtual void FixedUpdate(float deltaTime) { currentScene->FixedUpdate(deltaTime); };
+        virtual void FixedUpdate(float deltaTime)
+        {
+            // TODO: Make this settable by the end user
+            physicsWorld->Step(deltaTime,8,3);
+            currentScene->FixedUpdate(deltaTime);
+        };
         virtual void Draw(float deltaTime)
         {
             currentScene->Draw(GetFrameTime());
@@ -70,7 +75,7 @@ namespace Astrolib
         {
             return currentScene;
         }
-        void SetCurrentScene(Scene* newScene)
+        void SetCurrentScene(Scene *newScene)
         {
             currentScene = newScene;
         }
@@ -79,7 +84,7 @@ namespace Astrolib
         {
             SetConfigFlags(flag);
         }
-        
+
         Vector2 GetScreenSize()
         {
             return (Vector2){(float)GetRenderWidth(), (float)GetRenderHeight()};
@@ -94,26 +99,34 @@ namespace Astrolib
             CloseWindow();
         };
 
-        static Game& instance()
+        static b2World* GetPhysicsWorld()
         {
-            if(!Game::created)
+            return physicsWorld;
+        }
+
+        static Game &instance()
+        {
+            if (!Game::created)
             {
                 Game::INSTANCE = new Game();
                 Game::created = true;
             }
-           
+
             return *INSTANCE;
         }
 
-
     protected:
         Scene *currentScene;
-        Game(){};
+        Game()
+        {
+            physicsWorld = new b2World(b2Vec2_zero);
+        };
 
     private:
-        inline static Game* INSTANCE;
+        inline static Game *INSTANCE;
         inline static bool created;
         bool ySortEnabled = true;
+        inline static b2World *physicsWorld;
     };
 }
 

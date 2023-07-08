@@ -34,6 +34,7 @@ enum ENTITY_TYPE
     LIGHT,
     CAMERA,
     PIXELCAMERA,
+    PHYSICAL
 };
 
 namespace Astrolib
