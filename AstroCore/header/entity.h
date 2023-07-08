@@ -4,6 +4,7 @@
 #include <string>
 #include "structs.h"
 #include "interfaces.h"
+#include "debug.h"
 
 #ifndef __ENTITY2D_H__
 #define __ENTITY2D_H__

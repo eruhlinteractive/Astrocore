@@ -14,3 +14,4 @@
 #include "header/pixelPerfectCamera.h"
 #include "header/cameraEntity.h"
 #include "game.h"
+#include "debug.h"

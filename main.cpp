@@ -34,7 +34,7 @@ int main()
     int screenWidth = 1280;
     int screenHeight = 720;
 
-    const float FIXED_UPDATE_RATE= 1.0/ 60.0;
+    const float FIXED_UPDATE_RATE= 1.0f / 60.0f;
     float fixedUpdateTimer = 0.0f;
 
     game->InitGame("Astrolib", 1280, 720);
@@ -66,6 +66,5 @@ int main()
     game->Exit();
     delete game;
     game = nullptr;
-
     return 0;
 }
