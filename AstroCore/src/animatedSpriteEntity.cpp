@@ -131,7 +131,7 @@ void AnimatedSpriteEntity::Init()
     animStates = new std::map<string, SpriteAnimation *>();
 }
 
-Rectangle AnimatedSpriteEntity::GetSpriteRect()
+Rectangle AnimatedSpriteEntity::GetBoundRect()
 {
     Vector2 pos = GetGlobalPosition();
     return (Rectangle){pos.x, pos.y, currentAnim->frameSize.x, currentAnim->frameSize.y};
@@ -182,5 +182,16 @@ void AnimatedSpriteEntity::Draw(float deltaTime, Camera2D *camera)
     //               {0,0},
     //               GetGlobalRotation() * (180.0 / PI),
     //               WHITE);
-    DrawRectangleLines(round(destRect.x), round(destRect.y), 1, 1, RED);
+    //DrawRectangleLines(round(destRect.x), round(destRect.y), 1, 1, RED);
+
+    if (Debug::instance()->IsDebugFlagSet(DRAW_SPRITE_BOUNDS))
+    {
+        DrawRectangleLines(
+            destRect.x - destRect.width / 2.0f,
+            destRect.y - destRect.height / 2.0f,
+            destRect.width,
+            destRect.height,
+            RED
+        );
+    }
 }

@@ -22,7 +22,7 @@ namespace Astrolib
         ~SpriteEntity();
 
         void Draw(float deltaTime, Camera2D* camera) override;
-        Rectangle GetSpriteRect() override;
+        Rectangle GetBoundRect() override;
         
         bool IsFlippedH() { return (spriteFlip.x == -1); };
         bool IsFlippedV() { return (spriteFlip.y == -1); };

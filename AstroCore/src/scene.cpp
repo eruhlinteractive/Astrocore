@@ -189,7 +189,7 @@ void Scene::Draw(float deltaTime)
         Vector2 screenPos = GetWorldToScreen2D(p.second->GetGlobalPosition(), *currentCamera->GetCamera());
 
         // TODO: Update this to a proper AABB test
-        if (IsOnScreen(currentCamera->GetCamera(), p.second->GetSpriteRect()) && p.second->GetType() != TILEMAP)
+        if (IsOnScreen(currentCamera->GetCamera(), p.second->GetBoundRect()) && p.second->GetType() != TILEMAP)
         {
             pairs.push_back((Entity2D *)p.second);
         }

@@ -33,7 +33,7 @@ public:
     void PlayAnimation(){isPlaying = true;};
     string GetCurrentAnimation(){return currentAnimationName;};
     void Draw(float deltaTime, Camera2D* camera) override;
-    Rectangle GetSpriteRect() override;
+    Rectangle GetBoundRect() override;
     void Init();
 
     bool IsFlippedH(){return (spriteFlip.x == -1);};

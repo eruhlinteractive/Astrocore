@@ -40,8 +40,9 @@ int main()
     game->InitGame("Astrolib", 1280, 720);
     game->SetCurrentScene(new TestScene());
 
-    std::cout << GetWorkingDirectory() << std::endl;
-   
+    //Debug::instance()->SetDebugFlag(DRAW_SPRITE_BOUNDS);
+    //std::cout << GetWorkingDirectory() << std::endl;
+    
     // Main game loop
     while (!WindowShouldClose())    // Detect window close button or ESC key
     {
