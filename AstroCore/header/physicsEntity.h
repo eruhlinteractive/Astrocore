@@ -17,7 +17,7 @@ namespace Astrolib
     {
     public:
         PhysicsEntity(PHYSICS_TYPE bodyType);
-        PhysicsEntity(std::string name, PHYSICS_TYPE bodyType, Vector2 position, Vector2 scale, float rotation);
+        PhysicsEntity(std::string name, PHYSICS_TYPE bodyType, Vector2 position, float rotation);
         ~PhysicsEntity();
 
         virtual void FixedUpdate(float deltaTime) override;
@@ -53,6 +53,9 @@ namespace Astrolib
         void AddForce(Vector2 force);
         void AddForceAtPoint(Vector2 force, Vector2 point);
         void ApplyTorque(float torque);
+
+        void ApplyImpulse(Vector2 force);
+        void ApplyImpulseAtPoint(Vector2 force, Vector2 point);
 
     protected:
         b2BodyDef bodyDef;

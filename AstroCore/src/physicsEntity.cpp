@@ -6,6 +6,7 @@ PhysicsEntity::PhysicsEntity(PHYSICS_TYPE bodyType)
 {
     bodyDef = b2BodyDef();
     bodyDef.position.SetZero();
+
     type = PHYSICAL;
     if (bodyType == STATIC)
     {
@@ -20,9 +21,11 @@ PhysicsEntity::PhysicsEntity(PHYSICS_TYPE bodyType)
     physicsBody = Game::instance().GetPhysicsWorld()->CreateBody(&bodyDef);
 }
 
-PhysicsEntity::PhysicsEntity(std::string name, PHYSICS_TYPE bodyType, Vector2 position, Vector2 scale, float rotation)
+PhysicsEntity::PhysicsEntity(std::string name, PHYSICS_TYPE bodyType, Vector2 position, float rotation)
     : PhysicsEntity(bodyType)
 {
+    this->name = name;
+    physicsBody->SetTransform(b2Vec2(position.x, position.y), rotation);
 }
 
 PhysicsEntity::~PhysicsEntity()
@@ -51,6 +54,9 @@ void PhysicsEntity::CreateRectangleCollider(Vector2 center, Vector2 size, float 
 void PhysicsEntity::FixedUpdate(float deltaTime)
 {
     // TODO: Update entity properties/transforms to match physics transforms
+    b2Vec2 pos = physicsBody->GetLocalPoint(physicsBody->GetPosition());
+    transform.position = (Vector2){pos.x, pos.y};
+    transform.rotation = physicsBody->GetAngle();
 }
 
 /// @brief Creates a rectangle body and
@@ -125,11 +131,26 @@ inline void PhysicsEntity::AddForce(Vector2 force)
     physicsBody->ApplyForceToCenter(b2Vec2(force.x, force.y), true);
 }
 
+inline void PhysicsEntity::AddForceAtPoint(Vector2 force, Vector2 point)
+{
+    physicsBody->ApplyForce(b2Vec2(force.x, force.y), b2Vec2(point.x, point.y), true);
+}
 
 inline void PhysicsEntity::ApplyTorque(float torque)
 {
     physicsBody->ApplyTorque(torque, true);
 }
 
+
+inline void PhysicsEntity::ApplyImpulse(Vector2 force)
+{
+    physicsBody->ApplyLinearImpulseToCenter(b2Vec2(force.x, force.y), true);
+}
+
+
+inline void PhysicsEntity::ApplyImpulseAtPoint(Vector2 force, Vector2 point)
+{
+    physicsBody->ApplyLinearImpulse(b2Vec2(force.x, force.y), b2Vec2(point.x, point.y), true);
+}
 
 #pragma endregion

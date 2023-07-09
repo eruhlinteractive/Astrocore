@@ -53,9 +53,9 @@ namespace Astrolib
         void UnsetTransformFlag(TRANSFORM_FLAGS flag) { transformFlags &= ~(int)flag; };
         bool IsTransformFlagSet(TRANSFORM_FLAGS flag) { return (transformFlags & (int)flag) == (int)flag; };
 
-        Vector2 GetGlobalPosition();
-        float GetGlobalRotationDeg();
-        float GetGlobalRotation();
+        virtual Vector2 GetGlobalPosition();
+        virtual float GetGlobalRotationDeg();
+        virtual float GetGlobalRotation();
 
         /// @brief Get the path from the scene root to this entity
         /// @return The path to this entity from the scene root
