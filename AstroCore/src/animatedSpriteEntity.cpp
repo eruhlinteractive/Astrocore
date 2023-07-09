@@ -172,7 +172,7 @@ void AnimatedSpriteEntity::Draw(float deltaTime, Camera2D *camera)
                    srcRect,
                    destRect,
                    {currentAnim->origin.x * transform.scale.x, currentAnim->origin.y * transform.scale.y},
-                   GetGlobalRotation() * (180.0 / PI),
+                   GetGlobalRotationDeg(),
                    WHITE);
     
 

@@ -61,12 +61,19 @@ public:
 
         // Create test physics entity
         PhysicsEntity* testPhysicsEntity = new PhysicsEntity(STATIC);
+        testPhysicsEntity->SetName("physicsTest");
+
         SpriteEntity* beuhEntity = new SpriteEntity(beuh, {212,180}, {106, 90});
+        beuhEntity->SetName("beuh");
         beuhEntity->transform.Scale({0.2,0.2});
-        //testPhysicsEntity->CreateRectangleCollider({0,0}, {212 * 0.2,180 * 0.2});
-        testPhysicsEntity->CreateCircleCollider({0,0}, 50.0);
+        testPhysicsEntity->CreateRectangleCollider({0,0}, {212 * 0.2,180 * 0.2});
+        //testPhysicsEntity->CreateCircleCollider({0,0}, 50.0);
+
+        
 
         testPhysicsEntity->AddChild(beuhEntity);
+        testPhysicsEntity->transform.RotateDegrees(45);
+
         RegisterEntity(testPhysicsEntity);
         testPhysicsEntity->drawLayer = 100;
 
@@ -134,10 +141,14 @@ public:
 
         AnimatedSpriteEntity *testSprite = (AnimatedSpriteEntity *)FindEntityByName("testSprite");
         InputManager input = InputManager::instance();
-
+        PhysicsEntity* physicsTest = (PhysicsEntity*)FindEntityByName("physicsTest");
         TileMap *tm = (TileMap *)FindEntityByName("tileMap");
 
+
+        physicsTest->transform.Rotate(0.1 * deltaTime);
+
         if (input.IsActionDown("right"))
+
         {
             testSprite->transform.MoveLocal({50 * deltaTime, 0});
             testSprite->ChangeAnimation("runHoriz");

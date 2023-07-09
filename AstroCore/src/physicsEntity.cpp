@@ -55,7 +55,7 @@ void PhysicsEntity::FixedUpdate(float deltaTime)
 {
     if(physicsBody->GetType() == b2_staticBody)
     {
-        physicsBody->SetTransform(b2Vec2{transform.position.x, transform.position.y}, transform.rotation);
+        physicsBody->SetTransform(b2Vec2{transform.position.x, transform.position.y}, -transform.rotation);
     }
     else if(physicsBody->GetType() == b2_dynamicBody)
     {
@@ -166,19 +166,12 @@ void PhysicsEntity::Draw(float deltaTime, Camera2D *camera)
                 verts++;
             }
 
-
-            //for (int i = 0; i < shape->m_count; i++)
-            //{
-            //    Vector2 v = *(points + i);
-            //    Debug::Log(std::to_string(v.x) + "," + std::to_string(v.y));
-            //}
-            
-            DrawLineStrip(points, shape->m_count, RED);
+            DrawLineStrip(points, shape->m_count, BLUE);
 
             // Close polygon
             Vector2 start = *points;
             Vector2 end = *(points + shape->m_count -1);
-            DrawLine(start.x, start.y, end.x, end.y, RED);
+            DrawLine(start.x, start.y, end.x, end.y, BLUE);
             
         }
     }

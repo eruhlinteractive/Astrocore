@@ -89,6 +89,7 @@ Scene::~Scene()
 
         while(!currentEntites.empty())
         {
+            // TODO: Figure out why this is still throwing a segfault :(
             Entity2D* val = currentEntites[currentEntites.size() -1];
             delete val;
             val = nullptr;
