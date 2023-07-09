@@ -19,16 +19,14 @@ Scene::Scene()
 
 void Scene::OnNotify(const Signaler *signaler, std::string eventName)
 {
-    Entity2D* entity = (Entity2D*)signaler;
+    Entity2D *entity = (Entity2D *)signaler;
 
     // Callback to remove entity from the scene when removed
-    if(eventName == "entityDeleted")
+    if (eventName == "entityDeleted")
     {
         UnRegisterEntity(entity->GetName());
     }
-
 }
-
 
 bool Scene::RegisterEntity(Entity2D *entity)
 {
@@ -61,7 +59,7 @@ bool Scene::RegisterEntity(Entity2D *entity)
             lights.insert(std::pair{name, (Light2D *)entity});
         }
 
-        // Register to be notified when an entity is deleted (to be removed from scene tree)
+        // Register to be notified when an entity is deleted
         entity->AddObserver(this, "entityDeleted");
         return true;
     }
@@ -78,18 +76,25 @@ bool Scene::RegisterEntity(Entity2D *entity)
 
 Scene::~Scene()
 {
-    // Cleanup scene memory
-    for (auto e : entities)
+    if (!entities.empty())
     {
-        // Since parent entities delete all their own children, remove them from the 
-        for(auto child : e.second->GetChildren())
-        {
-            UnRegisterEntity(child->GetName());
-        }
-        //UnRegisterEntity(e.second->GetName());
+        auto last = *entities.begin();
+        std::vector<Entity2D*> currentEntites = std::vector<Entity2D*>();
 
-        delete e.second;
-        e.second = nullptr;
+        // Cleanup scene memory
+        for (auto e : entities)
+        {
+            currentEntites.push_back(e.second);
+        }
+
+        while(!currentEntites.empty())
+        {
+            Entity2D* val = currentEntites[currentEntites.size() -1];
+            delete val;
+            val = nullptr;
+
+            currentEntites.pop_back();
+        }
     }
 
     delete root;
@@ -108,8 +113,8 @@ bool Scene::UnRegisterEntity(std::string name)
             drawableEntities.erase(name);
         }
 
-        delete entities[name];
-        entities[name] = nullptr;
+        // delete entities[name];
+        // entities[name] = nullptr;
 
         entities.erase(name);
         return true;
@@ -180,7 +185,7 @@ void Scene::Update(float deltaTime)
 {
     for (auto e : entities)
     {
-        e.second->Update(deltaTime);        
+        e.second->Update(deltaTime);
     }
 }
 
@@ -242,31 +247,27 @@ void Scene::Draw(float deltaTime)
         std::sort(pairs.begin(), pairs.end(), SortByLayerIndex);
     }
 
-    
-
-    //if (currentCamera->GetType() == PIXELCAMERA)
+    // if (currentCamera->GetType() == PIXELCAMERA)
     //{
-    //    RenderTexture2D text = *(((PixelPerfectCamera2D *)currentCamera)->GetRenderTexture());
-    //    BeginTextureMode(text);
-    //    ClearBackground(RAYWHITE);
-
+    //     RenderTexture2D text = *(((PixelPerfectCamera2D *)currentCamera)->GetRenderTexture());
+    //     BeginTextureMode(text);
+    //     ClearBackground(RAYWHITE);
 
     //    //DrawLine(GetRenderWidth() / 2, 0, GetRenderWidth()/2, GetRenderHeight(), GRAY);
     //    //DrawLine(0, GetRenderHeight()/2, GetRenderWidth(), GetRenderHeight()/2, GRAY);
     //    //ClearBackground(RAYWHITE);
     //}
-    //else
+    // else
     //{
     //    BeginDrawing();
     //}
-    
-   
+
     currentCamera->BeginDrawing();
     ClearBackground(WHITE);
-    
-    //Camera2D cam = *(currentCamera->GetCamera());
-    //BeginMode2D(cam);
-  
+
+    // Camera2D cam = *(currentCamera->GetCamera());
+    // BeginMode2D(cam);
+
     for (Entity2D *e : pairs)
     {
         e->Draw(deltaTime, currentCamera->GetCamera());
@@ -274,17 +275,16 @@ void Scene::Draw(float deltaTime)
 
     currentCamera->EndDrawing();
 
-
     BeginDrawing();
     currentCamera->Draw(deltaTime, currentCamera->GetCamera());
-   // EndMode2D();
+    // EndMode2D();
 
-    //if (currentCamera->GetType() == PIXELCAMERA)
+    // if (currentCamera->GetType() == PIXELCAMERA)
     //{
-    //    EndTextureMode();
-    //}
-    // Render lights
-    // Based on https://slembcke.github.io/2D-Lighting-Overview
+    //     EndTextureMode();
+    // }
+    //  Render lights
+    //  Based on https://slembcke.github.io/2D-Lighting-Overview
 
     /*
     // Clear background
@@ -302,22 +302,22 @@ void Scene::Draw(float deltaTime)
     }
     EndBlendMode();
     EndTextureMode();
-    
-    
+
+
 
     Rectangle lightSrc, lightDest;
 
     lightSrc = (Rectangle){0, 0, (float)GetScreenWidth(), (float)-GetScreenHeight()};
     lightDest = (Rectangle){0, 0, (float)GetScreenWidth(), (float)GetScreenHeight()};
     */
-    //if (currentCamera->GetType() == PIXELCAMERA)
+    // if (currentCamera->GetType() == PIXELCAMERA)
     //{
-    //    
-    //    BeginDrawing();
-    //    //ClearBackground(RAYWHITE);
-    //    currentCamera->Draw(deltaTime, currentCamera->GetCamera());
-    //}
-    
+    //
+    //     BeginDrawing();
+    //     //ClearBackground(RAYWHITE);
+    //     currentCamera->Draw(deltaTime, currentCamera->GetCamera());
+    // }
+
     /*
     BeginBlendMode(BLEND_MULTIPLIED);
     DrawTexturePro(screenSpaceLightMap.texture, lightSrc, lightDest, (Vector2){0, 0}, 0, WHITE);
@@ -325,7 +325,7 @@ void Scene::Draw(float deltaTime)
     */
     std::string val = std::to_string(currentCamera->zoom);
     DrawText(val.c_str(), 10, 30, 20, DARKGREEN);
-    DrawFPS(10,10); 
-   
+    DrawFPS(10, 10);
+
     EndDrawing();
 }
