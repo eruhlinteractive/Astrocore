@@ -17,7 +17,6 @@
 #include "pixelPerfectCamera.h"
 #include "../include/box2d/box2d.h"
 
-
 // Custom Blend Modes
 #define RLGL_SRC_ALPHA 0x0302
 #define RLGL_MIN 0x8007
@@ -25,7 +24,7 @@
 
 namespace Astrolib
 {
-    class Scene
+    class Scene : public Observer
     {
 
     public:
@@ -45,6 +44,9 @@ namespace Astrolib
         void Draw(float deltaTime);
         bool AddLightToScene(Light2D *light);
 
+
+        void OnNotify(const Signaler *signaler, std::string eventName) override;
+        
         bool RegisterEntity(Entity2D *entity);
         bool UnRegisterEntity(std::string name);
 
@@ -53,7 +55,7 @@ namespace Astrolib
         Color ambientColor = WHITE;
         bool ySortEnabled = true;
 
-        Entity2D* GetRoot()
+        Entity2D *GetRoot()
         {
             return root;
         }
@@ -62,7 +64,7 @@ namespace Astrolib
         /// @param p1 The first pair
         /// @param p2 The second pair
         /// @return Whether the draw layer of the first value is larger than the second
-        static bool SortByLayerIndex(Entity2D *p1, Entity2D *p2)
+        inline static bool SortByLayerIndex(Entity2D *p1, Entity2D *p2)
         {
             return p1->GetDrawLayer() < p2->GetDrawLayer();
         }
@@ -85,14 +87,14 @@ namespace Astrolib
         /// @return True if the AABB check passes and the object is visible on screen
         static bool IsOnScreen(Camera2D *camera, Rectangle entityRect)
         {
-            Vector2 screenSize = {GetRenderWidth(), GetRenderHeight()};
+            Vector2 screenSize = {(float)GetRenderWidth(), (float)GetRenderHeight()};
             Vector2 screenSpaceCoords = GetWorldToScreen2D({entityRect.x, entityRect.y}, *camera);
 
             Rectangle tileRect = (Rectangle){
                 screenSpaceCoords.x,
                 screenSpaceCoords.y,
                 entityRect.width * camera->zoom,
-                entityRect.height * camera->zoom };
+                entityRect.height * camera->zoom};
 
             // Vector2 ss = GetScreenToWorld2D({tileRect.x, tileRect.y}, *camera);
             // Rectangle debugRect = (Rectangle){ss.x, ss.y, tileInfo->imageSize.x, tileInfo->imageSize.y};
@@ -107,7 +109,7 @@ namespace Astrolib
         }
 
     private:
-        Entity2D* root;
+        Entity2D *root;
         /// @brief Top level of the scene graph
         std::map<std::string, Entity2D *> entities;
         std::map<std::string, Entity2D *> drawableEntities;

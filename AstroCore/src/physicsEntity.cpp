@@ -53,10 +53,11 @@ void PhysicsEntity::CreateRectangleCollider(Vector2 center, Vector2 size, float 
 
 void PhysicsEntity::FixedUpdate(float deltaTime)
 {
-    // TODO: Update entity properties/transforms to match physics transforms
+    // Update entity properties/transforms to match physics transforms
     b2Vec2 pos = physicsBody->GetLocalPoint(physicsBody->GetPosition());
     transform.position = (Vector2){pos.x, pos.y};
     transform.rotation = physicsBody->GetAngle();
+    transform.scale = (Vector2){1.0, 1.0};
 }
 
 /// @brief Creates a rectangle body and

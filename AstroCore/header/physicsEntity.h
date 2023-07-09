@@ -43,7 +43,8 @@ namespace Astrolib
             
         void CreateCircleCollider(Vector2 center, float radius);
         void AddFixtureToBody(b2FixtureDef fixtureDefinition);
-        b2Body* GetPhysicsBody()
+        
+        inline b2Body* GetPhysicsBody()
         {
             return physicsBody;
         }

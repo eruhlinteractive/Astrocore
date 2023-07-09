@@ -13,5 +13,6 @@
 #include "header/tilemap.h"
 #include "header/pixelPerfectCamera.h"
 #include "header/cameraEntity.h"
-#include "game.h"
-#include "debug.h"
+#include "header/game.h"
+#include "header/debug.h"
+#include "header/physicsEntity.h"

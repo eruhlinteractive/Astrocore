@@ -17,6 +17,19 @@ Scene::Scene()
     LoadScene();
 }
 
+void Scene::OnNotify(const Signaler *signaler, std::string eventName)
+{
+    Entity2D* entity = (Entity2D*)signaler;
+
+    // Callback to remove entity from the scene when removed
+    if(eventName == "entityDeleted")
+    {
+        UnRegisterEntity(entity->GetName());
+    }
+
+}
+
+
 bool Scene::RegisterEntity(Entity2D *entity)
 {
     std::string name = entity->GetName();
@@ -47,6 +60,9 @@ bool Scene::RegisterEntity(Entity2D *entity)
         {
             lights.insert(std::pair{name, (Light2D *)entity});
         }
+
+        // Register to be notified when an entity is deleted (to be removed from scene tree)
+        entity->AddObserver(this, "entityDeleted");
         return true;
     }
 
@@ -65,9 +81,17 @@ Scene::~Scene()
     // Cleanup scene memory
     for (auto e : entities)
     {
+        // Since parent entities delete all their own children, remove them from the 
+        for(auto child : e.second->GetChildren())
+        {
+            UnRegisterEntity(child->GetName());
+        }
+        //UnRegisterEntity(e.second->GetName());
+
         delete e.second;
         e.second = nullptr;
     }
+
     delete root;
     root = nullptr;
     UnloadRenderTexture(screenSpaceLightMap);

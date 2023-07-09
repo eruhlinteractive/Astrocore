@@ -6,6 +6,7 @@
 #include "interfaces.h"
 #include "debug.h"
 
+
 #ifndef __ENTITY2D_H__
 #define __ENTITY2D_H__
 
@@ -37,9 +38,11 @@ enum ENTITY_TYPE
     PHYSICAL
 };
 
+
 namespace Astrolib
 {
-    class Entity2D : public Observer, Signaler
+    class Scene;
+    class Entity2D : public Observer, public Signaler
     {
     public:
         // Constructors
@@ -85,6 +88,11 @@ namespace Astrolib
         /// @brief Called when the object is de-allocated
         virtual void OnDestroy(){};
 
+        void SetCurrentScene(Scene* scene)
+        {
+            currentScene = scene;
+        }
+
         /// @brief The layer this sprite is drawn on (lower = first), relative to the parent
         int drawLayer = 0;
         int GetDrawLayer()
@@ -126,7 +134,7 @@ namespace Astrolib
         Transform2D transform;
         inline static float pixelsPerUnit = 1.0f;
 
-        
+
         float GetNearestMultiple(float value, float multiple)
 	    {
             if(multiple == 0)
@@ -149,8 +157,10 @@ namespace Astrolib
 	    }
 
     protected:
+        
         ENTITY_TYPE type;
         bool isReady = false;
+        Scene* currentScene;
 
         // Bit flags for this entity
         uint8_t transformFlags = 0;

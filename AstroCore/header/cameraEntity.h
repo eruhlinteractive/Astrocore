@@ -15,7 +15,7 @@ namespace Astrolib
         }
 
 
-        void OnNotify(const Observer *observer, std::string eventName) override
+        void OnNotify(const Signaler *signaler, std::string eventName) override
         {
             if(eventName == "windowResized")
             {

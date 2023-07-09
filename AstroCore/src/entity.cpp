@@ -8,6 +8,7 @@ using namespace Astrolib;
 
 int Entity2D::entityCount = 0;
 
+
 #pragma region Constructors
 Entity2D::Entity2D()
 {
@@ -43,10 +44,13 @@ Entity2D::~Entity2D()
     }
     // Delete children entities
     for (Entity2D *entity : *(children.get()))
-    {
+    {   
         delete entity;
         entity = nullptr;
     }
+
+    SendEvent("entityDeleted");
+    children.get()->clear();
 }
 
 #pragma endregion
@@ -186,13 +190,23 @@ void Entity2D::SetParent(Entity2D *newParent)
     }
 
     parentEntity = newParent;
-    parentEntity->AddChild(this);
+    if(parentEntity != nullptr)
+    {
+        parentEntity->AddChild(this);
+    }
+
+    
 }
 
 /// @brief Add and entity as a child of this entity
 /// @param newChild The new child to add to this entity
 void Entity2D::AddChild(Entity2D *newChild)
 {
+    if(newChild == nullptr)
+    {
+        return;
+    }
+
     // std::cout << children->size() << std::endl;
     if (newChild->GetParent() != this)
     {
@@ -221,7 +235,12 @@ std::vector<Entity2D *> Entity2D::GetChildren()
 /// @return True if the entity is a child, otherwise false
 bool Entity2D::HasChild(Entity2D *childToCheck)
 {
-    auto index = find(children->begin(), children->end(), childToCheck);
+    if(childToCheck == nullptr)
+    {
+        return false;
+    }
+    
+    auto index = find(children.get()->begin(), children.get()->end(), childToCheck);
     return index != children->end();
 }
 

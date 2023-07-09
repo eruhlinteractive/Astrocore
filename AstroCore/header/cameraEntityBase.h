@@ -44,7 +44,7 @@ namespace Astrolib
             }
             else
             {
-                destRect = (Rectangle){0, 0, GetRenderWidth(), GetRenderHeight()};
+                destRect = (Rectangle){0, 0, (float)GetRenderWidth(), (float)GetRenderHeight()};
             }
         }
 

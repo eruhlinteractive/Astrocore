@@ -59,6 +59,14 @@ public:
         Texture2D spriteIdle = tmInstance.GetTexture("res/idle_test.png");
         Texture2D beuh = tmInstance.GetTexture("res/beuh.png");
 
+        PhysicsEntity* testPhysicsEntity = new PhysicsEntity(STATIC);
+        SpriteEntity* beuhEntity = new SpriteEntity(beuh, {212,180}, {106, 90});
+        beuhEntity->transform.Scale({0.2,0.2});
+
+        testPhysicsEntity->AddChild(beuhEntity);
+        RegisterEntity(testPhysicsEntity);
+        testPhysicsEntity->drawLayer = 100;
+
         SpriteAnimation *idleAnim = new SpriteAnimation(spriteIdle, 4, 6, 4, {8, 8}, {16, 16});
         SpriteAnimation *runHorizAnim = new SpriteAnimation(spriteRun, 4, 6, 4, {0, 48}, {8, 8}, {16, 16});
         SpriteAnimation *runUpAnim = new SpriteAnimation(spriteRun, 4, 6, 4, {0, 32}, {8, 8}, {16, 16});
@@ -196,8 +204,6 @@ public:
 
     void LateUpdate(float deltaTime)
     {
-       
-
         AnimatedSpriteEntity *testSprite = (AnimatedSpriteEntity *)FindEntityByName("testSprite");
         Vector2 targetPos = testSprite->GetGlobalPosition();
         float x = cos(GetTime());
@@ -212,8 +218,6 @@ public:
         //currentCamera->target.y += deltaTime * 40.0f;
         //currentCamera->LateUpdate(deltaTime);
         Scene::LateUpdate(deltaTime);
-
-        
     }
 
     //void FixedUpdate(float deltaTime)

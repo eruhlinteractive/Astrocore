@@ -231,22 +231,22 @@ void TileMap::LoadDataTMX(std::string filePath)
                 (float)tile.imagePosition.x , 
                 (float)tile.imagePosition.y, 
                 (float)tile.imageSize.x, 
-                (float)tile.imageSize.y * -1.0
+                (float)tile.imageSize.y * -1.0f
             };
             
-            Rectangle dest = (Rectangle){newX, newY, tile.imageSize.x, tile.imageSize.y};
+            Rectangle dest = (Rectangle){(float)newX, (float)newY, (float)tile.imageSize.x, (float)tile.imageSize.y};
             // Render to atlas
             //DrawTexture(image, 0, 0, WHITE);
             //DrawTexturePro(image, source, dest, {0, 0} , 0 , WHITE);
-            DrawTextureRec(image, source, (Vector2){newX, maxTileHeight -  tile.imageSize.y}, WHITE);
+            DrawTextureRec(image, source, (Vector2){(float)newX, maxTileHeight -  (float)tile.imageSize.y}, WHITE);
         }
     
         //std::cout << path << std::endl;
 
         
         StaticTileMin* newTile = new StaticTileMin( 
-            (Vector2){tile.imageSize.x, tile.imageSize.y},
-            (Vector2){newX , newY}
+            (Vector2){(float)tile.imageSize.x, float(tile.imageSize.y)},
+            (Vector2){(float)newX , (float)newY}
         );
 
         // Store updated coordinates

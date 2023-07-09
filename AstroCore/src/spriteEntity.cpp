@@ -4,11 +4,15 @@ using namespace Astrolib;
 SpriteEntity::SpriteEntity(Sprite *sprite)
 {
     this->sprite = sprite;
+    name = "SpriteEntity_" + std::to_string(entityID);
+    type = SPRITE;
 }
 
 SpriteEntity::SpriteEntity(Texture2D spriteTexture, Vector2 frameSize, Vector2 origin)
 {
     this->sprite = new Sprite(spriteTexture, origin);
+    name = "SpriteEntity_" + std::to_string(entityID);
+    type = SPRITE;
 }
 
 SpriteEntity::~SpriteEntity()

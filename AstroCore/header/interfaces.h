@@ -5,11 +5,12 @@
 #include <map>
 namespace Astrolib
 {
+    class Signaler;
     class Observer
     {
     public:
         virtual ~Observer(){};
-        virtual void OnNotify(const Observer *observer, std::string eventName){};
+        virtual void OnNotify(const Signaler *signaler, std::string eventName){};
     };
 
     class Signaler
@@ -75,16 +76,18 @@ namespace Astrolib
 
     protected:
         std::map<std::string, std::vector<Observer *>> observerMap;
+
         void SendEvent(std::string eventName)
         {
             if (observerMap.find(eventName) != observerMap.end())
             {
                 for (Observer *observer : observerMap[eventName])
                 {
-                    observer->OnNotify(observer, eventName);
+                    observer->OnNotify(this, eventName);
                 }
             }
         }
     };
+
 };
 #endif // __INTERFACES_H__
