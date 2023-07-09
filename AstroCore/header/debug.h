@@ -66,9 +66,13 @@ namespace Astrolib
                 outputFile.open(GetLogPath().c_str());
             }
 
+            // Print to console as well
+            std::cout << newLogItem << std::endl;
+
             // Write to output stream
             newLogItem += '\n';
             outputFile << newLogItem.c_str();
+
             // Flush output buffer to the file
             outputFile.flush();
         }

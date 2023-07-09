@@ -79,22 +79,29 @@ Scene::~Scene()
     if (!entities.empty())
     {
         auto last = *entities.begin();
-        std::vector<Entity2D*> currentEntites = std::vector<Entity2D*>();
+        std::vector<string> currentEntityNames = std::vector<string>();
 
         // Cleanup scene memory
         for (auto e : entities)
         {
-            currentEntites.push_back(e.second);
+            currentEntityNames.push_back(e.first);
         }
 
-        while(!currentEntites.empty())
+        // Loop through all of the entity names to delete remaining entities in the scene
+        while(!currentEntityNames.empty())
         {
-            // TODO: Figure out why this is still throwing a segfault :(
-            Entity2D* val = currentEntites[currentEntites.size() -1];
-            delete val;
-            val = nullptr;
+            std::string name = currentEntityNames[currentEntityNames.size() -1];
 
-            currentEntites.pop_back();
+            if(entities.find(name) != entities.end())
+            {
+                Entity2D* val = entities[name];
+                Debug::Log("Deleting: " + val->GetName());
+                delete val;
+                val = nullptr;
+            }
+           
+
+            currentEntityNames.pop_back();
         }
     }
 
@@ -218,7 +225,7 @@ void Scene::Draw(float deltaTime)
     {
         Vector2 screenPos = GetWorldToScreen2D(p.second->GetGlobalPosition(), *currentCamera->GetCamera());
 
-        // TODO: Update this to a proper AABB test
+        // AABB test the rect to see if it's on screen
         if (IsOnScreen(currentCamera->GetCamera(), p.second->GetBoundRect()) && p.second->GetType() != TILEMAP)
         {
             pairs.push_back((Entity2D *)p.second);

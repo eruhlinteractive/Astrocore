@@ -251,7 +251,7 @@ void Entity2D::RemoveChild(Entity2D *childToRemove)
     auto index = find(children->begin(), children->end(), childToRemove);
     if (index != children->end())
     {
-        children->erase(index);
+        children.get()->erase(index);
         childToRemove->SetParent(nullptr);
     }
 }
