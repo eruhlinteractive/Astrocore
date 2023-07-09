@@ -39,6 +39,7 @@ int main()
 
     game->InitGame("Astrolib", 1280, 720);
     game->SetCurrentScene(new TestScene());
+    Debug::SetDebugFlag(DRAW_PHYSICS_BOUNDS);
 
     // Debug::instance()->SetDebugFlag(DRAW_SPRITE_BOUNDS);
     // std::cout << GetWorkingDirectory() << std::endl;

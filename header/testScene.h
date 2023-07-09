@@ -59,9 +59,12 @@ public:
         Texture2D spriteIdle = tmInstance.GetTexture("res/idle_test.png");
         Texture2D beuh = tmInstance.GetTexture("res/beuh.png");
 
+        // Create test physics entity
         PhysicsEntity* testPhysicsEntity = new PhysicsEntity(STATIC);
         SpriteEntity* beuhEntity = new SpriteEntity(beuh, {212,180}, {106, 90});
         beuhEntity->transform.Scale({0.2,0.2});
+        //testPhysicsEntity->CreateRectangleCollider({0,0}, {212 * 0.2,180 * 0.2});
+        testPhysicsEntity->CreateCircleCollider({0,0}, 50.0);
 
         testPhysicsEntity->AddChild(beuhEntity);
         RegisterEntity(testPhysicsEntity);

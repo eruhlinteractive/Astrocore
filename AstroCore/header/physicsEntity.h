@@ -57,6 +57,7 @@ namespace Astrolib
 
         void ApplyImpulse(Vector2 force);
         void ApplyImpulseAtPoint(Vector2 force, Vector2 point);
+        void Draw(float deltaTime, Camera2D *camera) override;
 
     protected:
         b2BodyDef bodyDef;

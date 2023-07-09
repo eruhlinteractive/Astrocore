@@ -49,7 +49,7 @@ bool Scene::RegisterEntity(Entity2D *entity)
         entities.insert(std::pair{name, entity});
 
         // Add to specialized lists
-        if (entity->GetType() == SPRITE || entity->GetType() == TILEMAP)
+        if (entity->GetType() == SPRITE || entity->GetType() == TILEMAP || entity->GetType() == PHYSICAL)
         {
             drawableEntities.insert(std::pair{name, entity});
         }
