@@ -6,7 +6,6 @@
 #include "interfaces.h"
 #include "debug.h"
 
-
 #ifndef __ENTITY2D_H__
 #define __ENTITY2D_H__
 
@@ -37,7 +36,6 @@ enum ENTITY_TYPE
     PIXELCAMERA,
     PHYSICAL
 };
-
 
 namespace Astrolib
 {
@@ -88,7 +86,7 @@ namespace Astrolib
         /// @brief Called when the object is de-allocated
         virtual void OnDestroy(){};
 
-        void SetCurrentScene(Scene* scene)
+        void SetCurrentScene(Scene *scene)
         {
             currentScene = scene;
         }
@@ -106,7 +104,11 @@ namespace Astrolib
 
         /// @brief Get the sprite rectangle, or a zero-sized rectangle if no sprite is set
         /// @return The Rectangle bounding box of the sprite
-        virtual Rectangle GetBoundRect() { return (Rectangle){transform.position.x, transform.position.y, 0, 0}; };
+        virtual Rectangle GetBoundRect()
+        {
+            Vector2 globalPos = GetGlobalPosition();
+            return (Rectangle){globalPos.x, globalPos.y, 0, 0};
+        };
 
         virtual void Draw(float deltaTime, Camera2D *camera){};
 
@@ -134,33 +136,31 @@ namespace Astrolib
         Transform2D transform;
         inline static float pixelsPerUnit = 1.0f;
 
-
         float GetNearestMultiple(float value, float multiple)
-	    {
-            if(multiple == 0)
+        {
+            if (multiple == 0)
             {
                 return value;
             }
 
-		    float rem = fmodf(value, multiple);
+            float rem = fmodf(value, multiple);
 
-            if(rem == 0)
+            if (rem == 0)
             {
                 return value;
             }
-		    float result = value - rem;
+            float result = value - rem;
 
-		    if (rem > (multiple / 2.0f))
-		    	result += multiple;
-    
-		    return result;
-	    }
+            if (rem > (multiple / 2.0f))
+                result += multiple;
+
+            return result;
+        }
 
     protected:
-        
         ENTITY_TYPE type;
         bool isReady = false;
-        Scene* currentScene;
+        Scene *currentScene;
 
         // Bit flags for this entity
         uint8_t transformFlags = 0;

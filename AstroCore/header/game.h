@@ -63,7 +63,7 @@ namespace Astrolib
         virtual void FixedUpdate(float deltaTime)
         {
             // TODO: Make this settable by the end user
-            physicsWorld->Step(deltaTime,8,3);
+            physicsWorld->Step(deltaTime, 8, 3);
             currentScene->FixedUpdate(deltaTime);
         };
         virtual void Draw(float deltaTime)
@@ -99,7 +99,7 @@ namespace Astrolib
             CloseWindow();
         };
 
-        static b2World* GetPhysicsWorld()
+        static b2World *GetPhysicsWorld()
         {
             return physicsWorld;
         }
@@ -119,7 +119,7 @@ namespace Astrolib
         Scene *currentScene;
         Game()
         {
-            physicsWorld = new b2World(b2Vec2_zero);
+            physicsWorld = new b2World(b2Vec2(0, 0));
         };
 
     private:

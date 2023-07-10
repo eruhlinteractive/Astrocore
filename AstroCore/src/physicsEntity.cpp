@@ -2,10 +2,10 @@
 
 using namespace Astrolib;
 
-PhysicsEntity::PhysicsEntity(PHYSICS_TYPE bodyType)
+PhysicsEntity::PhysicsEntity(PHYSICS_TYPE bodyType, Vector2 startPos)
 {
     bodyDef = b2BodyDef();
-    bodyDef.position.SetZero();
+    bodyDef.position = b2Vec2(startPos.x, startPos.y);
 
     type = PHYSICAL;
     if (bodyType == STATIC)
@@ -16,13 +16,19 @@ PhysicsEntity::PhysicsEntity(PHYSICS_TYPE bodyType)
     {
         bodyDef.type = b2_dynamicBody;
     }
+    else if (bodyType == KINEMATIC)
+    {
+        bodyDef.type = b2_kinematicBody;
+    }
 
+    // TODO: Move this to when the entity gets added to the tree
     // Register physics body with world
-    physicsBody = Game::instance().GetPhysicsWorld()->CreateBody(&bodyDef);
+    physicsBody = Game::GetPhysicsWorld()->CreateBody(&bodyDef);
+    transform.position = startPos;
 }
 
 PhysicsEntity::PhysicsEntity(std::string name, PHYSICS_TYPE bodyType, Vector2 position, float rotation)
-    : PhysicsEntity(bodyType)
+    : PhysicsEntity(bodyType, position)
 {
     this->name = name;
     physicsBody->SetTransform(b2Vec2(position.x, position.y), rotation);
@@ -53,19 +59,22 @@ void PhysicsEntity::CreateRectangleCollider(Vector2 center, Vector2 size, float 
 
 void PhysicsEntity::FixedUpdate(float deltaTime)
 {
-    if(physicsBody->GetType() == b2_staticBody)
+    if (physicsBody->GetType() == b2_staticBody || physicsBody->GetType() == b2_kinematicBody)
     {
-        physicsBody->SetTransform(b2Vec2{transform.position.x, transform.position.y}, -transform.rotation);
+        // TODO: Figure out how to convert from meters to pixels per Box2d documentation
+        // https://box2d.org/documentation/md__d_1__git_hub_box2d_docs_loose_ends.html#autotoc_md124
+
+        Vector2 globalPos = GetGlobalPosition();
+        physicsBody->SetTransform(b2Vec2{globalPos.x, globalPos.y}, -transform.rotation);
     }
-    else if(physicsBody->GetType() == b2_dynamicBody)
+    else if (physicsBody->GetType() == b2_dynamicBody)
     {
         // Update entity properties/transforms to match physics transforms
-        b2Vec2 pos = physicsBody->GetLocalPoint(physicsBody->GetPosition());
+        b2Vec2 pos = physicsBody->GetPosition();
         transform.position = (Vector2){pos.x, pos.y};
-        transform.rotation = physicsBody->GetAngle();
+        transform.rotation = -physicsBody->GetAngle();
         transform.scale = (Vector2){1.0, 1.0};
     }
-    
 }
 
 /// @brief Creates a rectangle body and
@@ -131,38 +140,40 @@ void PhysicsEntity::AddFixtureToBody(b2FixtureDef fixtureDefinition)
     physicsBody->CreateFixture(&fixtureDefinition);
 }
 
-
 void PhysicsEntity::Draw(float deltaTime, Camera2D *camera)
 {
-    if(Debug::IsDebugFlagSet(DRAW_PHYSICS_BOUNDS))
+    if (Debug::IsDebugFlagSet(DRAW_PHYSICS_BOUNDS))
     {
+
+        b2Vec2 bodyCenter = physicsBody->GetWorldCenter();
+        DrawRectangle(bodyCenter.x, bodyCenter.y, 2, 2, GREEN);
+
         // TODO: Draw all fixture shapes
-        b2Fixture* fixtureList = physicsBody->GetFixtureList();
+        b2Fixture *fixtureList = physicsBody->GetFixtureList();
         b2Fixture fix = fixtureList[0];
         b2Shape::Type shapeType = fix.GetShape()->GetType();
 
-        if(shapeType == b2Shape::Type::e_circle)
+        if (shapeType == b2Shape::Type::e_circle)
         {
-            b2CircleShape* shape = (b2CircleShape*)fix.GetShape();
-            DrawCircleLines(shape->m_p.x,shape->m_p.y, shape->m_radius, RED);
+            b2CircleShape *shape = (b2CircleShape *)fix.GetShape();
+            DrawCircleLines(shape->m_p.x, shape->m_p.y, shape->m_radius, RED);
         }
-        else if(shapeType == b2Shape::Type::e_polygon)
+        else if (shapeType == b2Shape::Type::e_polygon)
         {
-          
-            b2PolygonShape* shape = (b2PolygonShape*)fix.GetShape();
-            auto verts = shape->m_vertices;
-            Vector2* points = new Vector2[shape->m_count]();
-            points = points + shape->m_count + 1;
 
+            b2PolygonShape *shape = (b2PolygonShape *)fix.GetShape();
+            auto verts = shape->m_vertices;
+            Vector2 *points = new Vector2[shape->m_count]();
+            points = points + shape->m_count + 1;
             // Create points array
             for (int i = 0; i < shape->m_count; i++)
             {
-                
-                b2Vec2* vert = verts;
+
+                b2Vec2 *vert = verts;
                 b2Vec2 localPoint = physicsBody->GetLocalPoint(*vert);
 
                 // Reverse winding order of the points array (b2d is CCW, openGL is Cw)
-                *(--points) = (Vector2){localPoint.x, localPoint.y};
+                *(--points) = (Vector2){-localPoint.x, -localPoint.y};
                 verts++;
             }
 
@@ -170,9 +181,8 @@ void PhysicsEntity::Draw(float deltaTime, Camera2D *camera)
 
             // Close polygon
             Vector2 start = *points;
-            Vector2 end = *(points + shape->m_count -1);
+            Vector2 end = *(points + shape->m_count - 1);
             DrawLine(start.x, start.y, end.x, end.y, BLUE);
-            
         }
     }
 };
@@ -181,31 +191,29 @@ void PhysicsEntity::Draw(float deltaTime, Camera2D *camera)
 
 /// @brief Apply a force to the center of this body
 /// @param force The force vector to apply
-inline void PhysicsEntity::AddForce(Vector2 force)
+void PhysicsEntity::AddForce(Vector2 force)
 {
-    physicsBody->ApplyForceToCenter(b2Vec2(force.x, force.y), true);
+    physicsBody->ApplyForceToCenter(b2Vec2(-force.x, -force.y), true);
 }
 
-inline void PhysicsEntity::AddForceAtPoint(Vector2 force, Vector2 point)
+void PhysicsEntity::AddForceAtPoint(Vector2 force, Vector2 point)
 {
-    physicsBody->ApplyForce(b2Vec2(force.x, force.y), b2Vec2(point.x, point.y), true);
+    physicsBody->ApplyForce(b2Vec2(-force.x, -force.y), b2Vec2(point.x, point.y), true);
 }
 
-inline void PhysicsEntity::ApplyTorque(float torque)
+void PhysicsEntity::ApplyTorque(float torque)
 {
-    physicsBody->ApplyTorque(torque, true);
+    physicsBody->ApplyTorque(-torque, true);
 }
 
-
-inline void PhysicsEntity::ApplyImpulse(Vector2 force)
+void PhysicsEntity::ApplyImpulse(Vector2 force)
 {
-    physicsBody->ApplyLinearImpulseToCenter(b2Vec2(force.x, force.y), true);
+    physicsBody->ApplyLinearImpulseToCenter(b2Vec2(-force.x, -force.y), true);
 }
 
-
-inline void PhysicsEntity::ApplyImpulseAtPoint(Vector2 force, Vector2 point)
+void PhysicsEntity::ApplyImpulseAtPoint(Vector2 force, Vector2 point)
 {
-    physicsBody->ApplyLinearImpulse(b2Vec2(force.x, force.y), b2Vec2(point.x, point.y), true);
+    physicsBody->ApplyLinearImpulse(b2Vec2(-force.x, -force.y), b2Vec2(point.x, point.y), true);
 }
 
 #pragma endregion

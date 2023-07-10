@@ -60,19 +60,17 @@ public:
         Texture2D beuh = tmInstance.GetTexture("res/beuh.png");
 
         // Create test physics entity
-        PhysicsEntity* testPhysicsEntity = new PhysicsEntity(STATIC);
+        PhysicsEntity* testPhysicsEntity = new PhysicsEntity(DYNAMIC, {10,50});
         testPhysicsEntity->SetName("physicsTest");
+        //testPhysicsEntity->GetPhysicsBody()->SetTransform({-10,0},0.0f);
 
         SpriteEntity* beuhEntity = new SpriteEntity(beuh, {212,180}, {106, 90});
         beuhEntity->SetName("beuh");
         beuhEntity->transform.Scale({0.2,0.2});
-        testPhysicsEntity->CreateRectangleCollider({0,0}, {212 * 0.2,180 * 0.2});
+        testPhysicsEntity->CreateRectangleCollider({0,0}, {212 * 0.2, 180 * 0.2});
         //testPhysicsEntity->CreateCircleCollider({0,0}, 50.0);
-
-        
-
         testPhysicsEntity->AddChild(beuhEntity);
-        testPhysicsEntity->transform.RotateDegrees(45);
+        //testPhysicsEntity->transform.RotateDegrees(45);
 
         RegisterEntity(testPhysicsEntity);
         testPhysicsEntity->drawLayer = 100;
@@ -89,6 +87,12 @@ public:
 
         SpriteEntity *testSpr = new SpriteEntity(beuh, {212, 180}, {106, 90});
         testSpr->transform.MoveGlobal({10, 10});
+
+        PhysicsEntity* playerCollider = new PhysicsEntity(KINEMATIC, {0,0});
+        playerCollider->drawLayer = 100;
+        playerCollider->SetName("playerCollider");
+        playerCollider->CreateRectangleCollider({0,0}, {16,16});
+        testAnimSprite->AddChild(playerCollider);
         // testSpr->transform.Scale((Vector2){0.5f, 0.5f});
 
         //AnimatedSpriteEntity *testChild = new AnimatedSpriteEntity("testChild", {24, 24}, {48, 48}, spriteIdle);
@@ -132,6 +136,7 @@ public:
         //std::string path = t->GetPath();
         //t = GetEntity(path);
         //std::string name = t->GetName();
+        //testPhysicsEntity->ApplyImpulse({10000,10000});
     };
 
     void Update(float deltaTime)
@@ -142,10 +147,9 @@ public:
         AnimatedSpriteEntity *testSprite = (AnimatedSpriteEntity *)FindEntityByName("testSprite");
         InputManager input = InputManager::instance();
         PhysicsEntity* physicsTest = (PhysicsEntity*)FindEntityByName("physicsTest");
+        PhysicsEntity* playerCollider = (PhysicsEntity*)FindEntityByName("playerCollider");
         TileMap *tm = (TileMap *)FindEntityByName("tileMap");
-
-
-        physicsTest->transform.Rotate(0.1 * deltaTime);
+        //physicsTest->ApplyTorque(10000.0f);
 
         if (input.IsActionDown("right"))
 
@@ -172,13 +176,16 @@ public:
         else if (input.IsActionDown("up"))
         {
             testSprite->transform.MoveLocal({0, -50.0f * deltaTime});
+           
+            
             testSprite->SetFlipped(false, false);
             testSprite->ChangeAnimation("runUp");
         }
         else if (input.IsActionDown("down"))
         {
             testSprite->transform.MoveLocal({0, 50.0f * deltaTime});
-             testSprite->SetFlipped(false, false);
+            //playerCollider->AddForce({0,-10});
+            testSprite->SetFlipped(false, false);
             testSprite->ChangeAnimation("runDown");
         }
         else

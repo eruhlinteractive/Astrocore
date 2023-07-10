@@ -10,13 +10,14 @@ namespace Astrolib
     enum PHYSICS_TYPE
     {
         STATIC, // Doesn't move
-        DYNAMIC // Moveable
+        DYNAMIC, // Moveable
+        KINEMATIC // Moveable by user
     };
 
     class PhysicsEntity : public Entity2D
     {
     public:
-        PhysicsEntity(PHYSICS_TYPE bodyType);
+        PhysicsEntity(PHYSICS_TYPE bodyType, Vector2 startPos);
         PhysicsEntity(std::string name, PHYSICS_TYPE bodyType, Vector2 position, float rotation);
         ~PhysicsEntity();
 
