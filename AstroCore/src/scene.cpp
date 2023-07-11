@@ -49,7 +49,7 @@ bool Scene::RegisterEntity(Entity2D *entity)
         entities.insert(std::pair{name, entity});
 
         // Add to specialized lists
-        if (entity->GetType() == SPRITE || entity->GetType() == TILEMAP || entity->GetType() == PHYSICAL)
+        if (entity->GetType() == SPRITE || entity->GetType() == TILEMAP)
         {
             drawableEntities.insert(std::pair{name, entity});
         }
@@ -281,6 +281,11 @@ void Scene::Draw(float deltaTime)
         e->Draw(deltaTime, currentCamera->GetCamera());
     }
 
+
+    if(Debug::IsDebugFlagSet(DRAW_PHYSICS_BOUNDS))
+    {
+       GetPhysicsWorld()->DebugDraw();
+    }
     currentCamera->EndDrawing();
 
     BeginDrawing();
@@ -331,6 +336,7 @@ void Scene::Draw(float deltaTime)
     DrawTexturePro(screenSpaceLightMap.texture, lightSrc, lightDest, (Vector2){0, 0}, 0, WHITE);
     EndBlendMode();
     */
+
     std::string val = std::to_string(currentCamera->zoom);
     DrawText(val.c_str(), 10, 30, 20, DARKGREEN);
     DrawFPS(10, 10);

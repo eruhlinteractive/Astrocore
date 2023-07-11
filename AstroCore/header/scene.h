@@ -41,7 +41,7 @@ namespace Astrolib
         virtual void Update(float deltaTime);
         virtual void FixedUpdate(float deltaTime);
         virtual void LateUpdate(float deltaTime);
-        void Draw(float deltaTime);
+        virtual void Draw(float deltaTime);
         bool AddLightToScene(Light2D *light);
 
 
@@ -107,8 +107,17 @@ namespace Astrolib
 
             return isOnScreen;
         }
+        void SetPhysicsWorld(b2World *newWorld)
+        {
+            physicsWorld = newWorld;
+        }
+        b2World* GetPhysicsWorld()
+        {
+            return physicsWorld;
+        }
 
     private:
+        b2World *physicsWorld;
         Entity2D *root;
         /// @brief Top level of the scene graph
         std::map<std::string, Entity2D *> entities;

@@ -5,6 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include <algorithm>
+#include "physicsDebug.h"
 
 // Transformation flags
 // Since each flag is stored as a single bit, they need to be shifted to be in the proper positions

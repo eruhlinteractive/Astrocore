@@ -26,6 +26,9 @@
 #include <math.h>
 #include "AstroCore/astrocore.h"
 #include "testGame.h"
+#include "testScene.h"
+#include "physicsScene.h"
+#include "physicsDebug.h"
 
 int main()
 {
@@ -38,12 +41,12 @@ int main()
     float fixedUpdateTimer = 0.0f;
 
     game->InitGame("Astrolib", 1280, 720);
-    game->SetCurrentScene(new TestScene());
+    game->SetCurrentScene(new PhysicsScene());
+    game->GetPhysicsWorld()->SetDebugDraw(new PhysicsDebug());
+    game->GetCurrentScene()->SetPhysicsWorld(game->GetPhysicsWorld());
+
     Debug::SetDebugFlag(DRAW_PHYSICS_BOUNDS);
     Debug::SetDebugFlag(DRAW_SPRITE_BOUNDS);
-
-    // Debug::instance()->SetDebugFlag(DRAW_SPRITE_BOUNDS);
-    // std::cout << GetWorkingDirectory() << std::endl;
 
     // Main game loop
     while (!WindowShouldClose()) // Detect window close button or ESC key
