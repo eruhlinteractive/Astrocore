@@ -13,9 +13,9 @@ public:
     {
         currentCamera = new CameraEntity();
         RegisterEntity(currentCamera);
-        currentCamera->zoom = 9.0;
+        currentCamera->zoom = 2.0;
         currentCamera->target.y -= 30;
-        //currentCamera->SetRenderDimensions(320, 180);
+        currentCamera->SetRenderDimensions(320, 180);
         Game::GetPhysicsWorld()->SetGravity({0, 9.8 * 0.0f});
 
         PhysicsEntity *floor = new PhysicsEntity(STATIC, {-2, 0});
@@ -52,22 +52,20 @@ public:
         std::shared_ptr<InputAction> addForce = std::shared_ptr<InputAction>(new InputAction("addForce", KEY_SPACE));
         InputManager::instance().AddInputAction(addForce);
 
-
         for (int i = 0; i < 12; i++)
         {
             PhysicsEntity *box = new PhysicsEntity(DYNAMIC, {-i * 3.0 + 10, -50 + (-i * 10)});
             box->CreateRectangleCollider({0, 0}, {6.7, 6.7}, 0, 1, 5, 0);
-            
+
             Texture spriteTexture = TextureManager::instance().GetTexture("res/testSprite.png");
-            SpriteEntity *spriteChild = new SpriteEntity(spriteTexture, {48,48}, {24, 24});
-            //spriteChild->transform.MoveGlobal({-4,-4});
-            spriteChild->transform.Scale({0.15,0.15});
+            SpriteEntity *spriteChild = new SpriteEntity(spriteTexture, {48, 48}, {24, 24});
+            // spriteChild->transform.MoveGlobal({-4,-4});
+            spriteChild->transform.Scale({0.15, 0.15});
             box->AddChild(spriteChild);
             RegisterEntity(box);
-            
+
             entities.push_back(box);
         }
-
 
         PhysicsEntity *box = new PhysicsEntity(DYNAMIC, {0, -13});
         box->SetName("mixer");
@@ -75,24 +73,25 @@ public:
         box->GetPhysicsBody()->SetSleepingAllowed(false);
         box->GetPhysicsBody()->SetLinearDamping(100.0);
         box->GetPhysicsBody()->SetFixedRotation(true);
-        
+
         Texture spriteTexture = TextureManager::instance().GetTexture("res/idle_test.png");
-        SpriteEntity *spriteChild = new SpriteEntity(spriteTexture, {16,16}, {8, 8});
-        //spriteChild->transform.MoveGlobal({-4,-4});
-        spriteChild->transform.Scale({0.15,0.15});
+        SpriteEntity *spriteChild = new SpriteEntity(spriteTexture, {16, 16}, {8, 8});
+        spriteChild->GetSprite()->spriteSize = (Vector2){16, 16};
+        // spriteChild->transform.MoveGlobal({-4,-4});
+        spriteChild->transform.Scale({0.5, 0.5});
         box->AddChild(spriteChild);
         RegisterEntity(box);
-        
-        
+
         entities.push_back(box);
     }
 
     void Update(float deltaTime) override
     {
-        PhysicsEntity* mixer = (PhysicsEntity*)FindEntityByName("mixer");
-        //float x = (float)std::cos(GetTime()) * 10.0f;
-        //Debug::Log(std::to_string(x));
-        //mixer->transform.position.x = x;
+        PhysicsEntity *mixer = (PhysicsEntity *)FindEntityByName("mixer");
+        currentCamera->target = mixer->GetGlobalPosition();
+        // float x = (float)std::cos(GetTime()) * 10.0f;
+        // Debug::Log(std::to_string(x));
+        // mixer->transform.position.x = x;
 
         if (InputManager::instance().IsActionPressed("addForce"))
         {
@@ -106,24 +105,23 @@ public:
         // Get reference to input instance
         InputManager input = InputManager::instance();
 
-        if(input.IsActionDown("up"))
+        if (input.IsActionDown("up"))
         {
             mixer->AddForce({0.0, 1000});
         }
-        else if(input.IsActionDown("down"))
+        else if (input.IsActionDown("down"))
         {
             mixer->AddForce({0.0, -1000});
         }
 
-        if(input.IsActionDown("right"))
+        if (input.IsActionDown("right"))
         {
-            mixer->AddForce({-100, 0});
+            mixer->AddForce({-1000, 0});
         }
-        else if(input.IsActionDown("left"))
+        else if (input.IsActionDown("left"))
         {
-            mixer->AddForce({100, 0});
+            mixer->AddForce({1000, 0});
         }
-
 
         Scene::Update(deltaTime);
     }

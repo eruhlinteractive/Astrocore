@@ -11,6 +11,7 @@ src/filemanager.cpp
 src/tilemapLayer.cpp
 src/physicsEntity.cpp
 src/physicsDebug.cpp
+src/trigger2D.cpp
 )
 target_include_directories(${PROJECT_NAME}
     PRIVATE include

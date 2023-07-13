@@ -33,9 +33,9 @@ void SpriteEntity::Draw(float deltaTime, Camera2D *camera)
     // Update destination rect
     Rectangle srcRect, destRect;
     Vector2 globalPos = GetGlobalPosition();
-    srcRect = (Rectangle){0.0f, 0.0f, (float)sprite->spriteTexture.width, (float)sprite->spriteTexture.height};
-    destRect = (Rectangle){globalPos.x, globalPos.y, sprite->spriteTexture.width * transform.scale.x, sprite->spriteTexture.height * transform.scale.y};
-    DrawTexturePro(sprite->spriteTexture, srcRect, destRect, {(sprite->origin.x * transform.scale.x),(sprite->origin.y * transform.scale.y)}, GetGlobalRotationDeg(), WHITE);
+    srcRect = (Rectangle){sprite->startPoint.x, sprite->startPoint.y, (float)sprite->spriteSize.x, (float)sprite->spriteSize.y};
+    destRect = (Rectangle){globalPos.x, globalPos.y, sprite->spriteSize.x * transform.scale.x, sprite->spriteSize.y * transform.scale.y};
+    DrawTexturePro(sprite->spriteTexture, srcRect, destRect, {(sprite->origin.x * transform.scale.x), (sprite->origin.y * transform.scale.y)}, GetGlobalRotationDeg(), WHITE);
 
     if (Debug::instance()->IsDebugFlagSet(DRAW_SPRITE_BOUNDS))
     {

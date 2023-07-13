@@ -6,163 +6,181 @@
 
 namespace Astrolib
 {
-/// @brief A struct representing a single input event (i.e an 'E' key press or 'A' button press on a controller)
-typedef struct InputEvent
-{
-    // Constructor
-    InputEvent(int inputIndex, int actionControllerId =-1) 
+    /// @brief A struct representing a single input event (i.e an 'E' key press or 'A' button press on a controller)
+    typedef struct InputEvent
     {
-        controllerId = actionControllerId;
-        positiveInput = inputIndex;
-    };
-    
-    /// Is this a controller action?
-    int controllerId = -1;
+        // Constructor
+        InputEvent(int inputIndex, int actionControllerId = -1)
+        {
+            controllerId = actionControllerId;
+            positiveInput = inputIndex;
+        };
 
-    // What index is the positive(on) input?
-    int positiveInput;
-} InputEvent;
+        /// Is this a controller action?
+        int controllerId = -1;
 
-typedef struct Sprite
-{
-    Texture spriteTexture;
-    Vector2 origin;
-    Sprite(Texture2D texture, Vector2 origin)
+        // What index is the positive(on) input?
+        int positiveInput;
+    } InputEvent;
+
+    typedef struct Sprite
     {
-        this->spriteTexture = texture;
-        this->origin = origin;
-    }
-} Sprite;
+        // Texture that contains the sprite
+        Texture spriteTexture;
 
-typedef struct SpriteAnimation
-{
-    SpriteAnimation()
+        // Middle point of the sprite
+        Vector2 origin;
+
+        // Size of the sprite on the texture
+        Vector2 spriteSize;
+
+        // Start point of the sprite on the texture
+        Vector2 startPoint;
+
+        Sprite(Texture2D texture, Vector2 origin)
+        {
+            this->spriteTexture = texture;
+            this->origin = origin;
+            this->startPoint = (Vector2){0, 0};
+            this->spriteSize = (Vector2){texture.width, texture.height};
+        }
+
+        Sprite(Texture2D texture, Vector2 origin, Vector2 startPoint, Vector2 spriteSize) : Sprite(texture, origin)
+        {
+            this->startPoint = startPoint;
+            this->spriteSize = spriteSize;
+        }
+        
+    } Sprite;
+
+    typedef struct SpriteAnimation
     {
-        startPos = (Vector2){0,0};
-        frameMax = 0;
-        currentFrame = 1;
-        animFPS = 10;
-        framesWide = 1;
-        origin = {0,0};
-        frameSize = {0,0};
-    };
-    SpriteAnimation(Texture2D sprite, int frameCount, int animFPS, int framesWide, Vector2 origin, Vector2 frameSize)
+        SpriteAnimation()
+        {
+            startPos = (Vector2){0, 0};
+            frameMax = 0;
+            currentFrame = 1;
+            animFPS = 10;
+            framesWide = 1;
+            origin = {0, 0};
+            frameSize = {0, 0};
+        };
+        SpriteAnimation(Texture2D sprite, int frameCount, int animFPS, int framesWide, Vector2 origin, Vector2 frameSize)
+        {
+            spriteTexture = sprite;
+            this->startPos = (Vector2){0, 0};
+            frameMax = frameCount;
+            currentFrame = 0;
+            this->animFPS = animFPS;
+            this->framesWide = framesWide;
+            this->origin = origin;
+            this->frameSize = frameSize;
+        };
+
+        SpriteAnimation(Texture2D sprite, int frameCount, int animFPS, int framesWide, Vector2 startPos, Vector2 origin, Vector2 frameSize) : SpriteAnimation(sprite, frameCount, animFPS, framesWide, origin, frameSize)
+        {
+            this->startPos = startPos;
+        };
+
+        /// @brief The texture to draw from
+        Texture2D spriteTexture;
+
+        /// @brief How many frames are in the animation
+        int frameMax = 0;
+
+        /// @brief Currently rendered frame
+        int currentFrame = 1;
+
+        /// @brief Framerate of the animation
+        int animFPS = 10;
+
+        /// @brief How many frames of this animation exist horizontally
+        int framesWide = 1;
+
+        /// @brief Center of the frame dimensions (i.e for a 16x16 sprite, origin would be 8,8)
+        Vector2 origin;
+
+        /// @brief The size of each frame
+        Vector2 frameSize;
+
+        /// @brief The start position (top left) of the first sprite
+        Vector2 startPos;
+    } SpriteAnimation;
+
+    typedef struct Transform2D
     {
-        spriteTexture = sprite;
-        this->startPos = (Vector2){0,0};
-        frameMax = frameCount;
-        currentFrame = 0;
-        this->animFPS = animFPS;
-        this->framesWide = framesWide;
-        this->origin = origin;
-        this->frameSize = frameSize;
-    };
-    
-    SpriteAnimation(Texture2D sprite, int frameCount, int animFPS, int framesWide, Vector2 startPos, Vector2 origin, Vector2 frameSize):
-    SpriteAnimation(sprite, frameCount, animFPS, framesWide, origin, frameSize)
-    {
-        this->startPos = startPos;
-    };
+        Vector2 position;
+        float rotation;
+        Vector2 scale;
 
-    /// @brief The texture to draw from
-    Texture2D spriteTexture;
+        Transform2D()
+        {
+            this->position = (Vector2){0, 0};
+            this->rotation = 0;
+            this->scale = (Vector2){1, 1};
+        }
 
-    /// @brief How many frames are in the animation
-    int frameMax = 0;
+        Transform2D(Vector2 position, float rotation, Vector2 scale)
+        {
+            this->position = position;
+            this->rotation = rotation;
+            this->scale = scale;
+        }
 
-    /// @brief Currently rendered frame
-    int currentFrame = 1;
+        void MoveGlobal(Vector2 movement)
+        {
+            this->position = (Vector2){position.x + movement.x, position.y + movement.y};
+        }
 
-    /// @brief Framerate of the animation
-    int animFPS = 10;
+        void Rotate(float deltaRotationRadians)
+        {
+            this->rotation += deltaRotationRadians;
+        }
 
-    /// @brief How many frames of this animation exist horizontally
-    int framesWide = 1;
+        void RotateDegrees(float deltaRotationDeg)
+        {
+            Rotate((deltaRotationDeg * ((float)PI / 180.0f)));
+        }
 
-    /// @brief Center of the frame dimensions (i.e for a 16x16 sprite, origin would be 8,8)
-    Vector2 origin;
+        void Scale(Vector2 scaleDelta)
+        {
+            this->scale = (Vector2){scale.x * scaleDelta.x, scale.y * scaleDelta.y};
+        }
 
-    /// @brief The size of each frame
-    Vector2 frameSize;
+        /// @brief Move relative to the current rotation
+        /// @param movement The delta movement vector
+        void MoveLocal(Vector2 movement)
+        {
+            Vector2 movLocal = movement;
+            movLocal.x = movement.x * cos(rotation) - movement.y * sin(rotation);
+            movLocal.y = movement.x * sin(rotation) + movement.y * cos(rotation);
 
-    /// @brief The start position (top left) of the first sprite
-    Vector2 startPos;
-} SpriteAnimation;
+            this->position = (Vector2){movLocal.x + position.x, movLocal.y + position.y};
+        }
 
-typedef struct Transform2D
-{
-    Vector2 position;
-    float rotation;
-    Vector2 scale;
+        void RotateAround(Vector2 point, float deltaRotationRadians)
+        {
+            Vector2 translation = {position.x - point.x, position.y - point.y};
 
-    Transform2D()
-    {
-        this->position = (Vector2){0,0};
-        this->rotation = 0;
-        this->scale = (Vector2){1,1};
-    }
+            float xNew = translation.x * cos(deltaRotationRadians) - translation.y * sin(deltaRotationRadians);
+            float yNew = translation.x * sin(deltaRotationRadians) + translation.y * cos(deltaRotationRadians);
 
-    Transform2D(Vector2 position, float rotation, Vector2 scale)
-    {
-        this->position = position;
-        this->rotation = rotation;
-        this->scale = scale;
-    }
+            translation = {xNew + point.x, yNew + point.y};
 
-    void MoveGlobal(Vector2 movement)
-    {
-        this->position = (Vector2){position.x + movement.x, position.y + movement.y};
-    }
+            Vector2 movement = {translation.x - position.x, translation.y - position.y};
 
-    void Rotate(float deltaRotationRadians)
-    {
-        this->rotation += deltaRotationRadians;
-    }
+            this->rotation += deltaRotationRadians;
 
-    void RotateDegrees(float deltaRotationDeg)
-    {
-        Rotate((deltaRotationDeg * ((float)PI / 180.0f)));
-    }
+            MoveGlobal(movement);
+        }
 
-    void Scale(Vector2 scaleDelta)
-    {
-        this->scale = (Vector2){scale.x * scaleDelta.x, scale.y * scaleDelta.y};
-    }
-
-    /// @brief Move relative to the current rotation
-    /// @param movement The delta movement vector
-    void MoveLocal(Vector2 movement)
-    {
-        Vector2 movLocal = movement;
-        movLocal.x = movement.x * cos(rotation) - movement.y * sin(rotation);
-        movLocal.y = movement.x * sin(rotation) + movement.y * cos(rotation);
-
-        this->position = (Vector2){movLocal.x + position.x, movLocal.y + position.y};
-    }
-
-    void RotateAround(Vector2 point, float deltaRotationRadians)
-    {
-        Vector2 translation = {position.x - point.x, position.y - point.y};
-
-        float xNew = translation.x * cos(deltaRotationRadians) - translation.y * sin(deltaRotationRadians);
-        float yNew = translation.x * sin(deltaRotationRadians) + translation.y * cos(deltaRotationRadians);
-
-        translation = {xNew + point.x, yNew + point.y};
-
-        Vector2 movement = {translation.x - position.x, translation.y - position.y};
-
-        this->rotation += deltaRotationRadians;
-
-        MoveGlobal(movement);
-    }
-
-    void SetRotationDeg(float newRotationDeg)
-    {
-        this->rotation = (newRotationDeg * M_PI / 180);
-        // Keep within range 0-> 2PI
-        this->rotation = std::fmod(rotation, (2.0f * M_PI));
-    }
-} Transform2D;
+        void SetRotationDeg(float newRotationDeg)
+        {
+            this->rotation = (newRotationDeg * M_PI / 180);
+            // Keep within range 0-> 2PI
+            this->rotation = std::fmod(rotation, (2.0f * M_PI));
+        }
+    } Transform2D;
 };
 
 typedef struct StaticTileMin

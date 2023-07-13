@@ -21,9 +21,10 @@ namespace Astrolib
         SpriteEntity(Texture2D spriteTexture, Vector2 frameSize, Vector2 origin);
         ~SpriteEntity();
 
-        void Draw(float deltaTime, Camera2D* camera) override;
+        void Draw(float deltaTime, Camera2D *camera) override;
         Rectangle GetBoundRect() override;
-        
+        inline Sprite *GetSprite() { return sprite; };
+
         bool IsFlippedH() { return (spriteFlip.x == -1); };
         bool IsFlippedV() { return (spriteFlip.y == -1); };
         void SetFlipped(bool hFlipped, bool vFlipped)
