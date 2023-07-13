@@ -2,7 +2,6 @@
 #define __TRIGGER2D_H__
 
 #include "../include/box2d/box2d.h"
-#include "interfaces.h"
 #include "entity.h"
 
 namespace Astrolib
@@ -36,7 +35,10 @@ namespace Astrolib
     protected:
         // This is protected to prevent other classes from creating trigger body without a fixture
         Trigger2D();
-        void InitBody(b2BodyDef* def);
+
+        /// @brief Initializes the underlying physics body with a given body definition
+        /// @param def 
+        void InitBody(b2BodyDef def);
         void OnTriggerEntered();
         void OnTriggerExited();
         b2Body *physicsBody;
