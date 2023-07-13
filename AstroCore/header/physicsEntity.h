@@ -50,7 +50,7 @@ namespace Astrolib
             return physicsBody;
         }
 
-
+        Vector2 GetGlobalPosition() override;
         // Manipulation functions
         void AddForce(Vector2 force);
         void AddForceAtPoint(Vector2 force, Vector2 point);

@@ -70,9 +70,9 @@ void PhysicsEntity::FixedUpdate(float deltaTime)
     else if (physicsBody->GetType() == b2_dynamicBody)
     {
         // Update entity properties/transforms to match physics transforms
-        b2Vec2 pos = physicsBody->GetPosition();
+        b2Vec2 pos = physicsBody->GetTransform().p;
         transform.position = (Vector2){pos.x, pos.y};
-        transform.rotation = -physicsBody->GetAngle();
+        transform.rotation = physicsBody->GetAngle();
         transform.scale = (Vector2){1.0, 1.0};
     }
 }
@@ -102,6 +102,19 @@ void PhysicsEntity::CreateRectangleCollider(Vector2 center,
     fix.friction = friction;
     fix.restitution = restitution;
     AddFixtureToBody(fix);
+}
+
+Vector2 PhysicsEntity::GetGlobalPosition()
+{
+    if (physicsBody->GetType() == b2_kinematicBody || physicsBody->GetType() == b2_staticBody)
+    {
+        return Entity2D::GetGlobalPosition();
+    }
+    else
+    {
+        b2Vec2 pos = physicsBody->GetPosition();
+        return (Vector2){pos.x, pos.y};
+    }
 }
 
 /// @brief Creates a circle collider and adds it as a fixture to the physics body
@@ -139,7 +152,6 @@ void PhysicsEntity::AddFixtureToBody(b2FixtureDef fixtureDefinition)
 {
     physicsBody->CreateFixture(&fixtureDefinition);
 }
-
 
 #pragma region Manipulation Functions
 

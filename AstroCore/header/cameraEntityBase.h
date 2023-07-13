@@ -28,6 +28,7 @@ namespace Astrolib
             renderResolution = (Vector2){width, height};
             UnloadRenderTexture(rendText);
             rendText = LoadRenderTexture(width, height);
+            SetTextureFilter(rendText.texture, TEXTURE_FILTER_POINT);
             srcRect = (Rectangle){0, 0, width, -height};
         }
 

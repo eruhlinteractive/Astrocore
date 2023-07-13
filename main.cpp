@@ -46,7 +46,7 @@ int main()
     game->GetCurrentScene()->SetPhysicsWorld(game->GetPhysicsWorld());
 
     Debug::SetDebugFlag(DRAW_PHYSICS_BOUNDS);
-    Debug::SetDebugFlag(DRAW_SPRITE_BOUNDS);
+    //Debug::SetDebugFlag(DRAW_SPRITE_BOUNDS);
 
     // Main game loop
     while (!WindowShouldClose()) // Detect window close button or ESC key
