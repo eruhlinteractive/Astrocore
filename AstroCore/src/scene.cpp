@@ -13,8 +13,9 @@ Scene::Scene()
     // screenSpaceLightMap = LoadRenderTexture();
     screenSpaceLightMap = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
     ambientColor = WHITE;
+    physicsWorld = new b2World(b2Vec2_zero);
     root = new Entity2D(this->sceneName + "_root");
-    LoadScene();
+    //LoadScene();
 }
 
 void Scene::OnNotify(const Signaler *signaler, std::string eventName)
@@ -32,6 +33,9 @@ bool Scene::RegisterEntity(Entity2D *entity)
 {
     std::string name = entity->GetName();
     // int id = entity->GetEntityId();
+
+    // Tell entity that it was registered
+    entity->OnRegister(this);
 
     if (entity->GetChildCount() > 0)
     {
@@ -207,6 +211,8 @@ void Scene::LateUpdate(float deltaTime)
 
 void Scene::FixedUpdate(float deltaTime)
 {
+    physicsWorld->Step(deltaTime, 8, 3);
+    physicsWorld->ClearForces();
     for (std::pair<std::string, Entity2D *> p : entities)
     {
         p.second->FixedUpdate(deltaTime);

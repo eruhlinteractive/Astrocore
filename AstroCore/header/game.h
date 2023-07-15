@@ -22,7 +22,7 @@ namespace Astrolib
 
 // IDK if this even works with CMake ¯\_(ツ)_/¯
 #if __DEBUG__
-            debugMessage = " (Debug)";
+            debugMessage = " (Debug)";2
 #else
             debugMessage = " (Release)";
 #endif
@@ -52,7 +52,7 @@ namespace Astrolib
         /// @brief Draw in screen space
         void DrawUI();
 
-        virtual void Update(float deltaTime)
+        void Update(float deltaTime)
         {
             if (IsWindowResized())
             {
@@ -60,18 +60,18 @@ namespace Astrolib
             }
             currentScene->Update(GetFrameTime());
         };
-        virtual void FixedUpdate(float deltaTime)
+        void FixedUpdate(float deltaTime)
         {
             // TODO: Make this settable by the end user
-            physicsWorld->Step(deltaTime, 8, 3);
+            //physicsWorld->Step(deltaTime, 8, 3);
             currentScene->FixedUpdate(deltaTime);
         };
-        virtual void Draw(float deltaTime)
+        void Draw(float deltaTime)
         {
             currentScene->Draw(GetFrameTime());
         };
 
-        Scene *GetCurrentScene()
+        static Scene *GetCurrentScene()
         {
             return currentScene;
         }
@@ -99,11 +99,6 @@ namespace Astrolib
             CloseWindow();
         };
 
-        static b2World *GetPhysicsWorld()
-        {
-            return physicsWorld;
-        }
-
         static Game &instance()
         {
             if (!Game::created)
@@ -116,17 +111,13 @@ namespace Astrolib
         }
 
     protected:
-        Scene *currentScene;
-        Game()
-        {
-            physicsWorld = new b2World(b2Vec2(0, 0));
-        };
+        inline static Scene *currentScene;
+        Game(){};
 
     private:
         inline static Game *INSTANCE;
         inline static bool created;
         bool ySortEnabled = true;
-        inline static b2World *physicsWorld;
     };
 }
 

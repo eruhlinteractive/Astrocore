@@ -8,7 +8,10 @@ using namespace Astrolib;
 class PhysicsScene : public Scene
 {
 public:
-    PhysicsScene() { LoadScene(); };
+    PhysicsScene()
+    {
+        LoadScene();
+    };
     void LoadScene()
     {
         currentCamera = new CameraEntity();
@@ -16,11 +19,13 @@ public:
         currentCamera->zoom = 2.0;
         currentCamera->target.y -= 30;
         currentCamera->SetRenderDimensions(320, 180);
-        Game::GetPhysicsWorld()->SetGravity({0, 9.8 * 0.0f});
+        GetPhysicsWorld()->SetGravity({0.0, 9.8});
 
         PhysicsEntity *floor = new PhysicsEntity(STATIC, {-2, 0});
         floor->CreateRectangleCollider({0, 0}, {720, 20}, 0, 0.0, 1.0, 0.0);
         RegisterEntity(floor);
+        
+       
         // PhysicsEntity *box1 = new PhysicsEntity(DYNAMIC, {-2, -50});
         // box1->CreateRectangleCollider({0, 0}, {5, 5});
         // RegisterEntity(box1);
@@ -63,6 +68,7 @@ public:
             spriteChild->transform.Scale({0.15, 0.15});
             box->AddChild(spriteChild);
             RegisterEntity(box);
+            Debug::Log("Created Body: " + std::to_string(i));
 
             entities.push_back(box);
         }
@@ -70,9 +76,7 @@ public:
         PhysicsEntity *box = new PhysicsEntity(DYNAMIC, {0, -13});
         box->SetName("mixer");
         box->CreateRectangleCollider({0, 0}, {6.7, 6.7});
-        box->GetPhysicsBody()->SetSleepingAllowed(false);
-        box->GetPhysicsBody()->SetLinearDamping(100.0);
-        box->GetPhysicsBody()->SetFixedRotation(true);
+        
 
         Texture spriteTexture = TextureManager::instance().GetTexture("res/idle_test.png");
         SpriteEntity *spriteChild = new SpriteEntity(spriteTexture, {16, 16}, {8, 8});
@@ -81,6 +85,9 @@ public:
         spriteChild->transform.Scale({0.5, 0.5});
         box->AddChild(spriteChild);
         RegisterEntity(box);
+        box->GetPhysicsBody()->SetSleepingAllowed(false);
+        box->GetPhysicsBody()->SetLinearDamping(100.0);
+        box->GetPhysicsBody()->SetFixedRotation(true);
 
         entities.push_back(box);
     }

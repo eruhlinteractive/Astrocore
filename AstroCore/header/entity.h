@@ -1,3 +1,7 @@
+
+#ifndef __ENTITY2D_H__
+#define __ENTITY2D_H__
+
 #include "../include/raylib.h"
 #include <vector>
 #include <memory>
@@ -5,9 +9,6 @@
 #include "structs.h"
 #include "interfaces.h"
 #include "debug.h"
-
-#ifndef __ENTITY2D_H__
-#define __ENTITY2D_H__
 
 /*
     Base class for every entity in the scene (except a few special cases like lights)
@@ -57,6 +58,12 @@ namespace Astrolib
         virtual Vector2 GetGlobalPosition();
         virtual float GetGlobalRotationDeg();
         virtual float GetGlobalRotation();
+
+
+        /// @brief Called when a entity is registered in a scene
+        /// @param scene The scene the entity was registered in
+        virtual void OnRegister(Scene *scene) {};
+
 
         /// @brief Get the path from the scene root to this entity
         /// @return The path to this entity from the scene root

@@ -107,17 +107,20 @@ namespace Astrolib
 
             return isOnScreen;
         }
-        void SetPhysicsWorld(b2World *newWorld)
-        {
-            physicsWorld = newWorld;
-        }
+        //void SetPhysicsWorld(b2World *newWorld)
+        //{
+        //    physicsWorld = newWorld;
+        //}
+
         b2World* GetPhysicsWorld()
         {
             return physicsWorld;
         }
 
-    private:
+    protected:
         b2World *physicsWorld;
+    private:
+        
         Entity2D *root;
         /// @brief Top level of the scene graph
         std::map<std::string, Entity2D *> entities;

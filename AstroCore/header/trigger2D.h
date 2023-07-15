@@ -29,7 +29,7 @@ namespace Astrolib
         void AddCircleTrigger(Vector2 triggerOrigin, float radius);
         void AddRectangleTrigger(Vector2 triggerOrigin, Vector2 triggerSize);
         void AddCustomTrigger(b2Shape *triggerShape);
-
+        void OnRegister(Scene* scene) override;
         ~Trigger2D();
 
     protected:
@@ -38,10 +38,11 @@ namespace Astrolib
 
         /// @brief Initializes the underlying physics body with a given body definition
         /// @param def 
-        void InitBody(b2BodyDef def);
+        void InitBody(Vector2 position);
         void OnTriggerEntered();
         void OnTriggerExited();
         b2Body *physicsBody;
+        b2BodyDef bodyDef;
     };
 }
 #endif // __TRIGGER2D_H__

@@ -42,8 +42,8 @@ int main()
 
     game->InitGame("Astrolib", 1280, 720);
     game->SetCurrentScene(new PhysicsScene());
-    game->GetPhysicsWorld()->SetDebugDraw(new PhysicsDebug());
-    game->GetCurrentScene()->SetPhysicsWorld(game->GetPhysicsWorld());
+    //game->GetPhysicsWorld()->SetDebugDraw(new PhysicsDebug());
+    game->GetCurrentScene()->GetPhysicsWorld()->SetDebugDraw(new PhysicsDebug());
 
     Debug::SetDebugFlag(DRAW_PHYSICS_BOUNDS);
     //Debug::SetDebugFlag(DRAW_SPRITE_BOUNDS);

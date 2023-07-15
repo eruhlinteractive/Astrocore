@@ -23,8 +23,26 @@ PhysicsEntity::PhysicsEntity(PHYSICS_TYPE bodyType, Vector2 startPos)
 
     // TODO: Move this to when the entity gets added to the tree
     // Register physics body with world
-    physicsBody = Game::GetPhysicsWorld()->CreateBody(&bodyDef);
+    //physicsBody;
     transform.position = startPos;
+}
+
+void PhysicsEntity::OnRegister(Scene* scene)
+{
+    physicsBody = scene->GetPhysicsWorld()->CreateBody(&bodyDef);
+
+    // Add all cached fixtures to the body
+    for(b2FixtureDef *fixDef : fixtureTemps)
+    {
+        AddFixtureToBody(fixDef);
+
+        // Cleanup memory since the pointer was duplicated and deleted
+        delete fixDef;
+        fixDef = nullptr;
+    }
+
+    // Clear out the array, since it will no longer be used
+    fixtureTemps.clear();
 }
 
 PhysicsEntity::PhysicsEntity(std::string name, PHYSICS_TYPE bodyType, Vector2 position, float rotation)
@@ -92,15 +110,15 @@ void PhysicsEntity::CreateRectangleCollider(Vector2 center,
                                             float restitution = 0.0f)
 {
     // Create the box shape
-    b2PolygonShape shape;
-    shape.SetAsBox(size.x / 2.0, size.y / 2.0, b2Vec2(center.x, center.y), rotRads);
+    b2PolygonShape *shape = new b2PolygonShape();
+    shape->SetAsBox(size.x / 2.0, size.y / 2.0, b2Vec2(center.x, center.y), rotRads);
 
     // Define the fixture and add it to the body
-    b2FixtureDef fix;
-    fix.shape = &shape;
-    fix.density = density;
-    fix.friction = friction;
-    fix.restitution = restitution;
+    b2FixtureDef *fix = new b2FixtureDef();
+    fix->shape = shape;
+    fix->density = density;
+    fix->friction = friction;
+    fix->restitution = restitution;
     AddFixtureToBody(fix);
 }
 
@@ -130,16 +148,16 @@ void PhysicsEntity::CreateCircleCollider(
     float friction = 0.2f,
     float restitution = 0.0f)
 {
-    b2CircleShape circle;
-    circle.m_p.Set(center.x, center.y);
-    circle.m_radius = radius;
+    b2CircleShape *circle;
+    circle->m_p.Set(center.x, center.y);
+    circle->m_radius = radius;
 
     // Define the fixture and add it to the body
-    b2FixtureDef fix;
-    fix.shape = &circle;
-    fix.density = density;
-    fix.friction = friction;
-    fix.restitution = restitution;
+    b2FixtureDef *fix;
+    fix->shape = circle;
+    fix->density = density;
+    fix->friction = friction;
+    fix->restitution = restitution;
     AddFixtureToBody(fix);
 }
 
@@ -148,9 +166,19 @@ void PhysicsEntity::CreateCircleCollider(Vector2 center, float radius)
     CreateCircleCollider(center, radius, 1.0f, 0.2f, 0.0f);
 }
 
-void PhysicsEntity::AddFixtureToBody(b2FixtureDef fixtureDefinition)
+void PhysicsEntity::AddFixtureToBody(b2FixtureDef *fixtureDefinition)
 {
-    physicsBody->CreateFixture(&fixtureDefinition);
+    // Add the fixture directly if it has already been added to the physics world,
+    //  otherwise store it to be added when the physics body is created
+    if(physicsBody != nullptr && physicsBody != 0)
+    {
+        physicsBody->CreateFixture(fixtureDefinition);
+    }   
+    else
+    {
+        fixtureTemps.push_back(fixtureDefinition);
+    }
+    
 }
 
 #pragma region Manipulation Functions
