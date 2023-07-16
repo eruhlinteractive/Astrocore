@@ -16,3 +16,4 @@
 #include "header/game.h"
 #include "header/debug.h"
 #include "header/physicsEntity.h"
+#include "header/trigger2D.h"

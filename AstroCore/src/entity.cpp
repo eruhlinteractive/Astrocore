@@ -42,6 +42,7 @@ Entity2D::~Entity2D()
     {
         parentEntity->RemoveChild(this);
     }
+    
     // Delete children entities
     for (Entity2D *entity : *(children.get()))
     {   
@@ -54,6 +55,8 @@ Entity2D::~Entity2D()
 }
 
 #pragma endregion
+
+
 
 #pragma region Transformation Functions
 
@@ -116,6 +119,16 @@ void Entity2D::Update(float deltaTime)
     {
         Ready();
     }
+}
+
+void Entity2D::OnRegister(Scene* scene)
+{
+    currentScene = scene;
+}
+
+Scene* Entity2D::GetCurrentScene()
+{
+    return currentScene;
 }
 
 #pragma region Children Functions

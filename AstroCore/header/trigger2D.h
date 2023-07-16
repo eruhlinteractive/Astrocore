@@ -6,7 +6,7 @@
 
 namespace Astrolib
 {
-    class Trigger2D : public Entity2D
+    class Trigger2D : public Entity2D, public b2ContactListener
     {
     public:
         /// @brief Create a 2D trigger with a rectangular trigger shape
@@ -28,8 +28,9 @@ namespace Astrolib
 
         void AddCircleTrigger(Vector2 triggerOrigin, float radius);
         void AddRectangleTrigger(Vector2 triggerOrigin, Vector2 triggerSize);
-        void AddCustomTrigger(b2Shape *triggerShape);
-        void OnRegister(Scene* scene) override;
+        void AddCustomTrigger(b2Shape *triggerShape, Vector2 triggerCenter);
+        void OnRegister(Scene *scene) override;
+
         ~Trigger2D();
 
     protected:
@@ -37,12 +38,20 @@ namespace Astrolib
         Trigger2D();
 
         /// @brief Initializes the underlying physics body with a given body definition
-        /// @param def 
+        /// @param def
         void InitBody(Vector2 position);
-        void OnTriggerEntered();
-        void OnTriggerExited();
+        void AddFixtureToBody(b2FixtureDef *newFixture);
         b2Body *physicsBody;
-        b2BodyDef bodyDef;
+        b2BodyDef *bodyDef;
+        std::vector<b2FixtureDef *> tempFixtures;
+        bool addedToPhysicsWorld = false;
+
+
+        std::map<std::string, b2Body*> bodiesInTrigger;
+
+        // b2ContactListener overrides
+        virtual void BeginContact(b2Contact *contact) override;
+        virtual void EndContact(b2Contact *contact) override;
     };
 }
 #endif // __TRIGGER2D_H__

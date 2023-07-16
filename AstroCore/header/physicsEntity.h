@@ -67,6 +67,7 @@ namespace Astrolib
         b2BodyDef bodyDef;
         b2Body *physicsBody;
         PHYSICS_TYPE physicsMode = STATIC;
+        bool addedToPhysicsWorld = false;
 
         /// @brief Holds fixtures defined before the body has been added to the physics world
         std::vector<b2FixtureDef*> fixtureTemps;

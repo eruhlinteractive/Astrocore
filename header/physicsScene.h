@@ -57,6 +57,9 @@ public:
         std::shared_ptr<InputAction> addForce = std::shared_ptr<InputAction>(new InputAction("addForce", KEY_SPACE));
         InputManager::instance().AddInputAction(addForce);
 
+        Trigger2D* trigger = new Trigger2D({0, -12.5},{0,0}, {720,10});
+        RegisterEntity(trigger);
+
         for (int i = 0; i < 12; i++)
         {
             PhysicsEntity *box = new PhysicsEntity(DYNAMIC, {-i * 3.0 + 10, -50 + (-i * 10)});

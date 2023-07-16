@@ -50,7 +50,7 @@ namespace Astrolib
             this->startPoint = startPoint;
             this->spriteSize = spriteSize;
         }
-        
+
     } Sprite;
 
     typedef struct SpriteAnimation
@@ -181,6 +181,23 @@ namespace Astrolib
             this->rotation = std::fmod(rotation, (2.0f * M_PI));
         }
     } Transform2D;
+
+    // Custom data to pass into physics objects
+    typedef struct PhysicsEntityData
+    {
+        PhysicsEntityData(int entityID, std::string entityName)
+        {
+            this->entityID = entityID;
+            this->entityName = entityName;
+        }
+
+        int entityID;
+        std::string entityName;
+
+        std::string GetEntityName() { return entityName; };
+        int GetEntityId() { return entityID; };
+
+    } PhysicsEntityData;
 };
 
 typedef struct StaticTileMin

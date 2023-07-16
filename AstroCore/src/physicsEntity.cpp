@@ -29,14 +29,27 @@ PhysicsEntity::PhysicsEntity(PHYSICS_TYPE bodyType, Vector2 startPos)
 
 void PhysicsEntity::OnRegister(Scene* scene)
 {
+    // Create and assign custom data to the physics body
+    b2BodyUserData data = b2BodyUserData();
+    data.pointer = (uintptr_t)(new PhysicsEntityData(entityID, name));
+    bodyDef.userData = data;
+
     physicsBody = scene->GetPhysicsWorld()->CreateBody(&bodyDef);
+    
+    addedToPhysicsWorld = true;
+    currentScene = scene;
 
     // Add all cached fixtures to the body
     for(b2FixtureDef *fixDef : fixtureTemps)
     {
         AddFixtureToBody(fixDef);
 
-        // Cleanup memory since the pointer was duplicated and deleted
+        // Cleanup memory since the pointer was duplicated
+        // Note: Since all fixtures are created internally via helper functions,
+        //  it is assumed they can be safely deleted
+        delete fixDef->shape;
+        fixDef->shape = nullptr;
+
         delete fixDef;
         fixDef = nullptr;
     }
@@ -54,6 +67,12 @@ PhysicsEntity::PhysicsEntity(std::string name, PHYSICS_TYPE bodyType, Vector2 po
 
 PhysicsEntity::~PhysicsEntity()
 {
+    if(addedToPhysicsWorld)
+    {
+        currentScene->GetPhysicsWorld()->DestroyBody(physicsBody);
+    }
+
+    fixtureTemps.clear();
 }
 
 /// @brief Creates a rectangle collider with no rotation and a given size and center point, using
@@ -95,13 +114,13 @@ void PhysicsEntity::FixedUpdate(float deltaTime)
     }
 }
 
-/// @brief Creates a rectangle body and
-/// @param center
-/// @param size
-/// @param rotRads
-/// @param density
-/// @param friction
-/// @param restitution
+/// @brief Creates a rectangle body and associated fixture
+/// @param center The center of the collider relative to the body 
+/// @param size The length/width of the body
+/// @param rotRads The local rotation of the collider in radians
+/// @param density The density of the fixture
+/// @param friction The friction of the fixture
+/// @param restitution The restitution (bounciness) of the fixture
 void PhysicsEntity::CreateRectangleCollider(Vector2 center,
                                             Vector2 size,
                                             float rotRads,

@@ -111,6 +111,8 @@ Scene::~Scene()
 
     delete root;
     root = nullptr;
+    delete physicsWorld;
+    
     UnloadRenderTexture(screenSpaceLightMap);
 }
 
