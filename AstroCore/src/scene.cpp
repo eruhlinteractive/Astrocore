@@ -9,11 +9,15 @@ using namespace Astrolib;
 Scene::Scene()
 {
     entities = std::map<std::string, Entity2D *>();
+    entityIDMap = std::map<int, Entity2D*>();
+    physicsWorld = new b2World(b2Vec2_zero);
+    colTracker = CollisionTracker();
+    physicsWorld->SetContactListener(&colTracker);
 
     // screenSpaceLightMap = LoadRenderTexture();
     screenSpaceLightMap = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
     ambientColor = WHITE;
-    physicsWorld = new b2World(b2Vec2_zero);
+    
     root = new Entity2D(this->sceneName + "_root");
     //LoadScene();
 }
@@ -58,10 +62,15 @@ bool Scene::RegisterEntity(Entity2D *entity)
             drawableEntities.insert(std::pair{name, entity});
         }
 
-        else if (entity->GetType() == LIGHT)
+        if (entity->GetType() == LIGHT)
         {
             lights.insert(std::pair{name, (Light2D *)entity});
         }
+        if (entity->GetType() == PHYSICAL)
+        {
+            colTracker.AddTrackedEntity(entity->GetEntityID(), (CollisionEntity*) entity);
+        }
+    
 
         // Register to be notified when an entity is deleted
         entity->AddObserver(this, "entityDeleted");

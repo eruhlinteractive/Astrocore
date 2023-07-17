@@ -2,11 +2,11 @@
 #define __TRIGGER2D_H__
 
 #include "../include/box2d/box2d.h"
-#include "entity.h"
+#include "collisionEntity.h"
 
 namespace Astrolib
 {
-    class Trigger2D : public Entity2D, public b2ContactListener
+    class Trigger2D : public CollisionEntity
     {
     public:
         /// @brief Create a 2D trigger with a rectangular trigger shape
@@ -30,6 +30,15 @@ namespace Astrolib
         void AddRectangleTrigger(Vector2 triggerOrigin, Vector2 triggerSize);
         void AddCustomTrigger(b2Shape *triggerShape, Vector2 triggerCenter);
         void OnRegister(Scene *scene) override;
+        
+        /// @brief Is a body with name currently in this trigger
+        /// @param name The name of the body to query
+        /// @return Whether the body is in this trigger area
+        bool IsBodyInArea(std::string name);
+        
+        // b2ContactListener overrides
+        void BeginContact(b2Contact *contact) override;
+        void EndContact(b2Contact *contact) override;
 
         ~Trigger2D();
 
@@ -40,18 +49,14 @@ namespace Astrolib
         /// @brief Initializes the underlying physics body with a given body definition
         /// @param def
         void InitBody(Vector2 position);
-        void AddFixtureToBody(b2FixtureDef *newFixture);
-        b2Body *physicsBody;
-        b2BodyDef *bodyDef;
-        std::vector<b2FixtureDef *> tempFixtures;
-        bool addedToPhysicsWorld = false;
+        void DoThing(){
+            Debug::Log("AH");
+        }
+        void AddFixtureToBody(b2FixtureDef *newFixture) override;
+
+        std::map<std::string, b2Body *> bodiesInTrigger;
 
 
-        std::map<std::string, b2Body*> bodiesInTrigger;
-
-        // b2ContactListener overrides
-        virtual void BeginContact(b2Contact *contact) override;
-        virtual void EndContact(b2Contact *contact) override;
     };
 }
 #endif // __TRIGGER2D_H__

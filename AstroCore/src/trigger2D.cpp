@@ -5,13 +5,13 @@ using namespace Astrolib;
 
 Trigger2D::Trigger2D()
 {
-    tempFixtures = std::vector<b2FixtureDef*>();
+    tempFixtures = std::vector<b2FixtureDef *>();
 }
 
 Trigger2D::~Trigger2D()
 {
     // If this was added to the world, destroy the body
-    if(addedToPhysicsWorld)
+    if (addedToPhysicsWorld)
     {
         currentScene->GetPhysicsWorld()->DestroyBody(physicsBody);
     }
@@ -32,7 +32,7 @@ Trigger2D::Trigger2D(Vector2 position, Vector2 triggerOrigin, Vector2 triggerSiz
     shape->SetAsBox(triggerSize.x / 2.0f, triggerSize.y / 2.0f, (b2Vec2){triggerOrigin.x, triggerOrigin.y}, 0.0f);
 
     // Create sensor (trigger) fixture
-    b2FixtureDef* fix = new b2FixtureDef();
+    b2FixtureDef *fix = new b2FixtureDef();
     fix->shape = shape;
     fix->isSensor = true;
     AddFixtureToBody(fix);
@@ -43,22 +43,21 @@ Trigger2D::Trigger2D(Vector2 position, Vector2 triggerOrigin, float radius)
     InitBody(position);
 
     // Create box shape
-    b2CircleShape* shape = new b2CircleShape();
+    b2CircleShape *shape = new b2CircleShape();
     shape->m_p = b2Vec2(triggerOrigin.x, triggerOrigin.y);
     shape->m_radius = radius;
 
     // Create sensor (trigger) fixture
-    b2FixtureDef* fix = new b2FixtureDef();
+    b2FixtureDef *fix = new b2FixtureDef();
     fix->shape = shape;
     fix->isSensor = true;
     AddFixtureToBody(fix);
 }
 
-
 Trigger2D::Trigger2D(Vector2 position, b2Shape *triggerShape)
 {
     InitBody(position);
-    b2FixtureDef* fix = new b2FixtureDef();
+    b2FixtureDef *fix = new b2FixtureDef();
 }
 
 void Trigger2D::InitBody(Vector2 position)
@@ -69,11 +68,11 @@ void Trigger2D::InitBody(Vector2 position)
     bodyDef->position = b2Vec2(position.x, position.y);
 }
 
-void Trigger2D::AddFixtureToBody(b2FixtureDef* newFixture)
+void Trigger2D::AddFixtureToBody(b2FixtureDef *newFixture)
 {
-    if(physicsBody != nullptr)
+    if (physicsBody != nullptr)
     {
-        b2Fixture* fixture = physicsBody->CreateFixture(newFixture);
+        b2Fixture *fixture = physicsBody->CreateFixture(newFixture);
     }
     else
     {
@@ -81,17 +80,22 @@ void Trigger2D::AddFixtureToBody(b2FixtureDef* newFixture)
     }
 }
 
-void Trigger2D::OnRegister(Scene* scene)
+void Trigger2D::OnRegister(Scene *scene)
 {
+
+    b2BodyUserData data = b2BodyUserData();
+    data.pointer = (uintptr_t)(new PhysicsEntityData(entityID, name));
+    bodyDef->userData = data;
+    
     // Don't simulate the trigger until added to the scene
     physicsBody = scene->GetPhysicsWorld()->CreateBody(bodyDef);
-    
+
     addedToPhysicsWorld = true;
     currentScene = scene;
-    scene->GetPhysicsWorld()->SetContactListener(this);
+
     
     // Add 'cached' fixtures to the body now that it has been initialized
-    for(b2FixtureDef* fix : tempFixtures)
+    for (b2FixtureDef *fix : tempFixtures)
     {
         AddFixtureToBody(fix);
 
@@ -109,49 +113,60 @@ void Trigger2D::OnRegister(Scene* scene)
     tempFixtures.clear();
 }
 
+bool Trigger2D::IsBodyInArea(std::string name)
+{
+    return bodiesInTrigger.find(name) != bodiesInTrigger.end();
+}
 
 #pragma region Contact Functions
 
 void Trigger2D::BeginContact(b2Contact *contact)
 {
-    b2Body* bodyA = contact->GetFixtureA()->GetBody();
-    b2Body* bodyB = contact->GetFixtureB()->GetBody();
+    b2Body *bodyA = contact->GetFixtureA()->GetBody();
+    b2Body *bodyB = contact->GetFixtureB()->GetBody();
 
-    if(bodyA != this->physicsBody && bodyB != this->physicsBody)
+    if (bodyA != this->physicsBody && bodyB != this->physicsBody)
     {
         return;
     }
 
     // Determine which body is the one that collided with this trigger
-    b2Body* otherBody = bodyA == this->physicsBody ? bodyB : bodyA;
-    PhysicsEntityData* customData = (PhysicsEntityData*)(otherBody->GetUserData().pointer);
+    b2Body *otherBody = bodyA == this->physicsBody ? bodyB : bodyA;
+    PhysicsEntityData *customData = (PhysicsEntityData *)(otherBody->GetUserData().pointer);
 
     // Add to the bodies in the trigger area
-    if(bodiesInTrigger.find(customData->entityName) == bodiesInTrigger.end())
+    if (customData != nullptr && bodiesInTrigger.find(customData->entityName) == bodiesInTrigger.end())
     {
+        if (customData->entityName == "mixer")
+        {
+            Debug::Log("Mixer entered: " + name);
+        }
         bodiesInTrigger.insert({customData->entityName, otherBody});
     }
 
     SendEvent("bodyEntered");
 }
 
-
 void Trigger2D::EndContact(b2Contact *contact)
 {
-    b2Body* bodyA = contact->GetFixtureA()->GetBody();
-    b2Body* bodyB = contact->GetFixtureB()->GetBody();
+    b2Body *bodyA = contact->GetFixtureA()->GetBody();
+    b2Body *bodyB = contact->GetFixtureB()->GetBody();
 
     // Figure out which body is the one that collided with this trigger
-    b2Body* otherBody = bodyA == this->physicsBody ? bodyB : bodyA;
-    PhysicsEntityData* customData = (PhysicsEntityData*)(otherBody->GetUserData().pointer);
+    b2Body *otherBody = bodyA == this->physicsBody ? bodyB : bodyA;
+    PhysicsEntityData *customData = (PhysicsEntityData *)(otherBody->GetUserData().pointer);
 
-    if(bodiesInTrigger.find(customData->entityName) != bodiesInTrigger.end())
+    if (customData != nullptr && bodiesInTrigger.find(customData->entityName) != bodiesInTrigger.end())
     {
+        if (customData->entityName == "mixer")
+        {
+            Debug::Log("Mixer left: " + name);
+        }
+
         bodiesInTrigger.erase(customData->entityName);
     }
 
     SendEvent("bodyExited");
 }
-
 
 #pragma endregion

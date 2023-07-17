@@ -15,6 +15,7 @@
 #include "raylib.h"
 #include "cameraEntityBase.h"
 #include "pixelPerfectCamera.h"
+#include "collisionTracker.h"
 #include "../include/box2d/box2d.h"
 
 // Custom Blend Modes
@@ -124,11 +125,13 @@ namespace Astrolib
         Entity2D *root;
         /// @brief Top level of the scene graph
         std::map<std::string, Entity2D *> entities;
+        std::map<int, Entity2D*> entityIDMap;
         std::map<std::string, Entity2D *> drawableEntities;
         std::map<std::string, Light2D *> lights;
 
         std::string sceneName = "";
         RenderTexture2D screenSpaceLightMap;
+        CollisionTracker colTracker;
     };
 }
 

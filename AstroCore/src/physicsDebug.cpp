@@ -1,4 +1,5 @@
 #include "../header/physicsDebug.h"
+#include <vector>
 
 using namespace Astrolib;
 PhysicsDebug::PhysicsDebug()
@@ -9,33 +10,31 @@ PhysicsDebug::PhysicsDebug()
 
 void PhysicsDebug::DrawPolygon(const b2Vec2 *vertices, int32 vertexCount, const b2Color &color)
 {
-    Vector2 *points = new Vector2[vertexCount]();
-    points += vertexCount + 1;
-
     if (vertexCount == 0)
     {
         return;
     }
+    
+    std::vector<Vector2> points = std::vector<Vector2>();
+
     b2Vec2 firstVert = *vertices;
     b2Vec2 finalVert;
     for (int i = 0; i < vertexCount; i++)
     {
 
         const b2Vec2 vert = *vertices;
-        // Reverse winding order of the points array (b2d is CCW, openGL is Cw)
-        *(--points) = (Vector2){vert.x, vert.y};
+        points.push_back((Vector2){vert.x, vert.y});
         vertices++;
     }
-    Vector2 point = *points;
-    finalVert = b2Vec2(point.x, point.y);
 
-    DrawLineStrip(points, vertexCount, (Color){color.r * 255.0f, color.g* 255.0f, color.b* 255.0f, color.a* 255.0f});
-    Vector2 *finalPoints = new Vector2[vertexCount]();
+    DrawLineStrip(points.data(), vertexCount, (Color){color.r * 255.0f, color.g * 255.0f, color.b * 255.0f, color.a * 255.0f});
 
-    // Close the polygon
-    *(finalPoints) = {finalVert.x, finalVert.y};
-    *(finalPoints + 1) = {firstVert.x, firstVert.y};
-    DrawLineStrip(finalPoints, 2, (Color){color.r* 255.0f, color.g* 255.0f, color.b* 255.0f, color.a* 255.0f});
+    // Close the loop
+    std::vector<Vector2> finalPoints = std::vector<Vector2>();
+    finalPoints.push_back(points[points.size() - 1]);
+    finalPoints.push_back(points[0]);
+
+    DrawLineStrip(finalPoints.data(), 2, (Color){color.r * 255.0f, color.g * 255.0f, color.b * 255.0f, color.a * 255.0f});
 }
 
 void PhysicsDebug::DrawTransform(const b2Transform &xf)

@@ -4,21 +4,21 @@ using namespace Astrolib;
 
 PhysicsEntity::PhysicsEntity(PHYSICS_TYPE bodyType, Vector2 startPos)
 {
-    bodyDef = b2BodyDef();
-    bodyDef.position = b2Vec2(startPos.x, startPos.y);
+    bodyDef = new b2BodyDef();
+    bodyDef->position = b2Vec2(startPos.x, startPos.y);
 
     type = PHYSICAL;
     if (bodyType == STATIC)
     {
-        bodyDef.type = b2_staticBody;
+        bodyDef->type = b2_staticBody;
     }
     else if (bodyType == DYNAMIC)
     {
-        bodyDef.type = b2_dynamicBody;
+        bodyDef->type = b2_dynamicBody;
     }
     else if (bodyType == KINEMATIC)
     {
-        bodyDef.type = b2_kinematicBody;
+        bodyDef->type = b2_kinematicBody;
     }
 
     // TODO: Move this to when the entity gets added to the tree
@@ -32,9 +32,9 @@ void PhysicsEntity::OnRegister(Scene* scene)
     // Create and assign custom data to the physics body
     b2BodyUserData data = b2BodyUserData();
     data.pointer = (uintptr_t)(new PhysicsEntityData(entityID, name));
-    bodyDef.userData = data;
+    bodyDef->userData = data;
 
-    physicsBody = scene->GetPhysicsWorld()->CreateBody(&bodyDef);
+    physicsBody = scene->GetPhysicsWorld()->CreateBody(bodyDef);
     
     addedToPhysicsWorld = true;
     currentScene = scene;

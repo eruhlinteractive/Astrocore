@@ -60,6 +60,10 @@ public:
         Trigger2D* trigger = new Trigger2D({0, -12.5},{0,0}, {720,10});
         RegisterEntity(trigger);
 
+
+        //Trigger2D* trigger2 = new Trigger2D({0, -25.5},{0,0}, {720,10});
+        //RegisterEntity(trigger2);
+
         for (int i = 0; i < 12; i++)
         {
             PhysicsEntity *box = new PhysicsEntity(DYNAMIC, {-i * 3.0 + 10, -50 + (-i * 10)});
