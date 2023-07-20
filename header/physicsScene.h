@@ -64,7 +64,7 @@ public:
 
         for (int i = 0; i < 12; i++)
         {
-            PhysicsEntity *box = new PhysicsEntity(DYNAMIC, {-i * 3.0 + 10, -50 + (-i * 10)});
+            PhysicsEntity *box = new PhysicsEntity(DYNAMIC, {-i * 3.0f + 10.0f, -50.0f + (-i * 10.0f)});
             box->CreateRectangleCollider({0, 0}, {6.7, 6.7}, 0, 1, 5, 0);
 
             Texture spriteTexture = TextureManager::instance().GetTexture("res/testSprite.png");

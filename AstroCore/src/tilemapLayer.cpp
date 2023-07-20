@@ -26,7 +26,7 @@ void TileMapLayer::Draw(float deltaTime, Camera2D *camera)
     Texture2D *texture = tileAtlas;
     // std::vector<int> indexes = *tileIndexes;
     int drawn = 0;
-    Vector2 screenSize = {GetRenderWidth(), GetRenderHeight()};
+    Vector2 screenSize = {(float)GetRenderWidth(), (float)GetRenderHeight()};
     Vector2 globalPos = GetGlobalPosition();
     SetTextureWrap(*tileAtlas, RL_TEXTURE_WRAP_CLAMP);
     SetTextureFilter(*tileAtlas, TEXTURE_FILTER_POINT);

@@ -42,7 +42,7 @@ namespace Astrolib
             this->spriteTexture = texture;
             this->origin = origin;
             this->startPoint = (Vector2){0, 0};
-            this->spriteSize = (Vector2){texture.width, texture.height};
+            this->spriteSize = (Vector2){(float)texture.width, (float)texture.height};
         }
 
         Sprite(Texture2D texture, Vector2 origin, Vector2 startPoint, Vector2 spriteSize) : Sprite(texture, origin)
