@@ -136,7 +136,7 @@ public:
         }
 
         //std::string pos = std::to_string(WorldRenderedScreenCoords(mixer->GetGlobalPosition()).x) + "," + std::to_string(WorldRenderedScreenCoords(mixer->GetGlobalPosition()).y);
-        Debug::Log(std::to_string(IsOnScreen(mixer->GetBoundRect())));
+        //Debug::Log(std::to_string(IsOnScreen(mixer->GetBoundRect())));
     }
 
 private:
