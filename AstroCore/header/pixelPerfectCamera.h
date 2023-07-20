@@ -76,7 +76,7 @@ namespace Astrolib
             //SetTextureFilter(renderTexture.texture, TEXTURE_FILTER_POINT);
 
             // Update PPU used for movement/rendering
-            Entity2D::pixelsPerUnit = 1.0f / samplingRatio;
+            //Entity2D::pixelsPerUnit = 1.0f / samplingRatio;
 
 
             // The target's height is flipped (in the source Rectangle), due to OpenGL reasons

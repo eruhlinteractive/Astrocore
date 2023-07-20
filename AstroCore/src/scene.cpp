@@ -112,8 +112,6 @@ Scene::~Scene()
                 delete val;
                 val = nullptr;
             }
-           
-
             currentEntityNames.pop_back();
         }
     }
@@ -243,7 +241,7 @@ void Scene::Draw(float deltaTime)
         Vector2 screenPos = GetWorldToScreen2D(p.second->GetGlobalPosition(), *currentCamera->GetCamera());
 
         // AABB test the rect to see if it's on screen
-        if (IsOnScreen(currentCamera->GetCamera(), p.second->GetBoundRect()) && p.second->GetType() != TILEMAP)
+        if (IsOnScreen(p.second->GetBoundRect()) && p.second->GetType() != TILEMAP)
         {
             pairs.push_back((Entity2D *)p.second);
         }

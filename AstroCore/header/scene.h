@@ -45,9 +45,8 @@ namespace Astrolib
         virtual void Draw(float deltaTime);
         bool AddLightToScene(Light2D *light);
 
-
         void OnNotify(const Signaler *signaler, std::string eventName) override;
-        
+
         bool RegisterEntity(Entity2D *entity);
         bool UnRegisterEntity(std::string name);
 
@@ -86,46 +85,47 @@ namespace Astrolib
         /// @param camera The camera that is currently rendering the screen
         /// @param entityRect The rectangle of the entity
         /// @return True if the AABB check passes and the object is visible on screen
-        static bool IsOnScreen(Camera2D *camera, Rectangle entityRect)
+        bool IsOnScreen(Rectangle entityRect)
         {
-            Vector2 screenSize = {(float)GetRenderWidth(), (float)GetRenderHeight()};
-            Vector2 screenSpaceCoords = GetWorldToScreen2D({entityRect.x, entityRect.y}, *camera);
 
+            Vector2 renderSize = currentCamera->GetRenderResolution();
+            Vector2 screenSpaceCoords = GetWorldToScreen2D({entityRect.x, entityRect.y}, *(currentCamera->GetCamera()));
             Rectangle tileRect = (Rectangle){
                 screenSpaceCoords.x,
                 screenSpaceCoords.y,
-                entityRect.width * camera->zoom,
-                entityRect.height * camera->zoom};
+                entityRect.width,
+                entityRect.height};
 
+            //Debug::Log(std::to_string(tileRect.x));
             // Vector2 ss = GetScreenToWorld2D({tileRect.x, tileRect.y}, *camera);
             // Rectangle debugRect = (Rectangle){ss.x, ss.y, tileInfo->imageSize.x, tileInfo->imageSize.y};
 
             bool isOnScreen =
                 tileRect.x + tileRect.width > 0 &&
-                tileRect.x < screenSize.x &&
+                tileRect.x < renderSize.x &&
                 tileRect.y + tileRect.height > 0 &&
-                tileRect.y < screenSize.y;
+                tileRect.y < renderSize.y;
 
             return isOnScreen;
         }
-        //void SetPhysicsWorld(b2World *newWorld)
+        // void SetPhysicsWorld(b2World *newWorld)
         //{
-        //    physicsWorld = newWorld;
-        //}
+        //     physicsWorld = newWorld;
+        // }
 
-        b2World* GetPhysicsWorld()
+        b2World *GetPhysicsWorld()
         {
             return physicsWorld;
         }
 
     protected:
         b2World *physicsWorld;
+
     private:
-        
         Entity2D *root;
         /// @brief Top level of the scene graph
         std::map<std::string, Entity2D *> entities;
-        std::map<int, Entity2D*> entityIDMap;
+        std::map<int, Entity2D *> entityIDMap;
         std::map<std::string, Entity2D *> drawableEntities;
         std::map<std::string, Light2D *> lights;
 

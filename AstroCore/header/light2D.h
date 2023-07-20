@@ -13,7 +13,7 @@ namespace Astrolib
         float brightness;
         Color color;
 
-        void Draw(float deltaTime, Camera2D* camera) override {};
+        void Draw(float deltaTime, Camera2D *camera) override {};
     };
 }
 

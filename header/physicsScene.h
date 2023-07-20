@@ -21,11 +21,10 @@ public:
         currentCamera->SetRenderDimensions(320, 180);
         GetPhysicsWorld()->SetGravity({0.0, 9.8});
 
-        PhysicsEntity *floor = new PhysicsEntity(STATIC, {-2, 0});
-        floor->CreateRectangleCollider({0, 0}, {720, 20}, 0, 0.0, 1.0, 0.0);
-        RegisterEntity(floor);
-        
-       
+        //PhysicsEntity *floor = new PhysicsEntity(STATIC, {-2, 0});
+        //floor->CreateRectangleCollider({0, 0}, {720, 20}, 0, 0.0, 1.0, 0.0);
+        //RegisterEntity(floor);
+
         // PhysicsEntity *box1 = new PhysicsEntity(DYNAMIC, {-2, -50});
         // box1->CreateRectangleCollider({0, 0}, {5, 5});
         // RegisterEntity(box1);
@@ -57,12 +56,11 @@ public:
         std::shared_ptr<InputAction> addForce = std::shared_ptr<InputAction>(new InputAction("addForce", KEY_SPACE));
         InputManager::instance().AddInputAction(addForce);
 
-        Trigger2D* trigger = new Trigger2D({0, -12.5},{0,0}, {720,10});
+        Trigger2D *trigger = new Trigger2D({0, -12.5}, {0, 0}, {720, 10});
         RegisterEntity(trigger);
 
-
-        //Trigger2D* trigger2 = new Trigger2D({0, -25.5},{0,0}, {720,10});
-        //RegisterEntity(trigger2);
+        // Trigger2D* trigger2 = new Trigger2D({0, -25.5},{0,0}, {720,10});
+        // RegisterEntity(trigger2);
 
         for (int i = 0; i < 12; i++)
         {
@@ -83,7 +81,6 @@ public:
         PhysicsEntity *box = new PhysicsEntity(DYNAMIC, {0, -13});
         box->SetName("mixer");
         box->CreateRectangleCollider({0, 0}, {6.7, 6.7});
-        
 
         Texture spriteTexture = TextureManager::instance().GetTexture("res/idle_test.png");
         SpriteEntity *spriteChild = new SpriteEntity(spriteTexture, {16, 16}, {8, 8});
@@ -99,13 +96,14 @@ public:
         entities.push_back(box);
     }
 
-    void Update(float deltaTime) override
+    void FixedUpdate(float deltaTime) override
     {
+        Scene::FixedUpdate(deltaTime);
         PhysicsEntity *mixer = (PhysicsEntity *)FindEntityByName("mixer");
-        currentCamera->target = mixer->GetGlobalPosition();
-        // float x = (float)std::cos(GetTime()) * 10.0f;
-        // Debug::Log(std::to_string(x));
-        // mixer->transform.position.x = x;
+        // currentCamera->target = mixer->GetGlobalPosition();
+        //  float x = (float)std::cos(GetTime()) * 10.0f;
+        //  Debug::Log(std::to_string(x));
+        //  mixer->transform.position.x = x;
 
         if (InputManager::instance().IsActionPressed("addForce"))
         {
@@ -121,23 +119,24 @@ public:
 
         if (input.IsActionDown("up"))
         {
-            mixer->AddForce({0.0, 1000});
+            mixer->AddForce({0.0, 100000});
         }
         else if (input.IsActionDown("down"))
         {
-            mixer->AddForce({0.0, -1000});
+            mixer->AddForce({0.0, -100000});
         }
 
         if (input.IsActionDown("right"))
         {
-            mixer->AddForce({-1000, 0});
+            mixer->AddForce({-100000, 0});
         }
         else if (input.IsActionDown("left"))
         {
-            mixer->AddForce({1000, 0});
+            mixer->AddForce({100000, 0});
         }
 
-        Scene::Update(deltaTime);
+        //std::string pos = std::to_string(WorldRenderedScreenCoords(mixer->GetGlobalPosition()).x) + "," + std::to_string(WorldRenderedScreenCoords(mixer->GetGlobalPosition()).y);
+        Debug::Log(std::to_string(IsOnScreen(mixer->GetBoundRect())));
     }
 
 private:

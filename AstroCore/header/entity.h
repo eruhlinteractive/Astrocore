@@ -59,11 +59,9 @@ namespace Astrolib
         virtual float GetGlobalRotationDeg();
         virtual float GetGlobalRotation();
 
-
         /// @brief Called when a entity is registered in a scene
         /// @param scene The scene the entity was registered in
         virtual void OnRegister(Scene *scene);
-
 
         /// @brief Get the path from the scene root to this entity
         /// @return The path to this entity from the scene root
@@ -92,7 +90,6 @@ namespace Astrolib
 
         /// @brief Called when the object is de-allocated
         virtual void OnDestroy(){};
-
 
         /// @brief The layer this sprite is drawn on (lower = first), relative to the parent
         int drawLayer = 0;
@@ -135,10 +132,11 @@ namespace Astrolib
         int GetChildCount();
         Entity2D *GetParent();
 
-        Scene* GetCurrentScene();
+        Scene *GetCurrentScene();
         void SetParent(Entity2D *parent);
         Transform2D transform;
-        inline static float pixelsPerUnit = 1.0f;
+        // inline static float pixelsPerUnit = 1.0f;
+        inline static Vector2 worldDrawSize = {0, 0};
 
         float GetNearestMultiple(float value, float multiple)
         {
