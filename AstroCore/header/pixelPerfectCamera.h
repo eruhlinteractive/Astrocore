@@ -18,7 +18,7 @@ namespace Astrolib
             worldSpaceCamera = new Camera2D();
             worldSpaceCamera->zoom = 1.0;
             screenSpaceCamera->zoom = 1.0;
-            SetRenderResolution(GetScreenWidth(), GetScreenHeight());
+            SetRenderDimensions(GetScreenWidth(), GetScreenHeight());
         }
 
         ~PixelPerfectCamera2D()
@@ -60,11 +60,14 @@ namespace Astrolib
             return screenSpaceCamera;
         }
 
-        void SetRenderResolution(float newRenderWidth, float newRenderHeight)
+        void BeginDrawing() override { /* TODO: Implement this*/};
+        void EndDrawing() override { /* TODO: Implement this*/};
+
+        void SetRenderDimensions(float width, float height, bool maintainAspect = true) override
         {
             screenDimensions = (Vector2){(float)GetRenderWidth(), (float)GetRenderHeight()};
-            samplingRatio = (float)screenDimensions.x / (float)newRenderWidth;
-            virtualResolution = (Vector2){(float)newRenderWidth, newRenderHeight};
+            samplingRatio = (float)screenDimensions.x / (float)width;
+            virtualResolution = (Vector2){(float)width, height};
 
         
             // Re-initialize render texture

@@ -14,7 +14,6 @@ namespace Astrolib
         CameraEntityBase()
         {
             type = CAMERA;
-            SetRenderDimensions(GetRenderWidth(), GetRenderHeight());
         };
 
         // Make the calls to this a bit easier
@@ -22,61 +21,27 @@ namespace Astrolib
         Vector2 offset = {0, 0};
         float zoom = 1.0;
 
-        void SetRenderDimensions(float width, float height, bool maintainAspect = true)
-        {
-            maintainTargetAspectResolution = maintainAspect;
-            renderResolution = (Vector2){width, height};
-            UnloadRenderTexture(rendText);
-            rendText = LoadRenderTexture(width, height);
-            SetTextureFilter(rendText.texture, TEXTURE_FILTER_POINT);
-            srcRect = (Rectangle){0, 0, width, -height};
-        }
-
-        void UpdateDestinationRectSize()
-        {
-            if (maintainTargetAspectResolution)
-            {
-                float scale = min(GetRenderWidth() / renderResolution.x, GetRenderHeight() / renderResolution.y);
-                destRect = {
-                    (GetRenderWidth() - ((float)renderResolution.x * scale)) * 0.5f,
-                    (GetRenderHeight() - ((float)renderResolution.y * scale)) * 0.5f,
-                    (float)renderResolution.x * scale,
-                    (float)renderResolution.y * scale};
-            }
-            else
-            {
-                destRect = (Rectangle){0, 0, (float)GetRenderWidth(), (float)GetRenderHeight()};
-            }
-        }
+        virtual void SetRenderDimensions(float width, float height, bool maintainAspect = true) = 0;
 
         // Pure virtual
         virtual Camera2D *GetCamera() = 0;
 
-        void BeginDrawing()
-        {
-            BeginTextureMode(rendText);
-            BeginMode2D(*GetCamera());
-        }
-
-        void EndDrawing()
-        {
-
-            EndMode2D();
-            EndTextureMode();
-        }
+        virtual void BeginDrawing() = 0;
+        virtual void EndDrawing() = 0;
+        void Draw(float deltaTime, Camera2D *camera) = 0;
 
         Vector2 GetRenderCenter()
         {
             return (Vector2){renderResolution.x / 2.0f, renderResolution.y / 2.0f};
         }
 
-        void Draw(float deltaTime, Camera2D *camera) override
-        {
-            ClearBackground(BLACK);
-            DrawTexturePro(rendText.texture, srcRect, destRect, {0, 0}, 0, WHITE);
-        };
+        inline virtual Vector2 GetRenderResolution()
+        {   
+            return renderResolution;
+        }
 
     protected:
+        virtual void UpdateDestinationRectSize(){};
         bool maintainTargetAspectResolution = true;
         Vector2 renderResolution;
         RenderTexture2D rendText;
