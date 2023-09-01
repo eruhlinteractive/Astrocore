@@ -6,9 +6,9 @@
 #include <vector>
 #include <memory>
 #include <string>
-#include "structs.h"
-#include "interfaces.h"
-#include "debug.h"
+#include "../../data/structs.h"
+#include "../../data/interfaces.h"
+#include "../../engine/debug.h"
 
 /*
     Base class for every entity in the scene (except a few special cases like lights)

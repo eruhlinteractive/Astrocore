@@ -1,4 +1,4 @@
-#include "../header/filemanager.h"
+#include "filemanager.h"
 
 using namespace Astrolib;
 

@@ -1,4 +1,4 @@
-#include "../header/physicsEntity.h"
+#include "physicsEntity.h"
 
 using namespace Astrolib;
 

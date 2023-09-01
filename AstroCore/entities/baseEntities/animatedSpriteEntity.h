@@ -2,9 +2,9 @@
 #include "entity.h"
 #include "spriteEntity.h"
 #include <string>
-#include "structs.h"
+#include "../../data/structs.h"
 #include <map>
-#include "interfaces.h"
+#include "../../data/interfaces.h"
 
 #ifndef ANIMATED_SPRITE_ENTITY_H
 #define ANIMATED_SPRITE_ENTITY_H

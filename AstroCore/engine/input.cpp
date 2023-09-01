@@ -1,4 +1,4 @@
-#include "../header/input.h"
+#include "input.h"
 #include <iostream>
 
 using namespace Astrolib;

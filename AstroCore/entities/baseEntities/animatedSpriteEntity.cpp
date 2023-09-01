@@ -1,5 +1,5 @@
-#include "../header/animatedSpriteEntity.h"
-#include "../header/texturemanager.h"
+#include "animatedSpriteEntity.h"
+#include "../../engine/texturemanager.h"
 #include <iostream>
 
 using namespace Astrolib;

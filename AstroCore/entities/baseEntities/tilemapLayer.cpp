@@ -1,6 +1,6 @@
-#include "../header/tilemapLayer.h"
+#include "tilemapLayer.h"
 #include <iostream>
-#include "../header/scene.h"
+#include "../../engine/scene.h"
 
 
 using namespace Astrolib;

@@ -1,4 +1,4 @@
-#include "../header/collisionTracker.h"
+#include "collisionTracker.h"
 
 using namespace Astrolib;
 

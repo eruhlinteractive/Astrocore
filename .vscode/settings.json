@@ -56,5 +56,6 @@
         "iomanip": "cpp",
         "chrono": "cpp",
         "ratio": "cpp"
-    }
+    },
+    "cmake.sourceDirectory": "/mnt/ChungusL/GitHubRepos/astrocore/AstroCore"
 }

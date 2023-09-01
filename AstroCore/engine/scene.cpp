@@ -1,4 +1,4 @@
-#include "../header/scene.h"
+#include "scene.h"
 #include <iostream>
 using namespace Astrolib;
 

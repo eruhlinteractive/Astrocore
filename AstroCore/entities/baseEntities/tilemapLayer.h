@@ -6,7 +6,7 @@ using namespace std;
 #include <vector>
 #include "rlgl.h"
 #include <map>
-#include "structs.h"
+#include "../../data/structs.h"
 
 namespace Astrolib
 {

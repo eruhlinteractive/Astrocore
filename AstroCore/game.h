@@ -1,9 +1,9 @@
-#include "scene.h"
+#include "engine/scene.h"
 #include <vector>
 #include <map>
 #include "../include/raylib.h"
 #include <string>
-#include "../include/box2d/box2d.h"
+#include "include/box2d/box2d.h"
 
 #ifndef __GAME__
 #define __GAME__

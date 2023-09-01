@@ -1,4 +1,4 @@
-#include "../header/physicsDebug.h"
+#include "physicsDebug.h"
 #include <vector>
 
 using namespace Astrolib;

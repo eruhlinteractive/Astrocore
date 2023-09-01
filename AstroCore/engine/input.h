@@ -7,7 +7,7 @@
 #include <map>
 #include <string>
 #include <memory>
-#include "structs.h"
+#include "../data/structs.h"
 
 
 using namespace std;

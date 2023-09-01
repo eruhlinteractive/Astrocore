@@ -1,20 +1,20 @@
 #ifndef __SCENE_H__
 #define __SCENE_H__
 
-#include "entity.h"
+#include "../entities/baseEntities/entity.h"
 #include "texturemanager.h"
-#include "light2D.h"
+#include "../entities/baseEntities/light2D.h"
 #include "rlgl.h"
 #include <map>
 #include <string>
 #include <algorithm>
 #include <regex>
-#include "tilemap.h"
-#include "interfaces.h"
+#include "../entities/baseEntities/tilemap.h"
+#include "../data/interfaces.h"
 #include <typeinfo>
 #include "raylib.h"
-#include "cameraEntityBase.h"
-#include "pixelPerfectCamera.h"
+#include "../entities/baseEntities/cameraEntityBase.h"
+#include "../entities/baseEntities/pixelPerfectCamera.h"
 #include "collisionTracker.h"
 #include "../include/box2d/box2d.h"
 

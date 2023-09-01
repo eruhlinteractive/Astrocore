@@ -1,15 +1,15 @@
 #ifndef __TILEMAP_H__
 #define __TILEMAP_H__
 
-#include "../header/entity.h"
-#include "../header/filemanager.h"
-#include "../header/texturemanager.h"
+#include "entity.h"
+#include "../../engine/filemanager.h"
+#include "../../engine/texturemanager.h"
 #include <tmxlite/Config.hpp>
 #include <tmxlite/Map.hpp>
 #include <tmxlite/Layer.hpp>
 #include <tmxlite/TileLayer.hpp>
 #include <tmxlite/ObjectGroup.hpp>
-#include "structs.h"
+#include "../../data/structs.h"
 #include "tilemapLayer.h"
 
 namespace Astrolib

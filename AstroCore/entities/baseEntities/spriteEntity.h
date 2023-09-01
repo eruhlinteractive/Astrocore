@@ -1,7 +1,7 @@
 #include "entity.h"
-#include "structs.h"
-#include "texturemanager.h"
-#include "interfaces.h"
+#include "../../data/structs.h"
+#include "../../engine/texturemanager.h"
+#include "../../data/interfaces.h"
 
 #ifndef SPRITE_ENTITY_H
 #define SPRITE_ENTITY_H
