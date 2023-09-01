@@ -1,5 +1,5 @@
-#include "../header/trigger2D.h"
-#include "../header/scene.h"
+#include "trigger2D.h"
+#include "../../engine/scene.h"
 
 using namespace Astrolib;
 

@@ -1,4 +1,4 @@
-#include "../header/light2D.h"
+#include "light2D.h"
 
 using namespace Astrolib;
 

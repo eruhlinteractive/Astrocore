@@ -1,4 +1,4 @@
-#include "../header/spriteEntity.h"
+#include "spriteEntity.h"
 using namespace Astrolib;
 
 SpriteEntity::SpriteEntity(Sprite *sprite)

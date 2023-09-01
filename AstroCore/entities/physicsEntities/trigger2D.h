@@ -1,7 +1,7 @@
 #ifndef __TRIGGER2D_H__
 #define __TRIGGER2D_H__
 
-#include "../include/box2d/box2d.h"
+#include "../../include/box2d/box2d.h"
 #include "collisionEntity.h"
 
 namespace Astrolib

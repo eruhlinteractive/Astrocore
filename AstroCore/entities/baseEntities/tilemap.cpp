@@ -1,4 +1,4 @@
-#include "../header/tilemap.h"
+#include "tilemap.h"
 #include <iostream>
 
 using namespace Astrolib;

@@ -1,19 +1,30 @@
 // Single file to include functionality of the Astro Core
 
 #include "include/raylib.h"
-#include "header/entity.h"
-#include "header/input.h"
-#include "header/animatedSpriteEntity.h"
-#include "header/structs.h"
-#include "header/scene.h"
-#include "header/texturemanager.h"
-#include "header/game.h"
-#include "header/light2D.h"
-#include "header/filemanager.h"
-#include "header/tilemap.h"
-#include "header/pixelPerfectCamera.h"
-#include "header/cameraEntity.h"
-#include "header/game.h"
-#include "header/debug.h"
-#include "header/physicsEntity.h"
-#include "header/trigger2D.h"
+#include "game.h"
+
+// Data
+#include "data/structs.h"
+#include "data/interfaces.h"
+
+// Base entities
+#include "entities/baseEntities/tilemap.h"
+#include "entities/baseEntities/pixelPerfectCamera.h"
+#include "entities/baseEntities/cameraEntity.h"
+#include "entities/baseEntities/light2D.h"
+#include "entities/baseEntities/animatedSpriteEntity.h"
+#include "entities/baseEntities/entity.h"
+
+// Physics entities
+#include "entities/physicsEntities/physicsEntity.h"
+#include "entities/physicsEntities/trigger2D.h"
+
+// Engine
+#include "engine/scene.h"
+#include "engine/texturemanager.h"
+#include "engine/input.h"
+#include "engine/filemanager.h"
+
+
+#include "engine/debug.h"
+

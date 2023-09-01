@@ -1,4 +1,4 @@
-#include "../header/texturemanager.h"
+#include "texturemanager.h"
 
 using namespace Astrolib;
 
