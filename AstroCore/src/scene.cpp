@@ -203,17 +203,20 @@ Entity2D *Scene::FindEntityByName(std::string name)
 
 Vector2 Scene::GetWorldRenderSize()
 {
-    /*if (currentCamera == nullptr)
+    if (currentCamera == nullptr)
     {
         return (Vector2){GetScreenWidth(), GetScreenHeight()};
     }
-    */
 
     return currentCamera->GetRenderResolution();
 }
 
 void Scene::Update(float deltaTime)
 {
+    // Don't process if the scene is currently paused
+    // TODO: Add ability to pause individual nodes
+    if(isPaused) {return;}
+
     for (auto e : entities)
     {
         e.second->Update(deltaTime);

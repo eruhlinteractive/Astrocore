@@ -28,21 +28,19 @@ namespace Astrolib
             debugMessage = " (Release)";
 #endif
 
-                InitWindow(screenWidth, screenHeight, "Astrolib Game");
+            InitWindow(screenWidth, screenHeight, "Astrolib Game");
             SetWindowTitle((windowTitle + debugMessage).c_str());
             SetWindowSize(screenWidth, screenHeight);
-            // SetTargetFPS(targetFPS);
+            SetTargetFPS(targetFPS);
         }
 
-        virtual void CreateScene(){};
-
-        virtual void LateUpdate()
+        void LateUpdate()
         {
             currentScene->LateUpdate(GetFrameTime());
         };
 
         /// @brief Draw's the world using worldCamera
-        virtual void DrawWorld()
+        void DrawWorld()
         {
             currentScene->Draw(GetFrameTime());
         }
@@ -56,6 +54,7 @@ namespace Astrolib
             {
                 SendEvent("windowResized");
             }
+            
             currentScene->Update(GetFrameTime());
         };
         void FixedUpdate(float deltaTime)
@@ -86,8 +85,7 @@ namespace Astrolib
 
                 ClearBackground(WHITE);
                 Draw(GetFrameTime());
-               
-            }
+                        }
 
             // Run cleanup
             Exit();

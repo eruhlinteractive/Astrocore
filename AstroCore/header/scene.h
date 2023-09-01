@@ -131,6 +131,9 @@ namespace Astrolib
         std::map<std::string, Entity2D *> drawableEntities;
         std::map<std::string, Light2D *> lights;
 
+        // Is the processing currently paused?
+        bool isPaused = false;
+
         std::string sceneName = "";
         RenderTexture2D screenSpaceLightMap;
         CollisionTracker colTracker;
