@@ -20,18 +20,11 @@ namespace Astrolib
         {
             std::string debugMessage = "";
 
-// IDK if this even works with CMake ¯\_(ツ)_/¯
-#if __DEBUG__
-            debugMessage = " (Debug)";
-            2
-#else
-            debugMessage = " (Release)";
-#endif
-
             InitWindow(screenWidth, screenHeight, "Astrolib Game");
             SetWindowTitle((windowTitle + debugMessage).c_str());
             SetWindowSize(screenWidth, screenHeight);
             SetTargetFPS(targetFPS);
+            //SetWindowPosition(GetMonitorWidth(GetCurrentMonitor())/2 + screenWidth/5, GetMonitorHeight(GetCurrentMonitor())/2 - screenHeight/2);
         }
 
         void LateUpdate()
@@ -48,26 +41,28 @@ namespace Astrolib
         /// @brief Draw in screen space
         void DrawUI();
 
+        /// @brief Called once per frame on the current scene
+        /// @param deltaTime 
         void Update(float deltaTime)
         {
             if (IsWindowResized())
             {
                 SendEvent("windowResized");
             }
-            
+
             currentScene->Update(GetFrameTime());
         };
+        
         void FixedUpdate(float deltaTime)
         {
-            // TODO: Make this settable by the end user
-            // physicsWorld->Step(deltaTime, 8, 3);
+            // Run physics updates for the current scene
             currentScene->FixedUpdate(deltaTime);
         };
 
         // Runs the main game loop
         void Run()
         {
-            // TODO: Put core game loop here
+            // Core game loop
 
             while (!WindowShouldClose())
             {
@@ -85,7 +80,7 @@ namespace Astrolib
 
                 ClearBackground(WHITE);
                 Draw(GetFrameTime());
-                        }
+            }
 
             // Run cleanup
             Exit();
@@ -106,6 +101,7 @@ namespace Astrolib
         void SetCurrentScene(unique_ptr<Scene> newScene)
         {
             currentScene = std::move(newScene);
+            currentScene->LoadScene();
         }
 
         void SetConfigFlag(unsigned int flag)
@@ -118,10 +114,14 @@ namespace Astrolib
             return (Vector2){(float)GetRenderWidth(), (float)GetRenderHeight()};
         }
 
-        virtual void Exit()
+        /// @brief Exits the game and closes the window
+        void Exit()
         {
-
             TextureManager::instance().UnloadAllTextures();
+
+            // Delete the current scene
+            currentScene.reset();
+
             CloseWindow();
         };
 
@@ -136,11 +136,9 @@ namespace Astrolib
             return *INSTANCE;
         }
 
-    protected:
+    private:
         inline static unique_ptr<Scene> currentScene;
         Game(){};
-
-    private:
         inline static Game *INSTANCE;
         inline static bool created;
         bool ySortEnabled = true;

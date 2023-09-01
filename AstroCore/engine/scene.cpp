@@ -364,8 +364,8 @@ void Scene::Draw(float deltaTime)
     EndBlendMode();
     */
 
-    std::string val = std::to_string(currentCamera->zoom);
-    DrawText(val.c_str(), 10, 30, 20, DARKGREEN);
+    //std::string val = std::to_string(currentCamera->zoom);
+    //DrawText(val.c_str(), 10, 30, 20, DARKGREEN);
     DrawFPS(10, 10);
 
     EndDrawing();

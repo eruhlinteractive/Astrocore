@@ -10,7 +10,8 @@ namespace Astrolib
     public:
         void Init() override
         {
-            Game::instance().AddObserver((Observer *)this, "windowResized");
+            // TODO: Fix this class :D
+            //Game::instance().AddObserver((Observer *)this, "windowResized");
         }
 
         void OnNotify(const Signaler *signaler, std::string eventName) override

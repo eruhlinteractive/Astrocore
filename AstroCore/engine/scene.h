@@ -15,6 +15,7 @@
 #include "raylib.h"
 #include "../entities/baseEntities/cameraEntityBase.h"
 #include "../entities/baseEntities/pixelPerfectCamera.h"
+#include "../entities/baseEntities/cameraEntity.h"
 #include "collisionTracker.h"
 #include "../include/box2d/box2d.h"
 
@@ -35,7 +36,9 @@ namespace Astrolib
         Entity2D *FindEntityByName(std::string name);
         Entity2D *GetEntity(std::string path);
 
-        virtual void LoadScene(){};
+        virtual void LoadScene(){
+            isSceneLoaded = true;
+        };
         virtual void UnloadScene(){};
 
         virtual void Update(float deltaTime);
@@ -122,6 +125,11 @@ namespace Astrolib
 
     protected:
         b2World *physicsWorld;
+        // Is the processing currently paused?
+        bool isPaused = false;
+        // Has the scene already been loaded
+        bool isSceneLoaded = false;
+
 
     private:
         Entity2D *root;
@@ -130,9 +138,6 @@ namespace Astrolib
         std::map<int, Entity2D *> entityIDMap;
         std::map<std::string, Entity2D *> drawableEntities;
         std::map<std::string, Light2D *> lights;
-
-        // Is the processing currently paused?
-        bool isPaused = false;
 
         std::string sceneName = "";
         RenderTexture2D screenSpaceLightMap;

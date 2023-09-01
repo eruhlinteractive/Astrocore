@@ -96,6 +96,8 @@ namespace Astrolib
             DrawTexturePro(renderTexture.texture, sourceRect, destRect, {0, 0}, 0.0f, WHITE);
             EndMode2D();
              
+
+            /*
             std::string posText = "Target:" + std::to_string(targetPos.x) + "," + std::to_string(targetPos.y);
             DrawText(posText.c_str(), 10, 60, 20, RED);
 
@@ -104,12 +106,13 @@ namespace Astrolib
 
             std::string vrestText = "VRes: " + std::to_string(virtualResolution.x) + "," + std::to_string(virtualResolution.y);
             DrawText(vrestText.c_str(), 10, 105, 20, BLUE);
+            */
 
            
-           DrawRectangleLines(200, 200, 1 * samplingRatio, 1 * samplingRatio, RED);
+           //DrawRectangleLines(200, 200, 1 * samplingRatio, 1 * samplingRatio, RED);
            //DrawRectangleLines(210, 200, 1, 1 , RED);
 
-           DrawRectangleLines(screenSpaceCamera->target.x, screenSpaceCamera->target.y ,destRect.width, destRect.height, RED);
+           //DrawRectangleLines(screenSpaceCamera->target.x, screenSpaceCamera->target.y ,destRect.width, destRect.height, RED);
            
         }
         

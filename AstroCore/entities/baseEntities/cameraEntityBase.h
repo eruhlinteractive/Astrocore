@@ -2,7 +2,7 @@
 #define __CAMERAENTITYBASE_H__
 #include "raylib.h"
 #include "entity.h"
-
+#
 // An interface to provide generalized properties for different types of cameras
 
 namespace Astrolib
@@ -16,6 +16,10 @@ namespace Astrolib
             type = CAMERA;
         };
 
+        ~CameraEntityBase()
+        {
+            UnloadRenderTexture(rendText);
+        }
         // Make the calls to this a bit easier
         Vector2 target = {0, 0};
         Vector2 offset = {0, 0};
