@@ -22,12 +22,13 @@ namespace Astrolib
 
 // IDK if this even works with CMake ¯\_(ツ)_/¯
 #if __DEBUG__
-            debugMessage = " (Debug)";2
+            debugMessage = " (Debug)";
+            2
 #else
             debugMessage = " (Release)";
 #endif
 
-            InitWindow(screenWidth, screenHeight, "Astrolib Game");
+                InitWindow(screenWidth, screenHeight, "Astrolib Game");
             SetWindowTitle((windowTitle + debugMessage).c_str());
             SetWindowSize(screenWidth, screenHeight);
             // SetTargetFPS(targetFPS);
@@ -60,14 +61,36 @@ namespace Astrolib
         void FixedUpdate(float deltaTime)
         {
             // TODO: Make this settable by the end user
-            //physicsWorld->Step(deltaTime, 8, 3);
+            // physicsWorld->Step(deltaTime, 8, 3);
             currentScene->FixedUpdate(deltaTime);
         };
 
-
+        // Runs the main game loop
         void Run()
         {
             // TODO: Put core game loop here
+
+            while (!WindowShouldClose())
+            {
+                float x = GetFrameTime();
+                Update(GetFrameTime());
+
+                LateUpdate();
+                // Run FixedUpdate()
+                fixedUpdateTimer += GetFrameTime();
+                while (fixedUpdateTimer > FIXED_UPDATE_RATE)
+                {
+                    fixedUpdateTimer -= FIXED_UPDATE_RATE;
+                    FixedUpdate(FIXED_UPDATE_RATE);
+                }
+
+                ClearBackground(WHITE);
+                Draw(GetFrameTime());
+               
+            }
+
+            // Run cleanup
+            Exit();
         };
 
         void Draw(float deltaTime)
@@ -99,7 +122,7 @@ namespace Astrolib
 
         virtual void Exit()
         {
-        
+
             TextureManager::instance().UnloadAllTextures();
             CloseWindow();
         };
@@ -123,6 +146,8 @@ namespace Astrolib
         inline static Game *INSTANCE;
         inline static bool created;
         bool ySortEnabled = true;
+        const float FIXED_UPDATE_RATE = 1.0f / 60.0f;
+        float fixedUpdateTimer = 0.0f;
     };
 }
 

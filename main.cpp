@@ -36,42 +36,16 @@ int main()
     int screenWidth = 1280;
     int screenHeight = 720;
 
-    const float FIXED_UPDATE_RATE = 1.0f / 60.0f;
-    float fixedUpdateTimer = 0.0f;
-
     game->InitGame("Astrolib", 1280, 720);
 
     // Create base scene with new test scene
-
     game->SetCurrentScene(make_unique<TestScene>());
-    //game->GetPhysicsWorld()->SetDebugDraw(new PhysicsDebug());
     game->GetCurrentScene()->GetPhysicsWorld()->SetDebugDraw(new PhysicsDebug());
-
     Debug::SetDebugFlag(DRAW_PHYSICS_BOUNDS);
     //Debug::SetDebugFlag(DRAW_SPRITE_BOUNDS);
 
-    // Main game loop
-    while (!WindowShouldClose()) // Detect window close button or ESC key
-    {
-        // ClearBackground(RAYWHITE);
-        //  Run Update()
-        float x = GetFrameTime();
-        game->Update(GetFrameTime());
+    game->Run();
 
-        game->LateUpdate();
-        // Run FixedUpdate()
-        fixedUpdateTimer += GetFrameTime();
-        while (fixedUpdateTimer > FIXED_UPDATE_RATE)
-        {
-            fixedUpdateTimer -= FIXED_UPDATE_RATE;
-            game->FixedUpdate(FIXED_UPDATE_RATE);
-        }
-
-        ClearBackground(WHITE);
-        game->Draw(GetFrameTime());
-    }
-
-    game->Exit();
     delete game;
     game = nullptr;
     return 0;
