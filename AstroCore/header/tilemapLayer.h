@@ -22,6 +22,7 @@ namespace Astrolib
             Vector2 tileSize
         );
 
+        virtual void OnRegister(Scene *scene) override;
         std::vector<int>* tileIndexes;
         Texture* tileAtlas;
         std::map<int, StaticTileMin *>* mapTileInfo;

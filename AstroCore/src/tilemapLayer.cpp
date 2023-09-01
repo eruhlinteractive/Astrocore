@@ -19,6 +19,14 @@ TileMapLayer::TileMapLayer(std::vector<int> *tileIndexes,
     this->tileSize = tileSize;
 }
 
+
+void TileMapLayer::OnRegister(Scene *scene)
+{
+    Entity2D::OnRegister(scene);
+}
+
+
+
 void TileMapLayer::Draw(float deltaTime, Camera2D *camera)
 {
     int iterator = 0;

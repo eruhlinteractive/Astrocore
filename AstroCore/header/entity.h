@@ -51,6 +51,8 @@ namespace Astrolib
         virtual ~Entity2D();
         // Flag operations
 
+        
+
         void SetTransformFlag(TRANSFORM_FLAGS flag) { transformFlags |= (int)flag; };
         void UnsetTransformFlag(TRANSFORM_FLAGS flag) { transformFlags &= ~(int)flag; };
         bool IsTransformFlagSet(TRANSFORM_FLAGS flag) { return (transformFlags & (int)flag) == (int)flag; };

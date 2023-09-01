@@ -26,6 +26,8 @@ namespace Astrolib
         void RenderAllLayers();
         void RenderLayer(int layerIndex);
 
+        virtual void OnRegister(Scene* scene) override;
+
         void SetupLayers();        
         void SetDrawLayerForMapLayer(int layerIndex, int newSortIndex);
         Vector2 GetTileSize();

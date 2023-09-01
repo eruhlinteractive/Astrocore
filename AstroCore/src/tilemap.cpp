@@ -81,6 +81,18 @@ void TileMap::RenderLayer(int layerIndex)
 }
 
 
+void TileMap::OnRegister(Scene* scene)
+{
+    // Register base before also registering layers
+    Entity2D::OnRegister(scene);
+    for(auto layer : tileLayers)
+    {
+        layer->OnRegister(scene);
+    }
+
+}
+
+
 void TileMap::SetupLayers()
 {
     int iterator = 0;
