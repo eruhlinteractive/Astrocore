@@ -162,12 +162,12 @@ namespace Astrolib
     protected:
         ENTITY_TYPE type;
         bool isReady = false;
-        Scene *currentScene;
+        Scene *currentScene = nullptr;
 
         // Bit flags for this entity
         uint8_t transformFlags = 0;
         int entityID = 0;
-        std::string name;
+        std::string name ;
 
         /// @brief The children of this entity
         std::unique_ptr<std::vector<Entity2D *>> children = std::make_unique<std::vector<Entity2D *>>();

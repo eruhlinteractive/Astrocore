@@ -27,7 +27,6 @@ namespace Astrolib
 {
     class Scene : public Observer
     {
-
     public:
         Scene();
         ~Scene();
@@ -50,7 +49,7 @@ namespace Astrolib
         bool RegisterEntity(Entity2D *entity);
         bool UnRegisterEntity(std::string name);
 
-        CameraEntityBase *currentCamera;
+        CameraEntityBase *currentCamera = nullptr;
 
         Color ambientColor = WHITE;
         bool ySortEnabled = true;
@@ -108,6 +107,9 @@ namespace Astrolib
 
             return isOnScreen;
         }
+
+        Vector2 GetWorldRenderSize();
+        
         // void SetPhysicsWorld(b2World *newWorld)
         //{
         //     physicsWorld = newWorld;

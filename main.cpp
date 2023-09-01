@@ -25,7 +25,6 @@
 #include <string>
 #include <math.h>
 #include "AstroCore/astrocore.h"
-#include "testGame.h"
 #include "testScene.h"
 #include "physicsScene.h"
 #include "physicsDebug.h"
@@ -41,7 +40,10 @@ int main()
     float fixedUpdateTimer = 0.0f;
 
     game->InitGame("Astrolib", 1280, 720);
-    game->SetCurrentScene(new PhysicsScene());
+
+    // Create base scene with new test scene
+
+    game->SetCurrentScene(make_unique<TestScene>());
     //game->GetPhysicsWorld()->SetDebugDraw(new PhysicsDebug());
     game->GetCurrentScene()->GetPhysicsWorld()->SetDebugDraw(new PhysicsDebug());
 

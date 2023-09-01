@@ -1,25 +1,22 @@
 #include "../header/scene.h"
 #include <iostream>
-// For function timing
-#include <chrono>
-using namespace std::chrono;
-
 using namespace Astrolib;
 
 Scene::Scene()
 {
     entities = std::map<std::string, Entity2D *>();
-    entityIDMap = std::map<int, Entity2D*>();
+    entityIDMap = std::map<int, Entity2D *>();
     physicsWorld = new b2World(b2Vec2_zero);
     colTracker = CollisionTracker();
     physicsWorld->SetContactListener(&colTracker);
+    currentCamera = nullptr;
 
     // screenSpaceLightMap = LoadRenderTexture();
     screenSpaceLightMap = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
     ambientColor = WHITE;
-    
+
     root = new Entity2D(this->sceneName + "_root");
-    //LoadScene();
+    // LoadScene();
 }
 
 void Scene::OnNotify(const Signaler *signaler, std::string eventName)
@@ -33,13 +30,16 @@ void Scene::OnNotify(const Signaler *signaler, std::string eventName)
     }
 }
 
+
+
 bool Scene::RegisterEntity(Entity2D *entity)
 {
     std::string name = entity->GetName();
     // int id = entity->GetEntityId();
 
     // Tell entity that it was registered
-    entity->OnRegister(this);
+    entity->OnRegister(&(*this));
+
 
     if (entity->GetChildCount() > 0)
     {
@@ -68,9 +68,8 @@ bool Scene::RegisterEntity(Entity2D *entity)
         }
         if (entity->GetType() == PHYSICAL)
         {
-            colTracker.AddTrackedEntity(entity->GetEntityID(), (CollisionEntity*) entity);
+            colTracker.AddTrackedEntity(entity->GetEntityID(), (CollisionEntity *)entity);
         }
-    
 
         // Register to be notified when an entity is deleted
         entity->AddObserver(this, "entityDeleted");
@@ -101,13 +100,13 @@ Scene::~Scene()
         }
 
         // Loop through all of the entity names to delete remaining entities in the scene
-        while(!currentEntityNames.empty())
+        while (!currentEntityNames.empty())
         {
-            std::string name = currentEntityNames[currentEntityNames.size() -1];
+            std::string name = currentEntityNames[currentEntityNames.size() - 1];
 
-            if(entities.find(name) != entities.end())
+            if (entities.find(name) != entities.end())
             {
-                Entity2D* val = entities[name];
+                Entity2D *val = entities[name];
                 Debug::Log("Deleting: " + val->GetName());
                 delete val;
                 val = nullptr;
@@ -119,7 +118,7 @@ Scene::~Scene()
     delete root;
     root = nullptr;
     delete physicsWorld;
-    
+
     UnloadRenderTexture(screenSpaceLightMap);
 }
 
@@ -200,6 +199,17 @@ Entity2D *Scene::FindEntityByName(std::string name)
         return entities[name];
     }
     return nullptr;
+}
+
+Vector2 Scene::GetWorldRenderSize()
+{
+    /*if (currentCamera == nullptr)
+    {
+        return (Vector2){GetScreenWidth(), GetScreenHeight()};
+    }
+    */
+
+    return currentCamera->GetRenderResolution();
 }
 
 void Scene::Update(float deltaTime)
@@ -296,10 +306,9 @@ void Scene::Draw(float deltaTime)
         e->Draw(deltaTime, currentCamera->GetCamera());
     }
 
-
-    if(Debug::IsDebugFlagSet(DRAW_PHYSICS_BOUNDS))
+    if (Debug::IsDebugFlagSet(DRAW_PHYSICS_BOUNDS))
     {
-       GetPhysicsWorld()->DebugDraw();
+        GetPhysicsWorld()->DebugDraw();
     }
     currentCamera->EndDrawing();
 

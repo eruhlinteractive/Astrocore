@@ -8,18 +8,22 @@ using namespace Astrolib;
 class TestScene : public Scene
 {
 public:
-    TestScene() { LoadScene(); };
+    TestScene() : Scene() { LoadScene(); };
 
     void LoadScene()
     {
         CameraEntity *pixelCamera = new CameraEntity();
         currentCamera = pixelCamera;
-
         RegisterEntity(pixelCamera);
 
-        Vector2 screenSize = Game::instance().GetScreenSize();
+        
+
+        Vector2 screenSize = Astrolib::Game::instance().GetScreenSize();
         pixelCamera->SetRenderDimensions(320, 180);
 
+
+        currentCamera->GetRenderResolution();
+        
         ambientColor = WHITE;
         Light2D *newLight = new Light2D(50.0, 1.0, YELLOW);
         newLight->SetName("testLight");

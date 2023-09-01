@@ -1,5 +1,8 @@
 #include "../header/tilemapLayer.h"
 #include <iostream>
+#include "../header/scene.h"
+
+
 using namespace Astrolib;
 
 TileMapLayer::TileMapLayer(std::vector<int> *tileIndexes,
@@ -26,11 +29,12 @@ void TileMapLayer::Draw(float deltaTime, Camera2D *camera)
     Texture2D *texture = tileAtlas;
     // std::vector<int> indexes = *tileIndexes;
     int drawn = 0;
-    Vector2 screenSize = {(float)GetRenderWidth(), (float)GetRenderHeight()};
+    Vector2 screenSize = currentScene->GetWorldRenderSize();
     Vector2 globalPos = GetGlobalPosition();
     SetTextureWrap(*tileAtlas, RL_TEXTURE_WRAP_CLAMP);
     SetTextureFilter(*tileAtlas, TEXTURE_FILTER_POINT);
 
+    
     // Render each tile id
     for (int id : *tileIndexes)
     {
@@ -69,6 +73,7 @@ void TileMapLayer::Draw(float deltaTime, Camera2D *camera)
             tileRect.x < screenSize.x &&
             tileRect.y + tileRect.height > 0 &&
             tileRect.y < screenSize.y;
+            
         //bool isOnScreen = true;
         if (!isOnScreen)
         {

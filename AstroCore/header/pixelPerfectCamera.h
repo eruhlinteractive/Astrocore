@@ -9,7 +9,7 @@ namespace Astrolib
     {
     public:
         Vector2 targetPos = {0,0};
-        PixelPerfectCamera2D()
+        PixelPerfectCamera2D() : CameraEntityBase()
         {
             type = PIXELCAMERA;
             renderTexture = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());

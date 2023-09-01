@@ -11,7 +11,7 @@ namespace Astrolib
     class CameraEntityBase : public Entity2D
     {
     public:
-        CameraEntityBase()
+        CameraEntityBase() : Entity2D()
         {
             type = CAMERA;
         };
@@ -43,6 +43,8 @@ namespace Astrolib
     protected:
         virtual void UpdateDestinationRectSize(){};
         bool maintainTargetAspectResolution = true;
+
+        /// @brief The resolution we are currently rendering the world at (dest texture)
         Vector2 renderResolution;
         RenderTexture2D rendText;
         Rectangle srcRect;

@@ -33,10 +33,7 @@ namespace Astrolib
             // SetTargetFPS(targetFPS);
         }
 
-        virtual void CreateScene()
-        {
-            currentScene = new Scene();
-        }
+        virtual void CreateScene(){};
 
         virtual void LateUpdate()
         {
@@ -66,6 +63,13 @@ namespace Astrolib
             //physicsWorld->Step(deltaTime, 8, 3);
             currentScene->FixedUpdate(deltaTime);
         };
+
+
+        void Run()
+        {
+            // TODO: Put core game loop here
+        };
+
         void Draw(float deltaTime)
         {
             currentScene->Draw(GetFrameTime());
@@ -73,11 +77,14 @@ namespace Astrolib
 
         static Scene *GetCurrentScene()
         {
-            return currentScene;
+            return currentScene.get();
         }
-        void SetCurrentScene(Scene *newScene)
+
+        /// @brief Set the current scene of the game, transfering ownership to the Game instance
+        /// @param newScene A unique pointer to the new scene
+        void SetCurrentScene(unique_ptr<Scene> newScene)
         {
-            currentScene = newScene;
+            currentScene = std::move(newScene);
         }
 
         void SetConfigFlag(unsigned int flag)
@@ -92,9 +99,7 @@ namespace Astrolib
 
         virtual void Exit()
         {
-            delete currentScene;
-            currentScene = nullptr;
-
+        
             TextureManager::instance().UnloadAllTextures();
             CloseWindow();
         };
@@ -111,7 +116,7 @@ namespace Astrolib
         }
 
     protected:
-        inline static Scene *currentScene;
+        inline static unique_ptr<Scene> currentScene;
         Game(){};
 
     private:

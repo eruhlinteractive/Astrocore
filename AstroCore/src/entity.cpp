@@ -8,7 +8,6 @@ using namespace Astrolib;
 
 int Entity2D::entityCount = 0;
 
-
 #pragma region Constructors
 Entity2D::Entity2D()
 {
@@ -42,10 +41,10 @@ Entity2D::~Entity2D()
     {
         parentEntity->RemoveChild(this);
     }
-    
+
     // Delete children entities
     for (Entity2D *entity : *(children.get()))
-    {   
+    {
         delete entity;
         entity = nullptr;
     }
@@ -55,8 +54,6 @@ Entity2D::~Entity2D()
 }
 
 #pragma endregion
-
-
 
 #pragma region Transformation Functions
 
@@ -121,12 +118,12 @@ void Entity2D::Update(float deltaTime)
     }
 }
 
-void Entity2D::OnRegister(Scene* scene)
+void Entity2D::OnRegister(Scene *scene)
 {
     currentScene = scene;
 }
 
-Scene* Entity2D::GetCurrentScene()
+Scene *Entity2D::GetCurrentScene()
 {
     return currentScene;
 }
@@ -151,7 +148,7 @@ std::string Entity2D::GetPath()
         path = current->GetName() + "/" + path;
         current = current->GetParent();
     }
-    
+
     return path;
 }
 
@@ -203,19 +200,17 @@ void Entity2D::SetParent(Entity2D *newParent)
     }
 
     parentEntity = newParent;
-    if(parentEntity != nullptr)
+    if (parentEntity != nullptr)
     {
         parentEntity->AddChild(this);
     }
-
-    
 }
 
 /// @brief Add and entity as a child of this entity
 /// @param newChild The new child to add to this entity
 void Entity2D::AddChild(Entity2D *newChild)
 {
-    if(newChild == nullptr)
+    if (newChild == nullptr)
     {
         return;
     }
@@ -248,11 +243,11 @@ std::vector<Entity2D *> Entity2D::GetChildren()
 /// @return True if the entity is a child, otherwise false
 bool Entity2D::HasChild(Entity2D *childToCheck)
 {
-    if(childToCheck == nullptr)
+    if (childToCheck == nullptr)
     {
         return false;
     }
-    
+
     auto index = find(children.get()->begin(), children.get()->end(), childToCheck);
     return index != children->end();
 }
