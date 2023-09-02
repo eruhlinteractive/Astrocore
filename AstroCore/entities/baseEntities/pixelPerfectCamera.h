@@ -73,6 +73,9 @@ namespace Astrolib
             // Re-initialize render texture
             UnloadRenderTexture(renderTexture);
             renderTexture = LoadRenderTexture(virtualResolution.x, virtualResolution.y);
+
+            // Update base-class render resolution
+            renderResolution = {virtualResolution.x, virtualResolution.y};
             //SetTextureFilter(renderTexture.texture, TEXTURE_FILTER_POINT);
 
             // Update PPU used for movement/rendering

@@ -16,7 +16,7 @@ AnimatedSpriteEntity::AnimatedSpriteEntity()
 /// @param origin
 /// @param spriteSize
 /// @param spriteSrcPath
-AnimatedSpriteEntity::AnimatedSpriteEntity(std::string name, Vector2 startPos, Vector2 origin, Vector2 frameSize, Texture2D sprite, string defaultAnimName) : AnimatedSpriteEntity()
+AnimatedSpriteEntity::AnimatedSpriteEntity(std::string name, Vector2 startPos, Vector2 origin, Vector2 frameSize, Texture2D* sprite, string defaultAnimName) : AnimatedSpriteEntity()
 {
     Init();
 
@@ -38,7 +38,7 @@ AnimatedSpriteEntity::AnimatedSpriteEntity(std::string name, Vector2 startPos, V
     currentAnim = anim;
 }
 
-AnimatedSpriteEntity::AnimatedSpriteEntity(std::string name, Vector2 startPos, Vector2 origin, Vector2 frameSize, Texture2D sprite, int framesWide, int frameCount, int animFps)
+AnimatedSpriteEntity::AnimatedSpriteEntity(std::string name, Vector2 startPos, Vector2 origin, Vector2 frameSize, Texture2D* sprite, int framesWide, int frameCount, int animFps)
     : AnimatedSpriteEntity(name, startPos, origin, frameSize, sprite)
 {
     SpriteAnimation *anim = (*animStates)[currentAnimationName];
@@ -114,7 +114,7 @@ AnimatedSpriteEntity::~AnimatedSpriteEntity()
 
         if (sAnim != nullptr)
         {
-            Texture2D s = sAnim->spriteTexture;
+            Texture2D* s = sAnim->spriteTexture;
             TextureManager::instance().UnloadTexture(s);
 
             delete sAnim;
@@ -168,7 +168,7 @@ void AnimatedSpriteEntity::Draw(float deltaTime, Camera2D *camera)
     // DrawTexture(currentAnim->spriteTexture, srcPosX, srcPosY, WHITE);
     //  DrawTexture(spriteText,positionX,positionY,WHITE);
     
-    DrawTexturePro(currentAnim->spriteTexture,
+    DrawTexturePro(*(currentAnim->spriteTexture),
                    srcRect,
                    destRect,
                    {currentAnim->origin.x * transform.scale.x, currentAnim->origin.y * transform.scale.y},

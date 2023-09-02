@@ -16,6 +16,7 @@
 #include "../entities/baseEntities/cameraEntityBase.h"
 #include "../entities/baseEntities/pixelPerfectCamera.h"
 #include "../entities/baseEntities/cameraEntity.h"
+#include "../entities/baseEntities/spriteEntity.h"
 #include "collisionTracker.h"
 #include "../include/box2d/box2d.h"
 
@@ -26,7 +27,7 @@
 
 namespace Astrolib
 {
-    class Scene : public Observer
+    class Scene : public Observer, public Signaler
     {
     public:
         Scene();
@@ -45,6 +46,7 @@ namespace Astrolib
         virtual void FixedUpdate(float deltaTime);
         virtual void LateUpdate(float deltaTime);
         virtual void Draw(float deltaTime);
+
         bool AddLightToScene(Light2D *light);
 
         void OnNotify(const Signaler *signaler, std::string eventName) override;

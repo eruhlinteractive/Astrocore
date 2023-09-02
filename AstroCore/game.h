@@ -24,6 +24,7 @@ namespace Astrolib
             SetWindowTitle((windowTitle + debugMessage).c_str());
             SetWindowSize(screenWidth, screenHeight);
             SetTargetFPS(targetFPS);
+             
             //SetWindowPosition(GetMonitorWidth(GetCurrentMonitor())/2 + screenWidth/5, GetMonitorHeight(GetCurrentMonitor())/2 - screenHeight/2);
         }
 
@@ -101,7 +102,9 @@ namespace Astrolib
         void SetCurrentScene(unique_ptr<Scene> newScene)
         {
             currentScene = std::move(newScene);
+            AddObserver(currentScene.get(), "windowResized");
             currentScene->LoadScene();
+
         }
 
         void SetConfigFlag(unsigned int flag)
@@ -117,20 +120,19 @@ namespace Astrolib
         /// @brief Exits the game and closes the window
         void Exit()
         {
-            TextureManager::instance().UnloadAllTextures();
-
             // Delete the current scene
             currentScene.reset();
 
+            TextureManager::instance().UnloadAllTextures();
             CloseWindow();
         };
 
         static Game &instance()
         {
-            if (!Game::created)
+            if (!Game::isInitialized)
             {
                 Game::INSTANCE = new Game();
-                Game::created = true;
+                Game::isInitialized = true;
             }
 
             return *INSTANCE;
@@ -140,7 +142,7 @@ namespace Astrolib
         inline static unique_ptr<Scene> currentScene;
         Game(){};
         inline static Game *INSTANCE;
-        inline static bool created;
+        inline static bool isInitialized;
         bool ySortEnabled = true;
         const float FIXED_UPDATE_RATE = 1.0f / 60.0f;
         float fixedUpdateTimer = 0.0f;

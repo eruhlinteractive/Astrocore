@@ -23,7 +23,7 @@ TileMap::~TileMap()
     // Unload all textures
     for(auto tilePair : tileSets)
     {
-        TextureManager::instance().UnloadTexture(tilePair.second);  
+        TextureManager::instance().UnloadTexture(&tilePair.second);  
     }
     // Unload render texture
     UnloadRenderTexture(mapTextureAtlas);
@@ -202,8 +202,8 @@ void TileMap::LoadDataTMX(std::string filePath)
             std::string imagePath = tile.imagePath;
             if(tileSets.count(imagePath) == 0)
             {
-               Texture2D image = TextureManager::instance().GetTexture(imagePath);
-               tileSets.insert({imagePath, image});
+               Texture2D* image = TextureManager::instance().GetTexture(imagePath);
+               tileSets.insert({imagePath, *image});
             }
            
         }
@@ -233,7 +233,7 @@ void TileMap::LoadDataTMX(std::string filePath)
 
         std::string path = tile.imagePath;
         //std::cout << path << endl;
-        Texture2D image = TextureManager::instance().GetTexture(path);
+        Texture2D* image = TextureManager::instance().GetTexture(path);
 
         if(path != "")
         {
@@ -250,7 +250,7 @@ void TileMap::LoadDataTMX(std::string filePath)
             // Render to atlas
             //DrawTexture(image, 0, 0, WHITE);
             //DrawTexturePro(image, source, dest, {0, 0} , 0 , WHITE);
-            DrawTextureRec(image, source, (Vector2){(float)newX, maxTileHeight -  (float)tile.imageSize.y}, WHITE);
+            DrawTextureRec(*image, source, (Vector2){(float)newX, maxTileHeight -  (float)tile.imageSize.y}, WHITE);
         }
     
         //std::cout << path << std::endl;

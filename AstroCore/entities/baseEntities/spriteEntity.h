@@ -18,7 +18,7 @@ namespace Astrolib
             name = "SpriteEntity" + std::to_string(entityID);
         };
         SpriteEntity(Sprite *sprite);
-        SpriteEntity(Texture2D spriteTexture, Vector2 frameSize, Vector2 origin);
+        SpriteEntity(Texture2D* spriteTexture, Vector2 frameSize, Vector2 origin);
         ~SpriteEntity();
 
         void Draw(float deltaTime, Camera2D *camera) override;

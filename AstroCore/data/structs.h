@@ -1,6 +1,5 @@
 
 #include <math.h>
-
 #ifndef STRUCTS_H
 #define STRUCTS_H
 
@@ -26,7 +25,7 @@ namespace Astrolib
     typedef struct Sprite
     {
         // Texture that contains the sprite
-        Texture spriteTexture;
+        Texture* spriteTexture;
 
         // Middle point of the sprite
         Vector2 origin;
@@ -37,15 +36,15 @@ namespace Astrolib
         // Start point of the sprite on the texture
         Vector2 startPoint;
 
-        Sprite(Texture2D texture, Vector2 origin)
+        Sprite(Texture2D* texture, Vector2 origin)
         {
             this->spriteTexture = texture;
             this->origin = origin;
             this->startPoint = (Vector2){0, 0};
-            this->spriteSize = (Vector2){(float)texture.width, (float)texture.height};
+            this->spriteSize = (Vector2){(float)texture->width, (float)texture->height};
         }
 
-        Sprite(Texture2D texture, Vector2 origin, Vector2 startPoint, Vector2 spriteSize) : Sprite(texture, origin)
+        Sprite(Texture2D* texture, Vector2 origin, Vector2 startPoint, Vector2 spriteSize) : Sprite(texture, origin)
         {
             this->startPoint = startPoint;
             this->spriteSize = spriteSize;
@@ -65,7 +64,7 @@ namespace Astrolib
             origin = {0, 0};
             frameSize = {0, 0};
         };
-        SpriteAnimation(Texture2D sprite, int frameCount, int animFPS, int framesWide, Vector2 origin, Vector2 frameSize)
+        SpriteAnimation(Texture2D* sprite, int frameCount, int animFPS, int framesWide, Vector2 origin, Vector2 frameSize)
         {
             spriteTexture = sprite;
             this->startPos = (Vector2){0, 0};
@@ -77,13 +76,13 @@ namespace Astrolib
             this->frameSize = frameSize;
         };
 
-        SpriteAnimation(Texture2D sprite, int frameCount, int animFPS, int framesWide, Vector2 startPos, Vector2 origin, Vector2 frameSize) : SpriteAnimation(sprite, frameCount, animFPS, framesWide, origin, frameSize)
+        SpriteAnimation(Texture2D* sprite, int frameCount, int animFPS, int framesWide, Vector2 startPos, Vector2 origin, Vector2 frameSize) : SpriteAnimation(sprite, frameCount, animFPS, framesWide, origin, frameSize)
         {
             this->startPos = startPos;
         };
 
         /// @brief The texture to draw from
-        Texture2D spriteTexture;
+        Texture2D* spriteTexture;
 
         /// @brief How many frames are in the animation
         int frameMax = 0;
@@ -198,16 +197,17 @@ namespace Astrolib
         int GetEntityId() { return entityID; };
 
     } PhysicsEntityData;
+
+    typedef struct StaticTileMin
+    {
+        StaticTileMin(Vector2 size, Vector2 pos)
+        {
+            this->imageSize = size;
+            this->imagePos = pos;
+        }
+        Vector2 imageSize;
+        Vector2 imagePos;
+    } StaticTileMin;
 };
 
-typedef struct StaticTileMin
-{
-    StaticTileMin(Vector2 size, Vector2 pos)
-    {
-        this->imageSize = size;
-        this->imagePos = pos;
-    }
-    Vector2 imageSize;
-    Vector2 imagePos;
-} StaticTileMin;
 #endif

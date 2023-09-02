@@ -33,6 +33,17 @@ namespace Astrolib
         virtual void BeginDrawing() = 0;
         virtual void EndDrawing() = 0;
         void Draw(float deltaTime, Camera2D *camera) = 0;
+        
+        virtual void OnNotify(const Signaler *signaler, std::string eventName) override
+        {
+            // This gets connected when the camera is registered with a scene
+            if(eventName == "onWindowResized")
+            {
+                OnWindowResized();
+            }
+        }
+
+        virtual void OnWindowResized(){};
 
         Vector2 GetRenderCenter()
         {

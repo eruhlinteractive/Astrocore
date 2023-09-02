@@ -10,17 +10,13 @@ namespace Astrolib
     public:
         void Init() override
         {
-            // TODO: Fix this class :D
-            //Game::instance().AddObserver((Observer *)this, "windowResized");
+            SetRenderDimensions(GetRenderWidth(), GetRenderHeight());
+            UpdateDestinationRectSize();
         }
 
-        void OnNotify(const Signaler *signaler, std::string eventName) override
+        virtual void OnWindowResized() override
         {
-            if (eventName == "windowResized")
-            {
-                // offset = (Vector2){GetRenderWidth()/2.0f, GetRenderHeight()/ 2.0f};
-                UpdateDestinationRectSize();
-            }
+            UpdateDestinationRectSize();
         }
 
         void BeginDrawing() override
@@ -38,7 +34,7 @@ namespace Astrolib
 
         void Draw(float deltaTime, Camera2D *camera) override
         {
-            ClearBackground(BLACK);
+            //ClearBackground(BLACK);
             DrawTexturePro(rendText.texture, srcRect, destRect, {0, 0}, 0, WHITE);
         };
 
@@ -90,10 +86,10 @@ namespace Astrolib
 
         void Update(float deltaTime) override
         {
-            // camera->target = target;
-            // camera->target = (Vector2){target.x, target.y};
-            // camera->offset = offset;
-            // camera->zoom = zoom;
+            camera->target = target;
+            //camera->target = (Vector2){target.x, target.y};
+            camera->offset = offset;
+            camera->zoom = zoom;
         }
 
         void LateUpdate(float deltaTime) override

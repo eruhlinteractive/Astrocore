@@ -16,8 +16,11 @@ void TextureManager::UnloadAllTextures()
     {
         return;
     }
+
+    Debug::Log("Unloading all textures");
     for(std::pair p : *textures)
     {   
+        Debug::Log("Unloading texture with path: " + p.first);
         RLAPI::UnloadTexture((Texture2D)p.second);
     }    
 
@@ -31,46 +34,50 @@ void TextureManager::UnloadAllTextures()
 TextureManager::~TextureManager()
 {
     //UnloadAllTextures();
-    //delete textures;
-    //textures = nullptr;
+    delete textures;
+    textures = nullptr;
 
-    //delete textureReferences;
-    //textureReferences = nullptr;
+    delete textureReferences;
+    textureReferences = nullptr;
 }
 
-Texture2D TextureManager::GetTextureAbsolute(std::string absolutePath)
+Texture2D* TextureManager::GetTextureAbsolute(std::string absolutePath)
 {
     std::string fullPath = std::string(GetWorkingDirectory()) + "/" + absolutePath;
     return GetTexture(fullPath);
 }
 
-Texture2D TextureManager::GetTexture(std::string path)
+Texture2D* TextureManager::GetTexture(std::string path)
 {
     // Texture not yet loaded, load and return
     if(textures->find(path) == textures->end())
     {
         //std::string fullPath = std::string(GetWorkingDirectory()) + "/" + path;
-        Texture2D text = RLAPI::LoadTexture(path.c_str());
-        textures->insert(std::pair{path, text});
+        textures->insert(std::pair{path, RLAPI::LoadTexture(path.c_str())});
         textureReferences->insert(std::pair{path, 1});
-        return text;
+        return &(*textures)[path];
     }
 
     // Return loaded texture
     else
     {
         (*textureReferences)[path] += 1;
-        return (*textures)[path];
+        return &(*textures)[path];
     }
 
 }
 
 
-std::string TextureManager::GetTexturePath(Texture2D texture)
+std::string TextureManager::GetTexturePath(Texture2D* texture)
 {
+    if(textures == nullptr)
+    {
+        return "";
+    }
+
     for(std::pair p : (*textures))
     {   
-        if(p.second.id == texture.id)
+        if(p.second.id == texture->id)
         {
             return p.first;
         }
@@ -85,12 +92,12 @@ void TextureManager::UnloadTexture(std::string path)
 
     if(textures->find(path) != textures->end())
     {
-        
         (*textureReferences)[path] -= 1;
         
         // Texture is no longer referenced, unload it
         if((*textureReferences)[path] <= 0)
         {
+            Debug::Log("Texture with path " + path + " has been deleted");
             textureReferences->erase(path);
             Texture2D texture = (*textures)[path];
             RLAPI::UnloadTexture(texture);
@@ -101,12 +108,13 @@ void TextureManager::UnloadTexture(std::string path)
 }
 
 
-void TextureManager::UnloadTexture(Texture2D texture)
+void TextureManager::UnloadTexture(Texture2D* texture)
 {
-    std::string path = GetTexturePath(texture);
+    std::string path = this->GetTexturePath(texture);
     if(path != "")
     {
-         UnloadTexture(path);
+        
+        UnloadTexture(path);
     }
    
 }

@@ -28,9 +28,13 @@ void Scene::OnNotify(const Signaler *signaler, std::string eventName)
     {
         UnRegisterEntity(entity->GetName());
     }
+
+    // Notify scene that the screen has been resized
+    if(eventName == "windowResized")
+    {
+        SendEvent("onWindowResized");
+    }
 }
-
-
 
 bool Scene::RegisterEntity(Entity2D *entity)
 {
@@ -69,6 +73,10 @@ bool Scene::RegisterEntity(Entity2D *entity)
         if (entity->GetType() == PHYSICAL)
         {
             colTracker.AddTrackedEntity(entity->GetEntityID(), (CollisionEntity *)entity);
+        }
+        if (entity->GetType() == CAMERA)
+        {
+            AddObserver(entity, "onWindowResized");
         }
 
         // Register to be notified when an entity is deleted
