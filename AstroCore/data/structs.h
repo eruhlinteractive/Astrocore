@@ -25,7 +25,7 @@ namespace Astrolib
     typedef struct Sprite
     {
         // Texture that contains the sprite
-        Texture* spriteTexture;
+        Texture *spriteTexture;
 
         // Middle point of the sprite
         Vector2 origin;
@@ -36,7 +36,7 @@ namespace Astrolib
         // Start point of the sprite on the texture
         Vector2 startPoint;
 
-        Sprite(Texture2D* texture, Vector2 origin)
+        Sprite(Texture2D *texture, Vector2 origin)
         {
             this->spriteTexture = texture;
             this->origin = origin;
@@ -44,7 +44,7 @@ namespace Astrolib
             this->spriteSize = (Vector2){(float)texture->width, (float)texture->height};
         }
 
-        Sprite(Texture2D* texture, Vector2 origin, Vector2 startPoint, Vector2 spriteSize) : Sprite(texture, origin)
+        Sprite(Texture2D *texture, Vector2 origin, Vector2 startPoint, Vector2 spriteSize) : Sprite(texture, origin)
         {
             this->startPoint = startPoint;
             this->spriteSize = spriteSize;
@@ -64,7 +64,7 @@ namespace Astrolib
             origin = {0, 0};
             frameSize = {0, 0};
         };
-        SpriteAnimation(Texture2D* sprite, int frameCount, int animFPS, int framesWide, Vector2 origin, Vector2 frameSize)
+        SpriteAnimation(Texture2D *sprite, int frameCount, int animFPS, int framesWide, Vector2 origin, Vector2 frameSize)
         {
             spriteTexture = sprite;
             this->startPos = (Vector2){0, 0};
@@ -76,13 +76,13 @@ namespace Astrolib
             this->frameSize = frameSize;
         };
 
-        SpriteAnimation(Texture2D* sprite, int frameCount, int animFPS, int framesWide, Vector2 startPos, Vector2 origin, Vector2 frameSize) : SpriteAnimation(sprite, frameCount, animFPS, framesWide, origin, frameSize)
+        SpriteAnimation(Texture2D *sprite, int frameCount, int animFPS, int framesWide, Vector2 startPos, Vector2 origin, Vector2 frameSize) : SpriteAnimation(sprite, frameCount, animFPS, framesWide, origin, frameSize)
         {
             this->startPos = startPos;
         };
 
         /// @brief The texture to draw from
-        Texture2D* spriteTexture;
+        Texture2D *spriteTexture;
 
         /// @brief How many frames are in the animation
         int frameMax = 0;
@@ -201,6 +201,109 @@ namespace Astrolib
         int GetEntityId() { return entityID; };
 
     } PhysicsEntityData;
+
+    /// @brief A set of helper functions for vector arithmetic
+    typedef struct VectorHelper
+    {
+        ///@brief Rotates a vector by a given rotation (degrees)
+        /// @param x The x component of the vector to rotate
+        /// @param y The y component of the vector to rotate
+        /// @param rotationDegrees The delta rotation in degrees
+        /// @returns The rotated vector
+        static Vector2 RotateVectorDegrees(float x, float y, float rotationDegrees)
+        {
+            float rotation = rotationDegrees * (PI / 180.0f);
+
+            return RotateVector(x, y, rotation);
+            return (Vector2){0, 0};
+        }
+
+        /// @brief Rotates a vector by a given rotation (radians)
+        /// @param x The x component of the vector to rotate
+        /// @param y The y component of the vector to rotate
+        /// @param rotationDegrees The delta rotation in radians
+        /// @returns The rotated vector
+        static Vector2 RotateVector(float x, float y, float rotation)
+        {
+            Vector2 rotatedVector = {
+                cos(rotation) * x - sin(rotation) * y,
+                cos(rotation) * y + sin(rotation) * x,
+            };
+
+            return rotatedVector;
+        }
+
+        /// @brief Adds two vectors
+        /// @param vectorOne The initial vector
+        /// @param vectorTwo The vector to add to the inital vector
+        /// @returns The added vector
+        inline static Vector2 AddVectors(Vector2 vectorOne, Vector2 vectorTwo)
+        {
+            return (Vector2){vectorOne.x + vectorTwo.x, vectorOne.y + vectorTwo.y};
+        }
+
+        /// @brief Subtracts the second vector from the first
+        /// @param vectorOne The initial vector
+        /// @param vectorTwo The vector to subtract from vectorTwo
+        /// @returns The subtract vector
+        inline static Vector2 SubtractVectors(Vector2 vectorOne, Vector2 vectorTwo)
+        {
+            return (Vector2){vectorOne.x - vectorTwo.x, vectorOne.y - vectorTwo.y};
+        }
+
+        /// @brief Multiplies a vector by a scalar value
+        /// @param vector The initial vector
+        /// @param scalar The scalar value to multiply the vector by
+        /// @returns The scaled vector
+        inline static Vector2 ScalarMultiplyVector(Vector2 vector, float scalar)
+        {
+            return (Vector2){vector.x * scalar, vector.y * scalar};
+        }
+
+        /// @brief Divides a vector by a scalar value
+        /// @param vector The initial vector
+        /// @param scalar The scalar value to divide the vector by
+        /// @returns The scaled vector
+        inline static Vector2 ScalarDivideVector(Vector2 vector, float scalar)
+        {
+            return (Vector2){vector.x / scalar, vector.y / scalar};
+        }
+
+        /// @brief Calculates the length (magnitude) of a vector
+        /// @param vector The vector to calculate the length of
+        /// @returns The vectors length
+        inline static float LengthOf(Vector2 vector)
+        {
+            return sqrt(vector.x * vector.x + vector.y * vector.y);
+        }
+
+        /// @brief Normalizes the provided value
+        /// @param vector The vector to normalized
+        /// @returns The normalized vector
+        inline static Vector2 Normalize(Vector2 vector)
+        {
+            float mag = LengthOf(vector);
+            if (mag == 0)
+            {
+                return (Vector2){0, 0};
+            }
+            // Return normalized vector
+            return ScalarDivideVector(vector, mag);
+        }
+
+        /// @brief Calculates the dot product of two (automatically normalized) vectors
+        /// @param vectorOne The initial vector
+        /// @param vectorTwo The second vector
+        /// @returns The dot product of the two vectors
+        inline static float Dot(Vector2 vectorOne, Vector2 vectorTwo)
+        {
+            Vector2 nOne = Normalize(vectorOne);
+            Vector2 nTwo = Normalize(vectorTwo);
+
+            return (nOne.x * nTwo.x) + (nOne.y + nTwo.y);
+        }
+
+    } VectorHelper;
 
     typedef struct StaticTileMin
     {
