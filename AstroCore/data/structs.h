@@ -108,8 +108,12 @@ namespace Astrolib
 
     typedef struct Transform2D
     {
+        // Local position
         Vector2 position;
+        // Rotation in radians
         float rotation;
+
+        // Local scale
         Vector2 scale;
 
         Transform2D()

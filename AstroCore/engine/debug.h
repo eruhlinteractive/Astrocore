@@ -14,6 +14,7 @@ enum DEBUG_FLAGS
 {
     DRAW_PHYSICS_BOUNDS = 1 << 0, // 1
     DRAW_SPRITE_BOUNDS = 1 << 1,  // 2
+    DRAW_WORLD_GRID = 3 << 1,  // 2
     // SCL_UNIQUE = 1 << 2  // 4
 };
 
@@ -56,6 +57,21 @@ namespace Astrolib
             // std::replace(newFileLocation.begin(), newFileLocation.end(), '\\', '\\\\');
             pathToLog = newFileLocation;
             outputFile.open(GetLogPath().c_str());
+        }
+
+        static void DrawWorldGrid(int xStep, int yStep, Vector2 worldPos)
+        {
+            for (int i = -1; i <= (GetScreenWidth() / xStep); i++)
+            {
+                float pos = xStep * i - (GetScreenWidth()/2.0) + (worldPos.x - fmod(worldPos.x, xStep));
+                DrawLineEx({pos, worldPos.y -GetScreenHeight()/2.0f}, {pos, worldPos.y + GetScreenHeight()/2.0f}, 2.0f, GRAY);
+            }
+
+            for (int i = -1; i <= (GetScreenHeight() / yStep); i++)
+            {
+                float pos = yStep * i - (GetScreenHeight()/2.0) + (worldPos.y - fmod(worldPos.y, yStep));
+                DrawLineEx({worldPos.x -GetScreenWidth()/2.0f, pos}, {worldPos.x + GetScreenWidth()/2.0f, pos}, 2.0f, GRAY);
+            }
         }
 
         /// @brief Log a new line to the debug log

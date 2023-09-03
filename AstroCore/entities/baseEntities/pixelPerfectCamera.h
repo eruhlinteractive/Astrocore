@@ -63,7 +63,7 @@ namespace Astrolib
         void BeginDrawing() override { /* TODO: Implement this*/};
         void EndDrawing() override { /* TODO: Implement this*/};
 
-        void SetRenderDimensions(float width, float height, bool maintainAspect = true) override
+        void SetRenderDimensions(float width, float height) override
         {
             screenDimensions = (Vector2){(float)GetRenderWidth(), (float)GetRenderHeight()};
             samplingRatio = (float)screenDimensions.x / (float)width;

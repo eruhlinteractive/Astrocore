@@ -9,6 +9,7 @@
 #include "../../data/structs.h"
 #include "../../data/interfaces.h"
 #include "../../engine/debug.h"
+#include "../../engine/input.h"
 
 /*
     Base class for every entity in the scene (except a few special cases like lights)
@@ -137,7 +138,7 @@ namespace Astrolib
         Scene *GetCurrentScene();
         void SetParent(Entity2D *parent);
         Transform2D transform;
-        // inline static float pixelsPerUnit = 1.0f;
+        inline static float pixelsPerUnit = 1.0f;
         inline static Vector2 worldDrawSize = {0, 0};
 
         float GetNearestMultiple(float value, float multiple)

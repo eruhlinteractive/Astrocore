@@ -5,17 +5,18 @@
 #
 // An interface to provide generalized properties for different types of cameras
 
+enum VIEWPORT_SCALE_MODE {
+    KEEP_ASPECT, // Keep aspect, letter boxing when needed
+    FILL_ASPECT, // Fill the screen while keeping target render aspect ratio
+    RENDER_FULL // Render the full screen at a 1:1 resolution (world is rendered at the screen resolution)
+};
+
 namespace Astrolib
 {
     // TODO: Specalize a lot of this functionality out of the base class
     class CameraEntityBase : public Entity2D
     {
     public:
-        CameraEntityBase() : Entity2D()
-        {
-            type = CAMERA;
-        };
-
         ~CameraEntityBase()
         {
             UnloadRenderTexture(rendText);
@@ -25,7 +26,7 @@ namespace Astrolib
         Vector2 offset = {0, 0};
         float zoom = 1.0;
 
-        virtual void SetRenderDimensions(float width, float height, bool maintainAspect = true) = 0;
+        virtual void SetRenderDimensions(float width, float height) = 0;
 
         // Pure virtual
         virtual Camera2D *GetCamera() = 0;
@@ -43,6 +44,13 @@ namespace Astrolib
             }
         }
 
+        /// @brief Set the scale mode for the viewport
+        /// @param scaleMode The scale mode to apply
+        virtual void SetScaleMode(VIEWPORT_SCALE_MODE scaleMode)
+        {
+            maintainTargetAspectResolution = (scaleMode == KEEP_ASPECT);
+        }
+
         virtual void OnWindowResized(){};
 
         Vector2 GetRenderCenter()
@@ -56,8 +64,14 @@ namespace Astrolib
         }
 
     protected:
+        CameraEntityBase() : Entity2D()
+        {
+            type = CAMERA;
+        };
         virtual void UpdateDestinationRectSize(){};
         bool maintainTargetAspectResolution = true;
+
+        VIEWPORT_SCALE_MODE currentScaleMode = RENDER_FULL;
 
         /// @brief The resolution we are currently rendering the world at (dest texture)
         Vector2 renderResolution;

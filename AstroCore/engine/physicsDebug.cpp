@@ -39,8 +39,22 @@ void PhysicsDebug::DrawPolygon(const b2Vec2 *vertices, int32 vertexCount, const 
 
 void PhysicsDebug::DrawTransform(const b2Transform &xf)
 {
-    DrawCircleV({xf.p.x, xf.p.y}, 0.5f, PURPLE);
+    //DrawCircleV({xf.p.x, xf.p.y}, 0.5f, PURPLE);
+    float length = 10.0f;
 
-    b2Vec2 vec = {cos(xf.q.GetAngle()) * 5, sin(xf.q.GetAngle()) * 5};
-    DrawLineV({xf.p.x, xf.p.y}, {xf.p.x + vec.x, xf.p.y + vec.y}, PURPLE);
+    // Calculate vector along axis (1, O)
+    b2Vec2 xVec = {cos(xf.q.GetAngle()), sin(xf.q.GetAngle())};
+    // Normalize xAxis vector
+    //float mag = sqrt(xVec.x * xVec.x + xVec.y * xVec.y);
+    //xVec = {xVec.x / mag, xVec.y / mag};
+
+    DrawLineV({xf.p.x, xf.p.y}, {xf.p.x + xVec.x * length , xf.p.y + xVec.y * length}, RED);
+
+    // Calculate and draw Y axis vector
+    float rot = xf.q.GetAngle() + -(PI/2.0f);
+
+    b2Vec2 yVec = {cos(rot), sin(rot)};
+    DrawLineV({xf.p.x, xf.p.y}, {xf.p.x + yVec.x * length, xf.p.y + yVec.y * length}, GREEN);
+
+
 }

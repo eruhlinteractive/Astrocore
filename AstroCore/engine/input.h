@@ -8,6 +8,7 @@
 #include <string>
 #include <memory>
 #include "../data/structs.h"
+#include "debug.h"
 
 
 using namespace std;
@@ -88,7 +89,7 @@ public:
     bool HasAction(string actionName);
     void AddInputAction(shared_ptr<InputAction> newAction);
     void RemoveInputAction(string actionName);
-    void AddActionEvent(string actionName, int positiveIndex, int controllerId);
+    void AddActionEvent(string actionName, int positiveIndex, int controllerId = -1);
 
     static InputManager& instance()
     {

@@ -308,6 +308,11 @@ void Scene::Draw(float deltaTime)
 
     currentCamera->BeginDrawing();
     ClearBackground(WHITE);
+    if(Debug::IsDebugFlagSet(DRAW_WORLD_GRID))
+    {
+        Debug::DrawWorldGrid(100, 100, currentCamera->GetGlobalPosition());
+    }
+    
 
     // Camera2D cam = *(currentCamera->GetCamera());
     // BeginMode2D(cam);

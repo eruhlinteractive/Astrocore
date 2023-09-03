@@ -81,7 +81,7 @@ PhysicsEntity::~PhysicsEntity()
 /// @param size The size of the rectangle (width and height)
 void PhysicsEntity::CreateRectangleCollider(Vector2 center, Vector2 size)
 {
-    CreateRectangleCollider(center, size, 0.0f, 1.0f, 0.1f, 0.5f);
+    CreateRectangleCollider(center, size, 0.0f, 0.1f, 0.1f, 0.5f);
 }
 
 /// @brief Creates a rectangle collider with a relative rotation and a given size and center point, using
@@ -218,6 +218,19 @@ void PhysicsEntity::ApplyTorque(float torque)
 {
     physicsBody->ApplyTorque(-torque, true);
 }
+
+
+void PhysicsEntity::AddLocalForce(Vector2 force)
+{
+    float globalRot = physicsBody->GetAngle();
+
+    Vector2 localForce = {
+        cos(globalRot) * force.x - sin(globalRot) * force.y,
+        cos(globalRot) * force.y + sin(globalRot) * force.x,
+    };
+    physicsBody->ApplyForceToCenter(b2Vec2(-localForce.x, -localForce.y), true);
+}
+
 
 void PhysicsEntity::ApplyImpulse(Vector2 force)
 {

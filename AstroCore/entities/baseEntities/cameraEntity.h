@@ -16,6 +16,12 @@ namespace Astrolib
 
         virtual void OnWindowResized() override
         {
+            if(currentScaleMode == RENDER_FULL)
+            {
+                SetRenderDimensions(GetRenderWidth(), GetRenderHeight());
+                UpdateDestinationRectSize();
+            }
+            return;
             UpdateDestinationRectSize();
         }
 
@@ -39,19 +45,18 @@ namespace Astrolib
         };
 
 
-        void SetRenderDimensions(float width, float height, bool maintainAspect = true) override
+        void SetRenderDimensions(float width, float height) override
         {
-            maintainTargetAspectResolution = maintainAspect;
             renderResolution = (Vector2){width, height};
             UnloadRenderTexture(rendText);
             rendText = LoadRenderTexture(width, height);
-            SetTextureFilter(rendText.texture, TEXTURE_FILTER_POINT);
+            //SetTextureFilter(rendText.texture, TEXTURE_FILTER_ANISOTROPIC_16X);
             srcRect = (Rectangle){0, 0, width, -height};
         }
 
         void UpdateDestinationRectSize() override
         {
-            if (maintainTargetAspectResolution)
+            if (currentScaleMode == KEEP_ASPECT)
             {
                 float scale = min(GetRenderWidth() / renderResolution.x, GetRenderHeight() / renderResolution.y);
                 destRect = {
@@ -60,10 +65,21 @@ namespace Astrolib
                     (float)renderResolution.x * scale,
                     (float)renderResolution.y * scale};
             }
+            else if( currentScaleMode == FILL_ASPECT)
+            {
+                float scale = min(GetRenderWidth() / renderResolution.x, GetRenderHeight() / renderResolution.y);
+            }
             else
             {
                 destRect = (Rectangle){0, 0, (float)GetRenderWidth(), (float)GetRenderHeight()};
             }
+        }
+
+
+        virtual void SetScaleMode(VIEWPORT_SCALE_MODE scaleMode) override
+        {
+            CameraEntityBase::SetScaleMode(scaleMode);
+            UpdateDestinationRectSize();
         }
 
         CameraEntity() : CameraEntityBase()
@@ -84,18 +100,11 @@ namespace Astrolib
             return camera;
         }
 
-        void Update(float deltaTime) override
-        {
-            camera->target = target;
-            //camera->target = (Vector2){target.x, target.y};
-            camera->offset = offset;
-            camera->zoom = zoom;
-        }
-
         void LateUpdate(float deltaTime) override
         {
             camera->target = target;
             camera->target = (Vector2){target.x, target.y};
+            transform.position = {target.x, target.y};
 
             camera->offset = {offset.x + GetRenderCenter().x, offset.y + GetRenderCenter().y};
             camera->zoom = zoom;
@@ -105,6 +114,8 @@ namespace Astrolib
         // void Draw(float deltaTime, Camera2D *camera) override {}
 
     private:
+
+        // World space camera
         Camera2D *camera;
     };
 }

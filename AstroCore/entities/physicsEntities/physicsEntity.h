@@ -64,6 +64,13 @@ namespace Astrolib
         void ApplyTorque(float torque);
         void ApplyImpulse(Vector2 force);
         void ApplyImpulseAtPoint(Vector2 force, Vector2 point);
+
+        // Relative force
+        void AddLocalForce(Vector2 force);
+        void AddLocalForceAtPoint(Vector2 force, Vector2 point);
+        void ApplyLocalImpulse(Vector2 force);
+        void ApplyLocalImpulseAtPoint(Vector2 force, Vector2 point);
+
         void BeginContact(b2Contact *contact) override {};
         void EndContact(b2Contact *contact) override {};
 

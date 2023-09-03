@@ -49,6 +49,8 @@ bool InputManager::IsActionPressed(string actionName)
 /// @return True if an action with the name actionName is pressed
 bool InputManager::IsActionDown(string actionName)
 {
+    
+
     // Do we have an action at this name currently?
     if (HasAction(actionName))
     {
@@ -98,7 +100,7 @@ void InputManager::AddActionEvent(string actionName, int positiveIndex, int cont
         shared_ptr<InputAction> action = (*inputMap)[actionName];
 
         // Create new input action
-        InputEvent newEvent = InputEvent(controllerId, positiveIndex); 
+        InputEvent newEvent = InputEvent(positiveIndex, controllerId); 
         action->AddInputEvent(newEvent);
     }
     
@@ -106,7 +108,7 @@ void InputManager::AddActionEvent(string actionName, int positiveIndex, int cont
     else
     {
         shared_ptr<InputAction> newAction = std::make_shared<InputAction>(actionName);
-        InputEvent newEvent = InputEvent(controllerId, positiveIndex);
+        InputEvent newEvent = InputEvent(positiveIndex, controllerId);
         AddInputAction(newAction);
         newAction->AddInputEvent(newEvent);
     }
