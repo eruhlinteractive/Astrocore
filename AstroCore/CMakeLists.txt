@@ -9,6 +9,7 @@ entities/baseEntities/light2D.cpp
 entities/baseEntities/tilemap.cpp
 engine/filemanager.cpp
 entities/baseEntities/tilemapLayer.cpp
+entities/baseEntities/stackedSpriteEntity.cpp
 entities/physicsEntities/physicsEntity.cpp
 engine/physicsDebug.cpp
 entities/physicsEntities/trigger2D.cpp

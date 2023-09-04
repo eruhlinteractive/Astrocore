@@ -58,6 +58,20 @@ namespace Astrolib
             return (Vector2){renderResolution.x / 2.0f, renderResolution.y / 2.0f};
         }
 
+        /// @brief Get the normalized (-1, 1) screen coordinates
+        /// @param worldPos The world position of the entity
+        /// @return Vector2 representing the normalized screen-space position
+        inline virtual Vector2 GetNormalizedScreenCoords(Vector2 worldPos)
+        {
+            Vector2 screenPos = GetWorldToScreen2D(worldPos, *GetCamera());
+            //screenPos = VectorHelper::AddVectors(screenPos, {GetRenderWidth()/2.0f, GetRenderHeight()/2.0f});
+            
+            Vector2 nSC = {screenPos.x / GetRenderWidth(), screenPos.y / GetRenderHeight()};
+            nSC = {(nSC.x - 0.5f) * 2.0f, (nSC.y - 0.5f) * 2.0f};
+            nSC = {clamp(nSC.x, -1.0f, 1.0f), clamp(nSC.y, -1.0f, 1.0f)};
+            return nSC;
+        }
+
         inline virtual Vector2 GetRenderResolution()
         {   
             return renderResolution;

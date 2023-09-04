@@ -28,7 +28,7 @@ namespace Astrolib
         Texture *spriteTexture;
 
         // Middle point of the sprite
-        Vector2 origin;
+        Vector2 center;
 
         // Size of the sprite on the texture
         Vector2 spriteSize;
@@ -36,15 +36,15 @@ namespace Astrolib
         // Start point of the sprite on the texture
         Vector2 startPoint;
 
-        Sprite(Texture2D *texture, Vector2 origin)
+        Sprite(Texture2D *texture, Vector2 center)
         {
             this->spriteTexture = texture;
-            this->origin = origin;
+            this->center = center;
             this->startPoint = (Vector2){0, 0};
             this->spriteSize = (Vector2){(float)texture->width, (float)texture->height};
         }
 
-        Sprite(Texture2D *texture, Vector2 origin, Vector2 startPoint, Vector2 spriteSize) : Sprite(texture, origin)
+        Sprite(Texture2D *texture, Vector2 center, Vector2 startPoint, Vector2 spriteSize) : Sprite(texture, center)
         {
             this->startPoint = startPoint;
             this->spriteSize = spriteSize;
@@ -249,6 +249,15 @@ namespace Astrolib
         inline static Vector2 SubtractVectors(Vector2 vectorOne, Vector2 vectorTwo)
         {
             return (Vector2){vectorOne.x - vectorTwo.x, vectorOne.y - vectorTwo.y};
+        }
+
+        /// @brief Multiplies two vectors
+        /// @param vectorOne The initial vector
+        /// @param vectorTwo The second vectors
+        /// @returns The multiplied vector
+        inline static Vector2 MultiplyVectors(Vector2 vectorOne, Vector2 vectorTwo)
+        {
+            return (Vector2){vectorOne.x * vectorTwo.x, vectorOne.y * vectorTwo.y};
         }
 
         /// @brief Multiplies a vector by a scalar value

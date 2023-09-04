@@ -2,6 +2,7 @@
 #define __SCENE_H__
 
 #include "../entities/baseEntities/entity.h"
+#include "../entities/baseEntities/stackedSpriteEntity.h"
 #include "texturemanager.h"
 #include "../entities/baseEntities/light2D.h"
 #include "rlgl.h"

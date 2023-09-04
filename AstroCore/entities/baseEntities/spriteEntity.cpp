@@ -9,9 +9,9 @@ SpriteEntity::SpriteEntity(Sprite *sprite)
     type = SPRITE;
 }
 
-SpriteEntity::SpriteEntity(Texture2D *spriteTexture, Vector2 frameSize, Vector2 origin)
+SpriteEntity::SpriteEntity(Texture2D *spriteTexture, Vector2 spriteSize, Vector2 center)
 {
-    this->sprite = new Sprite(spriteTexture, origin);
+    this->sprite = new Sprite(spriteTexture, center, {0,0},spriteSize);
     name = "SpriteEntity_" + std::to_string(entityID);
     type = SPRITE;
 }
@@ -36,11 +36,11 @@ void SpriteEntity::Draw(float deltaTime, Camera2D *camera)
     Vector2 globalPos = GetGlobalPosition();
     srcRect = (Rectangle){sprite->startPoint.x, sprite->startPoint.y, (float)sprite->spriteSize.x, (float)sprite->spriteSize.y};
     destRect = (Rectangle){globalPos.x, globalPos.y, sprite->spriteSize.x * transform.scale.x / pixelsPerUnit, sprite->spriteSize.y * transform.scale.y / pixelsPerUnit};
-    DrawTexturePro(*(sprite->spriteTexture), srcRect, destRect, {(sprite->origin.x * transform.scale.x) / pixelsPerUnit, (sprite->origin.y * transform.scale.y) / pixelsPerUnit}, GetGlobalRotationDeg(), WHITE);
+    DrawTexturePro(*(sprite->spriteTexture), srcRect, destRect, {(sprite->center.x * transform.scale.x) / pixelsPerUnit, (sprite->center.y * transform.scale.y) / pixelsPerUnit}, GetGlobalRotationDeg(), WHITE);
 
     if (Debug::instance()->IsDebugFlagSet(DRAW_SPRITE_BOUNDS))
     {
-        Rectangle rect = (Rectangle){destRect.x - (sprite->origin.x * transform.scale.x)/pixelsPerUnit,  destRect.y - (sprite->origin.y * transform.scale.y)/pixelsPerUnit, destRect.width, destRect.height};
+        Rectangle rect = (Rectangle){destRect.x - (sprite->center.x * transform.scale.x)/pixelsPerUnit,  destRect.y - (sprite->center.y * transform.scale.y)/pixelsPerUnit, destRect.width, destRect.height};
         DrawRectangleLinesEx(rect, 1.0f / pixelsPerUnit * 2, RED);
         // DrawRectangleLines(destRect.x - (sprite->origin.x * transform.scale.x)/pixelsPerUnit, destRect.y - (sprite->origin.y * transform.scale.y)/pixelsPerUnit, destRect.width, destRect.height, RED);
     }

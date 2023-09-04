@@ -18,7 +18,12 @@ namespace Astrolib
             name = "SpriteEntity" + std::to_string(entityID);
         };
         SpriteEntity(Sprite *sprite);
-        SpriteEntity(Texture2D* spriteTexture, Vector2 frameSize, Vector2 origin);
+
+        /// @brief Creates a new sprite entity
+        /// @param spriteTexture The texture to use for the sprite
+        /// @param spriteSize The original size of the sprite 
+        /// @param center The center (rotation point) of the sprite
+        SpriteEntity(Texture2D* spriteTexture, Vector2 spriteSize, Vector2 center);
         ~SpriteEntity();
 
         void Draw(float deltaTime, Camera2D *camera) override;
