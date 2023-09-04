@@ -210,11 +210,11 @@ namespace Astrolib
         /// @param y The y component of the vector to rotate
         /// @param rotationDegrees The delta rotation in degrees
         /// @returns The rotated vector
-        static Vector2 RotateVectorDegrees(float x, float y, float rotationDegrees)
+        static Vector2 RotateVectorDegrees(Vector2 vector, float rotationDegrees)
         {
             float rotation = rotationDegrees * (PI / 180.0f);
 
-            return RotateVector(x, y, rotation);
+            return RotateVector(vector, rotation);
             return (Vector2){0, 0};
         }
 
@@ -223,11 +223,11 @@ namespace Astrolib
         /// @param y The y component of the vector to rotate
         /// @param rotationDegrees The delta rotation in radians
         /// @returns The rotated vector
-        static Vector2 RotateVector(float x, float y, float rotation)
+        static Vector2 RotateVector(Vector2 vector, float rotation)
         {
             Vector2 rotatedVector = {
-                cos(rotation) * x - sin(rotation) * y,
-                cos(rotation) * y + sin(rotation) * x,
+                cos(rotation) * vector.x - sin(rotation) * vector.y,
+                cos(rotation) * vector.y + sin(rotation) * vector.x,
             };
 
             return rotatedVector;
@@ -286,6 +286,17 @@ namespace Astrolib
             return sqrt(vector.x * vector.x + vector.y * vector.y);
         }
 
+        /// @brief Linear interpolate between two vectors by a given weight
+        /// @param start The starting vector
+        /// @param end The ending vector
+        /// @param weight The weight to interpolate by ([0,1] for interpolate, other values for extrapolation)
+        /// @returns The interpolated vector
+        inline static Vector2 LerpVector(Vector2 start, Vector2 end, float weight)
+        {
+            // (1.0f - weight)  * start + weight * end
+            return AddVectors(ScalarMultiplyVector(start, (1.0f - weight)), ScalarMultiplyVector(end, weight));
+        }
+
         /// @brief Normalizes the provided value
         /// @param vector The vector to normalized
         /// @returns The normalized vector
@@ -313,6 +324,16 @@ namespace Astrolib
         }
 
     } VectorHelper;
+
+    /// @brief A set of common math functions
+    typedef struct MathHelper
+    {
+        /// @brief Linear interpolate between start and end values by some weight
+        static inline float Lerp(float start, float end, float weight)
+        {
+            return (1.0f - weight)  * start + weight * end;
+        }
+    }MathHelper;
 
     typedef struct StaticTileMin
     {

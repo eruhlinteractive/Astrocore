@@ -108,6 +108,7 @@ namespace Astrolib
 
             camera->offset = {offset.x + GetRenderCenter().x, offset.y + GetRenderCenter().y};
             camera->zoom = zoom;
+            camera->rotation = GetGlobalRotationDeg();
         }
 
         // Only declared to satisfy the pure virtual function

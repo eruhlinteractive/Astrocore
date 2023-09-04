@@ -30,7 +30,10 @@ void StackedSpriteEntity::Draw(float deltaTime, Camera2D *camera)
     Vector2 globalPos = GetGlobalPosition();
     float srcPosX, srcPosY;
 
+    // Calculate and rotate normalized screen coords opposite of cameras rotation to maintain perspective
     Vector2 nSC = currentScene->currentCamera->GetNormalizedScreenCoords(globalPos);
+    nSC = VectorHelper::RotateVector(nSC, -currentScene->currentCamera->GetGlobalRotation());
+
     //Debug::Log(std::to_string(nSC.y));
     // Calculate the layer offset we should use
     float offset = isOverridingOffset ? layerOffsetOverride : layerOffset;
@@ -41,7 +44,7 @@ void StackedSpriteEntity::Draw(float deltaTime, Camera2D *camera)
     {
         srcPosX = i % layersWide * layerSize.x + spriteStartPos.x;
         srcPosY = (int)(i / layersWide) * layerSize.y + spriteStartPos.y;
-
+        
         Vector2 offsetVec = {offset * i, offset * i};
 
         // Shift offset if we are using perspective shifting
