@@ -4,7 +4,7 @@ using namespace Astrolib;
 
 StackedSpriteEntity::StackedSpriteEntity(Texture2D *spriteSheet, int layersWide, int layerCount, 
                             Vector2 layerSize, Vector2 center, Vector2 spriteStartPos)
-                            : SpriteEntity(spriteSheet, (Vector2){spriteSheet->width, spriteSheet->height}, center)
+                            : SpriteEntity(spriteSheet, (Vector2){(float)spriteSheet->width, (float)spriteSheet->height}, center)
 {
     // Note: The spritesheet width is passed into the constructor of the base sprite entity because the 'slicing' of each frame
     //          is performed in the Draw() of the stacked sprite sheet entity
@@ -39,6 +39,8 @@ void StackedSpriteEntity::Draw(float deltaTime, Camera2D *camera)
     float offset = isOverridingOffset ? layerOffsetOverride : layerOffset;
     offset *= transform.scale.y;
 
+    bool shiftPerspective = isOverridingPerspective ? perspectiveShiftVal : globalUsePerspectiveShift;
+
     // Loop through each layer, offsetting and rendering above the bottom layer
     for (int i = 0; i < layerCount; i++)
     {
@@ -48,13 +50,13 @@ void StackedSpriteEntity::Draw(float deltaTime, Camera2D *camera)
         Vector2 offsetVec = {offset * i, offset * i};
 
         // Shift offset if we are using perspective shifting
-        if(usePerspectiveShift)
+        if(shiftPerspective)
         {
             offsetVec = VectorHelper::MultiplyVectors(offsetVec, {-nSC.x, -nSC.y});
         }
 
         srcRect = (Rectangle){srcPosX, srcPosY, layerSize.x, layerSize.y};
-        destRect = (Rectangle){globalPos.x + offsetVec.x, globalPos.y + offsetVec.y, layerSize.x * transform.scale.x / pixelsPerUnit,
+        destRect = (Rectangle){globalPos.x + offsetVec.x, globalPos.y + offsetVec.y , layerSize.x * transform.scale.x / pixelsPerUnit ,
                                layerSize.y * transform.scale.y / pixelsPerUnit};
 
         DrawTexturePro(*(sprite->spriteTexture),

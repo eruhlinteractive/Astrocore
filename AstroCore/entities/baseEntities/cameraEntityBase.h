@@ -58,6 +58,18 @@ namespace Astrolib
             return (Vector2){renderResolution.x / 2.0f, renderResolution.y / 2.0f};
         }
 
+        /// @brief Set the texture to be rendered in the background
+        /// @param texture The texture to set
+        void SetBackgroundTexture(Texture2D* texture, float scale = 1.0f)
+        {
+            backgroundTexture = texture;
+        }
+
+        void SetBackgroundScale(float scale)
+        {
+            backgroundScale = scale;
+        }
+
         /// @brief Get the normalized (-1, 1) screen coordinates
         /// @param worldPos The world position of the entity
         /// @return Vector2 representing the normalized screen-space position
@@ -84,8 +96,9 @@ namespace Astrolib
         };
         virtual void UpdateDestinationRectSize(){};
         bool maintainTargetAspectResolution = true;
-
+        static inline Texture2D* backgroundTexture = nullptr;
         VIEWPORT_SCALE_MODE currentScaleMode = RENDER_FULL;
+        float backgroundScale = 0.25f;
 
         /// @brief The resolution we are currently rendering the world at (dest texture)
         Vector2 renderResolution;

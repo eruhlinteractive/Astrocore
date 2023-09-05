@@ -49,8 +49,6 @@ bool InputManager::IsActionPressed(string actionName)
 /// @return True if an action with the name actionName is pressed
 bool InputManager::IsActionDown(string actionName)
 {
-    
-
     // Do we have an action at this name currently?
     if (HasAction(actionName))
     {
@@ -112,6 +110,19 @@ void InputManager::AddActionEvent(string actionName, int positiveIndex, int cont
         AddInputAction(newAction);
         newAction->AddInputEvent(newEvent);
     }
+
+}
+
+float InputManager::GetActionStrength(string actionName)
+{
+    // TODO: Get this to work with gamepad joysticks and such
+    return 0;
+}
+
+Vector2 InputManager::GetInputAxis(string positiveActionName, string negativeActionName)
+{
+    assert(HasAction(positiveActionName) && "Positive action name does not have a defined action in InputManager::GetInputAxis()");
+    assert(HasAction(negativeActionName) && "Negative action name does not have a defined action in InputManager::GetInputAxis()");
 
 }
 

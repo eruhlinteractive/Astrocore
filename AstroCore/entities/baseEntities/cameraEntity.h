@@ -29,11 +29,17 @@ namespace Astrolib
         {
             BeginTextureMode(rendText);
             BeginMode2D(*GetCamera());
+
+            if(backgroundTexture != nullptr)
+            {
+                DrawTextureEx(*backgroundTexture,
+                 {-backgroundTexture->width/2.0f * backgroundScale + target.x , -backgroundTexture->height/2.0f  * backgroundScale + target.y},
+                  0.0f, backgroundScale, WHITE);
+            }
         }
 
         void EndDrawing() override
         {
-
             EndMode2D();
             EndTextureMode();
         }

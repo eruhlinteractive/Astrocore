@@ -141,6 +141,9 @@ namespace Astrolib
         inline static float pixelsPerUnit = 1.0f;
         inline static Vector2 worldDrawSize = {0, 0};
 
+        inline void SetVisible(bool isVisible){this->isVisible = isVisible;}
+        bool isVisible = true;
+
         float GetNearestMultiple(float value, float multiple)
         {
             if (multiple == 0)

@@ -90,6 +90,8 @@ public:
     void AddInputAction(shared_ptr<InputAction> newAction);
     void RemoveInputAction(string actionName);
     void AddActionEvent(string actionName, int positiveIndex, int controllerId = -1);
+    Vector2 GetInputAxis(string positiveActionName, string negativeActionName);
+    float GetActionStrength(string actionName);
 
     static InputManager& instance()
     {

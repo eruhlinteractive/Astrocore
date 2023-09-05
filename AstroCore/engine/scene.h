@@ -92,7 +92,6 @@ namespace Astrolib
         /// @return True if the AABB check passes and the object is visible on screen
         bool IsOnScreen(Rectangle entityRect)
         {
-
             Vector2 renderSize = currentCamera->GetRenderResolution();
             Vector2 screenSpaceCoords = GetWorldToScreen2D({entityRect.x, entityRect.y}, *(currentCamera->GetCamera()));
             Rectangle tileRect = (Rectangle){

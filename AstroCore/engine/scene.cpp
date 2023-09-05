@@ -213,7 +213,7 @@ Vector2 Scene::GetWorldRenderSize()
 {
     if (currentCamera == nullptr)
     {
-        return (Vector2){GetScreenWidth(), GetScreenHeight()};
+        return (Vector2){(float)GetScreenWidth(), (float)GetScreenHeight()};
     }
 
     return currentCamera->GetRenderResolution();
@@ -261,8 +261,8 @@ void Scene::Draw(float deltaTime)
     {
         Vector2 screenPos = GetWorldToScreen2D(p.second->GetGlobalPosition(), *currentCamera->GetCamera());
 
-        // AABB test the rect to see if it's on screen
-        if (IsOnScreen(p.second->GetBoundRect()) && p.second->GetType() != TILEMAP)
+        // AABB test the rect to see if it's on screen and add if it is AND is visible
+        if (IsOnScreen(p.second->GetBoundRect()) && p.second->GetType() != TILEMAP && p.second->isVisible)
         {
             pairs.push_back((Entity2D *)p.second);
         }
@@ -291,31 +291,12 @@ void Scene::Draw(float deltaTime)
         std::sort(pairs.begin(), pairs.end(), SortByLayerIndex);
     }
 
-    // if (currentCamera->GetType() == PIXELCAMERA)
-    //{
-    //     RenderTexture2D text = *(((PixelPerfectCamera2D *)currentCamera)->GetRenderTexture());
-    //     BeginTextureMode(text);
-    //     ClearBackground(RAYWHITE);
-
-    //    //DrawLine(GetRenderWidth() / 2, 0, GetRenderWidth()/2, GetRenderHeight(), GRAY);
-    //    //DrawLine(0, GetRenderHeight()/2, GetRenderWidth(), GetRenderHeight()/2, GRAY);
-    //    //ClearBackground(RAYWHITE);
-    //}
-    // else
-    //{
-    //    BeginDrawing();
-    //}
-
     currentCamera->BeginDrawing();
     ClearBackground(WHITE);
     if(Debug::IsDebugFlagSet(DRAW_WORLD_GRID))
     {
         Debug::DrawWorldGrid(100, 100, currentCamera->GetGlobalPosition());
     }
-    
-
-    // Camera2D cam = *(currentCamera->GetCamera());
-    // BeginMode2D(cam);
 
     for (Entity2D *e : pairs)
     {
