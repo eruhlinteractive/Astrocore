@@ -1,7 +1,7 @@
 #ifndef __COLLISIONENTITY_H__
 #define __COLLISIONENTITY_H__
 
-#include "../../include/box2d/box2d.h"
+#include <box2d/box2d.h>
 #include "../baseEntities/entity.h"
 
 namespace Astrolib

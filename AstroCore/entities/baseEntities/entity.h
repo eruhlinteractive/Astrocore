@@ -2,7 +2,7 @@
 #ifndef __ENTITY2D_H__
 #define __ENTITY2D_H__
 
-#include "../include/raylib.h"
+#include <raylib.h>
 #include <vector>
 #include <memory>
 #include <string>

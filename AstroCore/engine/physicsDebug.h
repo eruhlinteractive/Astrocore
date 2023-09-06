@@ -1,7 +1,7 @@
 #ifndef __PHYSICSDEBUG_H__
 #define __PHYSICSDEBUG_H__
-#include "../include/box2d/b2_draw.h"
-#include "../include/raylib.h"
+#include <box2d/box2d.h>
+#include <raylib.h>
 
 namespace Astrolib
 {

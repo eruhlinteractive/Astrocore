@@ -2,7 +2,7 @@
 #define __PHYSICSENTITY_H__
 
 #include "collisionEntity.h"
-#include "../../include/box2d/box2d.h"
+#include <box2d/box2d.h>
 #include "../../engine/scene.h"
 
 namespace Astrolib

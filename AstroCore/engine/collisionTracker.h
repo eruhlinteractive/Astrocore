@@ -1,7 +1,6 @@
 #ifndef __COLLISIONTRACKER_H__
 #define __COLLISIONTRACKER_H__
 
-#include "../include/box2d/box2d.h"
 #include "../entities/physicsEntities/collisionEntity.h"
 
 namespace Astrolib

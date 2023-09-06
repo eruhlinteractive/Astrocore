@@ -124,6 +124,7 @@ Vector2 InputManager::GetInputAxis(string positiveActionName, string negativeAct
     assert(HasAction(positiveActionName) && "Positive action name does not have a defined action in InputManager::GetInputAxis()");
     assert(HasAction(negativeActionName) && "Negative action name does not have a defined action in InputManager::GetInputAxis()");
 
+    return (Vector2){0,0};
 }
 
 /// @brief Does the input map have an action?

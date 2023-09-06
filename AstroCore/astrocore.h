@@ -1,6 +1,6 @@
 // Single file to include functionality of the Astro Core
 
-#include "include/raylib.h"
+#include <raylib.h>
 #include "game.h"
 
 // Data

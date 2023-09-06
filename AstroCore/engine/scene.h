@@ -19,7 +19,7 @@
 #include "../entities/baseEntities/cameraEntity.h"
 #include "../entities/baseEntities/spriteEntity.h"
 #include "collisionTracker.h"
-#include "../include/box2d/box2d.h"
+#include <box2d/box2d.h>
 
 // Custom Blend Modes
 #define RLGL_SRC_ALPHA 0x0302
