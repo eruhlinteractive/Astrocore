@@ -76,7 +76,6 @@ namespace Astrolib
 
         static bool SortByLayerIndexWithYSort(Entity2D *p1, Entity2D *p2)
         {
-
             // Y Position sorting
             if (p1->GetDrawLayer() == p2->GetDrawLayer())
             {

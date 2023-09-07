@@ -125,7 +125,7 @@ namespace Astrolib
         void SetName(std::string newName) { this->name = newName; };
         std::string GetName() { return name; };
 
-        // Get children
+        ///@brief Get a list of all children of this entity
         std::vector<Entity2D *> GetChildren();
         Entity2D *GetChildAtIndex(int index);
         Entity2D *GetChild(std::string name);
@@ -141,8 +141,14 @@ namespace Astrolib
         inline static float pixelsPerUnit = 1.0f;
         inline static Vector2 worldDrawSize = {0, 0};
 
-        inline void SetVisible(bool isVisible){this->isVisible = isVisible;}
-        bool isVisible = true;
+        /// @brief Set the visibility of this entity, applying the value to all children
+        /// @param isVisible Is the entity visible?
+        void SetVisible(bool isVisible);
+
+        /// @brief Is this node currently visible?
+        /// @return True if the node is visible
+        inline bool IsVisible() { return isVisible;}
+        
 
         float GetNearestMultiple(float value, float multiple)
         {
@@ -166,6 +172,7 @@ namespace Astrolib
         }
 
     protected:
+        bool isVisible = true;
         ENTITY_TYPE type;
         bool isReady = false;
         Scene *currentScene = nullptr;

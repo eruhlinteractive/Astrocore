@@ -238,6 +238,18 @@ std::vector<Entity2D *> Entity2D::GetChildren()
     return *children;
 }
 
+
+void Entity2D::SetVisible(bool isVisible)
+{
+    this->isVisible = isVisible;
+
+    for(Entity2D* child : *children)
+    {
+        child->SetVisible(isVisible);
+    }
+}
+
+
 /// @brief Checks if the entity is a child of this entity
 /// @param childToCheck The potential child in question
 /// @return True if the entity is a child, otherwise false

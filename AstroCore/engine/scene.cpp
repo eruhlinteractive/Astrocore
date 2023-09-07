@@ -30,7 +30,7 @@ void Scene::OnNotify(const Signaler *signaler, std::string eventName)
     }
 
     // Notify scene that the screen has been resized
-    if(eventName == "windowResized")
+    if (eventName == "windowResized")
     {
         SendEvent("onWindowResized");
     }
@@ -43,7 +43,6 @@ bool Scene::RegisterEntity(Entity2D *entity)
 
     // Tell entity that it was registered
     entity->OnRegister(&(*this));
-
 
     if (entity->GetChildCount() > 0)
     {
@@ -223,7 +222,10 @@ void Scene::Update(float deltaTime)
 {
     // Don't process if the scene is currently paused
     // TODO: Add ability to pause individual nodes
-    if(isPaused) {return;}
+    if (isPaused)
+    {
+        return;
+    }
 
     for (auto e : entities)
     {
@@ -261,8 +263,14 @@ void Scene::Draw(float deltaTime)
     {
         Vector2 screenPos = GetWorldToScreen2D(p.second->GetGlobalPosition(), *currentCamera->GetCamera());
 
+        // Don't render if we aren't visible
+        if (!p.second->IsVisible())
+        {
+            continue;
+        }
+
         // AABB test the rect to see if it's on screen and add if it is AND is visible
-        if (IsOnScreen(p.second->GetBoundRect()) && p.second->GetType() != TILEMAP && p.second->isVisible)
+        if (IsOnScreen(p.second->GetBoundRect()) && p.second->GetType() != TILEMAP)
         {
             pairs.push_back((Entity2D *)p.second);
         }
@@ -274,8 +282,6 @@ void Scene::Draw(float deltaTime)
             {
                 pairs.push_back(layer);
             }
-            // auto layer = ((TileMap *)p.second)->GetTileLayers()[1];
-            // pairs.push_back(layer);
         }
     }
 
@@ -293,7 +299,7 @@ void Scene::Draw(float deltaTime)
 
     currentCamera->BeginDrawing();
     ClearBackground(WHITE);
-    if(Debug::IsDebugFlagSet(DRAW_WORLD_GRID))
+    if (Debug::IsDebugFlagSet(DRAW_WORLD_GRID))
     {
         Debug::DrawWorldGrid(100, 100, currentCamera->GetGlobalPosition());
     }
@@ -358,8 +364,8 @@ void Scene::Draw(float deltaTime)
     EndBlendMode();
     */
 
-    //std::string val = std::to_string(currentCamera->zoom);
-    //DrawText(val.c_str(), 10, 30, 20, DARKGREEN);
+    // std::string val = std::to_string(currentCamera->zoom);
+    // DrawText(val.c_str(), 10, 30, 20, DARKGREEN);
     DrawFPS(10, 10);
 
     EndDrawing();
