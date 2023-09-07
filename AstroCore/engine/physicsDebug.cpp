@@ -27,14 +27,14 @@ void PhysicsDebug::DrawPolygon(const b2Vec2 *vertices, int32 vertexCount, const 
         vertices++;
     }
 
-    DrawLineStrip(points.data(), vertexCount, (Color){color.r * 255.0f, color.g * 255.0f, color.b * 255.0f, color.a * 255.0f});
+    DrawLineStrip(points.data(), vertexCount, (Color){(unsigned char)(color.r * 255.0f), (unsigned char)(color.g * 255.0f), (unsigned char)(color.b * 255.0f), (unsigned char)(color.a * 255.0f)});
 
     // Close the loop
     std::vector<Vector2> finalPoints = std::vector<Vector2>();
     finalPoints.push_back(points[points.size() - 1]);
     finalPoints.push_back(points[0]);
 
-    DrawLineStrip(finalPoints.data(), 2, (Color){color.r * 255.0f, color.g * 255.0f, color.b * 255.0f, color.a * 255.0f});
+    DrawLineStrip(finalPoints.data(), 2, (Color){(unsigned char)(color.r * 255.0f), (unsigned char)(color.g * 255.0f), (unsigned char)(color.b * 255.0f), (unsigned char)(color.a * 255.0f)});
 }
 
 void PhysicsDebug::DrawTransform(const b2Transform &xf)

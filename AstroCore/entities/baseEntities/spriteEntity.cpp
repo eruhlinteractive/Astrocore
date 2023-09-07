@@ -26,7 +26,7 @@ SpriteEntity::~SpriteEntity()
 Rectangle SpriteEntity::GetBoundRect()
 {
     Vector2 pos = GetGlobalPosition();
-    return (Rectangle){pos.x, pos.y, sprite->spriteTexture->width, sprite->spriteTexture->height};
+    return (Rectangle){pos.x, pos.y, (float)sprite->spriteTexture->width, (float)sprite->spriteTexture->height};
 }
 
 void SpriteEntity::Draw(float deltaTime, Camera2D *camera)
