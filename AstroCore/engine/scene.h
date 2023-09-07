@@ -113,16 +113,22 @@ namespace Astrolib
         }
 
         Vector2 GetWorldRenderSize();
-        
-        // void SetPhysicsWorld(b2World *newWorld)
-        //{
-        //     physicsWorld = newWorld;
-        // }
 
         b2World *GetPhysicsWorld()
         {
             return physicsWorld;
         }
+
+        /// @brief Register a resource with a given name (service locator pattern)
+        /// @param name The name of the resource to register
+        /// @param resource A pointer to the resource to register
+        void RegisterResource(string name, void* resource);
+
+        /// @brief Get a resource with a given name
+        /// @param name The name of the resource to get
+        /// @return A void pointer to the resource, or nullptr if the resource hasn't been registered yet
+        void* GetResource(string name);
+        bool HasResourve(string name);
 
     protected:
         b2World *physicsWorld;
@@ -134,6 +140,7 @@ namespace Astrolib
 
     private:
         Entity2D *root;
+        
         /// @brief Top level of the scene graph
         std::map<std::string, Entity2D *> entities;
         std::map<int, Entity2D *> entityIDMap;

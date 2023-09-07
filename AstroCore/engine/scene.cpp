@@ -44,6 +44,9 @@ bool Scene::RegisterEntity(Entity2D *entity)
     // Tell entity that it was registered
     entity->OnRegister(&(*this));
 
+    // Add as a child of the root
+    //root->AddChild(entity);
+
     if (entity->GetChildCount() > 0)
     {
         std::vector<Entity2D *> children = entity->GetChildren();

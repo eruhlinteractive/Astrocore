@@ -19,6 +19,10 @@ namespace Astrolib
         virtual void InitGame(std::string windowTitle, int screenWidth, int screenHeight, int targetFPS = 60)
         {
             std::string debugMessage = "";
+            #if(DEBUG)
+                debugMessage = " - DEBUG";
+            #endif
+           
 
             InitWindow(screenWidth, screenHeight, "Astrolib Game");
             SetWindowTitle((windowTitle + debugMessage).c_str());
@@ -104,7 +108,6 @@ namespace Astrolib
             currentScene = std::move(newScene);
             AddObserver(currentScene.get(), "windowResized");
             currentScene->LoadScene();
-
         }
 
         void SetConfigFlag(unsigned int flag)

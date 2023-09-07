@@ -7,6 +7,12 @@
 #include <algorithm>
 #include "physicsDebug.h"
 
+#if(DEBUG)
+    #define NDEBUG
+#endif
+
+#include <cassert>
+
 // Transformation flags
 // Since each flag is stored as a single bit, they need to be shifted to be in the proper positions
 // https://dietertack.medium.com/using-bit-flags-in-c-d39ec6e30f08
@@ -92,6 +98,14 @@ namespace Astrolib
 
             // Flush output buffer to the file
             outputFile.flush();
+        }
+        
+        /// @brief A wrapper for assert calls (makes it easier to disable on build)
+        /// @param condition The condition to check
+        /// @param failureMessage The message to show if the condition is false
+        inline static void Assert(bool condition, const std::string failureMessage)
+        {
+            assert(condition && failureMessage.c_str());
         }
 
         /// @brief Get the path to the current log file
