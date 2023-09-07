@@ -10,10 +10,11 @@ Astrocore is a game-focused game library built on the [Raylib](https://www.rayli
 - Composition/node based entity structure
 
 
-## How to use
+## Installation
 
 **Prerequisites**
 - [vcpkg](https://github.com/microsoft/vcpkg)
 
 1. Install the following libraries with vcpkg: [Raylib](https://www.raylib.com/), [Box2D](https://box2d.org/)
 2. Build and install the following libraries to your system: [tmxlite](https://github.com/fallahn/tmxlite)
+3. Add astrocore to the Cmake build config
