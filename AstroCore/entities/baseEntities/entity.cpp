@@ -61,7 +61,7 @@ Entity2D::~Entity2D()
 /// @return A Vector2 representing the world coordinates
 Vector2 Entity2D::GetGlobalPosition()
 {
-    if (this->parentEntity != nullptr)
+    if (this->parentEntity != nullptr && !IsTransformFlagSet(POS_UNIQUE))
     {
 
         Vector2 parentGlobal = parentEntity->GetGlobalPosition();
@@ -79,8 +79,7 @@ Vector2 Entity2D::GetGlobalPosition()
     }
     else
     {
-        Vector2 globalPos = transform.position;
-        return globalPos;
+        return transform.position;
     }
 }
 
@@ -97,7 +96,7 @@ float Entity2D::GetGlobalRotation()
 {
     float globalRot = transform.rotation;
 
-    if (parentEntity != nullptr)
+    if (parentEntity != nullptr && !IsTransformFlagSet(ROT_UNIQUE))
     {
         globalRot = transform.rotation + parentEntity->GetGlobalRotation();
         globalRot = std::fmod(globalRot, (2.0f * M_PI));

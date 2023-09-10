@@ -19,11 +19,9 @@ engine/collisionTracker.cpp
 target_include_directories(${PROJECT_NAME}
     PUBLIC engine
     PUBLIC entities
-    PRIVATE <vcpkg include path>
-    
 )
 
 target_link_directories(${PROJECT_NAME}
     PRIVATE engine
     PRIVATE entities
-    PRIVATE <vcpkg lib path>
+)

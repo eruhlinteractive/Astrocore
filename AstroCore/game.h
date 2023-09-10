@@ -83,6 +83,10 @@ namespace Astrolib
                     FixedUpdate(FIXED_UPDATE_RATE);
                 }
 
+                // Calculate how far we are between the current and next physics step
+                float physicsFraction = fixedUpdateTimer / FIXED_UPDATE_RATE;
+                // Debug::Log(std::to_string(physicsFraction));
+
                 ClearBackground(WHITE);
                 Draw(GetFrameTime());
             }
