@@ -3,7 +3,7 @@
 #include "raylib.h"
 #include "cameraEntityBase.h"
 
-namespace Astrolib
+namespace Astrocore
 {
     class PixelPerfectCamera2D : public CameraEntityBase
     {

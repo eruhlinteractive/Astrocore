@@ -1,7 +1,7 @@
 #include "tilemap.h"
 #include <iostream>
 
-using namespace Astrolib;
+using namespace Astrocore;
 
 TileMap::TileMap()
 {

@@ -1,6 +1,6 @@
 #include "filemanager.h"
 
-using namespace Astrolib;
+using namespace Astrocore;
 
 
 unsigned char* FileManager::LoadFileBytes(std::string filePath)

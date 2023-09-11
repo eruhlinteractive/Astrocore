@@ -13,7 +13,7 @@
 
 using namespace std;
 
-namespace Astrolib
+namespace Astrocore
 {
 /// @brief A struct representing a single input action (i.e jump)
 class InputAction

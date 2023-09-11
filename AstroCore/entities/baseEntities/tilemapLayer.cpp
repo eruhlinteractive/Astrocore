@@ -3,7 +3,7 @@
 #include "../../engine/scene.h"
 
 
-using namespace Astrolib;
+using namespace Astrocore;
 
 TileMapLayer::TileMapLayer(std::vector<int> *tileIndexes,
                            Texture *tileAtlas,

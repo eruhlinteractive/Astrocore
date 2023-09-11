@@ -1,7 +1,7 @@
 #include "physicsDebug.h"
 #include <vector>
 
-using namespace Astrolib;
+using namespace Astrocore;
 PhysicsDebug::PhysicsDebug()
 {
     SetFlags(e_shapeBit);

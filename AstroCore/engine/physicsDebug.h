@@ -3,7 +3,7 @@
 #include <box2d/box2d.h>
 #include <raylib.h>
 
-namespace Astrolib
+namespace Astrocore
 {
     class PhysicsDebug : public b2Draw
     {

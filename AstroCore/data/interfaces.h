@@ -3,7 +3,7 @@
 #include <vector>
 #include <algorithm>
 #include <map>
-namespace Astrolib
+namespace Astrocore
 {
     class Signaler;
     class Observer

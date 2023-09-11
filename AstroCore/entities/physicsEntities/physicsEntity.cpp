@@ -1,6 +1,6 @@
 #include "physicsEntity.h"
 
-using namespace Astrolib;
+using namespace Astrocore;
 
 PhysicsEntity::PhysicsEntity(PHYSICS_TYPE bodyType, Vector2 startPos)
 {

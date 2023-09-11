@@ -2,7 +2,7 @@
 #define __LIGHT_H__
 #include "entity.h"
 
-namespace Astrolib
+namespace Astrocore
 {
     class Light2D : public Entity2D
     {

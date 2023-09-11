@@ -3,7 +3,7 @@
 
 #include "../entities/physicsEntities/collisionEntity.h"
 
-namespace Astrolib
+namespace Astrocore
 {
     /// This class listens for collisions in the physics world and notifies the correct entities
     ///     Note: This is not meant to be queried directly, except by the scene to add/remove entities

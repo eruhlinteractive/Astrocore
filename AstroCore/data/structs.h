@@ -3,7 +3,7 @@
 #ifndef STRUCTS_H
 #define STRUCTS_H
 
-namespace Astrolib
+namespace Astrocore
 {
     /// @brief A struct representing a single input event (i.e an 'E' key press or 'A' button press on a controller)
     typedef struct InputEvent

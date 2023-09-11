@@ -1,6 +1,6 @@
 #include "scene.h"
 #include <iostream>
-using namespace Astrolib;
+using namespace Astrocore;
 
 Scene::Scene()
 {

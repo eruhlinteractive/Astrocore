@@ -1,6 +1,6 @@
 #include "collisionTracker.h"
 
-using namespace Astrolib;
+using namespace Astrocore;
 
 void CollisionTracker::AddTrackedEntity(int entityID, CollisionEntity* entity)
 {

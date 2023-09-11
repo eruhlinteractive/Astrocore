@@ -12,7 +12,7 @@
 
 using namespace std;
 
-namespace Astrolib
+namespace Astrocore
 {
 class AnimatedSpriteEntity: public Entity2D
 {

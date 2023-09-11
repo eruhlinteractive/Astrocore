@@ -4,7 +4,7 @@
 #include <stdexcept>
 #include <algorithm>
 
-using namespace Astrolib;
+using namespace Astrocore;
 
 int Entity2D::entityCount = 0;
 

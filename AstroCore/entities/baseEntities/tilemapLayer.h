@@ -8,7 +8,7 @@ using namespace std;
 #include <map>
 #include "../../data/structs.h"
 
-namespace Astrolib
+namespace Astrocore
 {
     class TileMapLayer : public Entity2D
     {

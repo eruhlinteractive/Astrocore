@@ -4,7 +4,7 @@
 #include <box2d/box2d.h>
 #include "../baseEntities/entity.h"
 
-namespace Astrolib
+namespace Astrocore
 {
     /// @brief An abstract base class for all physical entities that interface with the
     ///         box2D library

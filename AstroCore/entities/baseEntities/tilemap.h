@@ -12,7 +12,7 @@
 #include "../../data/structs.h"
 #include "tilemapLayer.h"
 
-namespace Astrolib
+namespace Astrocore
 {
     class TileMap : public Entity2D
     {

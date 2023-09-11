@@ -8,7 +8,7 @@
 
 
 
-namespace Astrolib
+namespace Astrocore
 {
     class Entity2D;
     class CameraEntityBase;

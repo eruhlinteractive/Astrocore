@@ -11,7 +11,7 @@ enum VIEWPORT_SCALE_MODE {
     RENDER_FULL // Render the full screen at a 1:1 resolution (world is rendered at the screen resolution)
 };
 
-namespace Astrolib
+namespace Astrocore
 {
     // A base class containing all common camera entity functions and members
     class CameraEntityBase : public Entity2D

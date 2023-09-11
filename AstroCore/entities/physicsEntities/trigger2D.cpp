@@ -1,7 +1,7 @@
 #include "trigger2D.h"
 #include "../../engine/scene.h"
 
-using namespace Astrolib;
+using namespace Astrocore;
 
 Trigger2D::Trigger2D()
 {

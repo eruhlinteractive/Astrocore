@@ -7,7 +7,7 @@
 #include <algorithm>
 #include "physicsDebug.h"
 
-#if(DEBUG)
+#if(!DEBUG)
     #define NDEBUG
 #endif
 
@@ -24,7 +24,7 @@ enum DEBUG_FLAGS
     // SCL_UNIQUE = 1 << 2  // 4
 };
 
-namespace Astrolib
+namespace Astrocore
 {
     class Debug
     {
@@ -105,7 +105,11 @@ namespace Astrolib
         /// @param failureMessage The message to show if the condition is false
         inline static void Assert(bool condition, const std::string failureMessage)
         {
-            assert(condition && failureMessage.c_str());
+            if(!condition)
+            {
+                Log("**ASSERT TRIGGERED: " + failureMessage + " **");
+                assert(condition);
+            }
         }
 
         /// @brief Get the path to the current log file

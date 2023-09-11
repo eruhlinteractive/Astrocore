@@ -4,7 +4,7 @@
 #include <box2d/box2d.h>
 #include "collisionEntity.h"
 
-namespace Astrolib
+namespace Astrocore
 {
     class Trigger2D : public CollisionEntity
     {

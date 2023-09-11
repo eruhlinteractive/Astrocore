@@ -6,7 +6,7 @@
 #ifndef SPRITE_ENTITY_H
 #define SPRITE_ENTITY_H
 
-namespace Astrolib
+namespace Astrocore
 {
     class SpriteEntity : public Entity2D
     {

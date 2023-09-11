@@ -1,6 +1,6 @@
 #include "light2D.h"
 
-using namespace Astrolib;
+using namespace Astrocore;
 
 Light2D::Light2D()
 {

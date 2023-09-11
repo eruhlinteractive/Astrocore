@@ -1,6 +1,6 @@
 #include "texturemanager.h"
 
-using namespace Astrolib;
+using namespace Astrocore;
 
 
 TextureManager::TextureManager()

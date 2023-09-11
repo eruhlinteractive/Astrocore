@@ -29,7 +29,7 @@
 #define RLGL_MIN 0x8007
 #define RLGL_MAX 0x8008
 
-namespace Astrolib
+namespace Astrocore
 {
     class Scene : public Observer, public Signaler, public EntityScene
     {

@@ -6,7 +6,7 @@
 #include <raylib.h>
 #include "debug.h"
 
-namespace Astrolib
+namespace Astrocore
 {
     class TextureManager
     {

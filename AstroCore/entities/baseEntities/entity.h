@@ -41,7 +41,7 @@ enum ENTITY_TYPE
     PHYSICAL
 };
 
-namespace Astrolib
+namespace Astrocore
 {
     class Scene;
     class Entity2D : public Observer, public Signaler

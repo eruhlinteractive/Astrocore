@@ -10,7 +10,7 @@
 
 using namespace std;
 
-namespace Astrolib
+namespace Astrocore
 {
     class Game : public Signaler
     {

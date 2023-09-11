@@ -4,7 +4,7 @@
 #include "../include/raylib.h"
 #include <string>
 
-namespace Astrolib
+namespace Astrocore
 {
     class FileManager
     {

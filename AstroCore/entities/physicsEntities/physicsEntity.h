@@ -5,7 +5,7 @@
 #include <box2d/box2d.h>
 #include "../../engine/scene.h"
 
-namespace Astrolib
+namespace Astrocore
 {
     enum PHYSICS_TYPE
     {

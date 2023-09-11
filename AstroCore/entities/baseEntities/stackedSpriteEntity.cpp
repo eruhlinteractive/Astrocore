@@ -1,6 +1,6 @@
 #include "stackedSpriteEntity.h"
 #include "../../engine/scene.h"
-using namespace Astrolib;
+using namespace Astrocore;
 
 StackedSpriteEntity::StackedSpriteEntity(Texture2D *spriteSheet, int layersWide, int layerCount, 
                             Vector2 layerSize, Vector2 center, Vector2 spriteStartPos)

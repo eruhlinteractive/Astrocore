@@ -3,7 +3,7 @@
 
 #include "spriteEntity.h"
 
-namespace Astrolib
+namespace Astrocore
 {
     class StackedSpriteEntity : public SpriteEntity
     {

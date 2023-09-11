@@ -3,7 +3,7 @@
 
 #include "cameraEntityBase.h"
 
-namespace Astrolib
+namespace Astrocore
 {
     class CameraEntity : public CameraEntityBase
     {

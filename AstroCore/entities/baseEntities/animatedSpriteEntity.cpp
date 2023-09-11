@@ -2,7 +2,7 @@
 #include "../../engine/texturemanager.h"
 #include <iostream>
 
-using namespace Astrolib;
+using namespace Astrocore;
 
 #pragma region Constructors
 
