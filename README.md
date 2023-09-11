@@ -3,7 +3,7 @@
 # Astrocore
 
 ## What is it
-Astrocore is a game-focused game library built on the [Raylib](https://www.raylib.com/) game library that aims to provided generalized management systems. This includes systems such as transformation inheritance, scene and asset management, etc.
+Astrocore is a game-focused C++ library built on [Raylib](https://www.raylib.com/) that aims to provided generalized management systems. This includes systems such as transformation inheritance, scene and asset management, etc.
 
 ## Other Features:
 - TMX tilemap loading
