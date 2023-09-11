@@ -272,6 +272,11 @@ bool Scene::HasResource(std::string name)
     return sceneResources.find(name) != sceneResources.end();
 }
 
+float Scene::GetPhysicsFraction()
+{
+    return physicsStepFraction;
+}
+
 Vector2 Scene::GetWorldRenderSize()
 {
     if (currentCamera == nullptr)

@@ -43,6 +43,7 @@ namespace Astrolib
         virtual Entity2D *GetRoot() = 0;
         virtual CameraEntityBase* GetCurrentCamera() = 0;
         virtual void SetCurrentCamera(CameraEntityBase* newCamera) = 0;
+        virtual float GetPhysicsFraction() = 0;
 
     };
 }

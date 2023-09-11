@@ -32,6 +32,8 @@ namespace Astrolib
 {
     class Scene : public Observer, public Signaler, public EntityScene
     {
+    friend class Game;
+
     public:
         Scene();
         ~Scene();
@@ -45,6 +47,7 @@ namespace Astrolib
         {
             isSceneLoaded = true;
         };
+
         virtual void UnloadScene(){};
 
         virtual void Update(float deltaTime);
@@ -55,7 +58,10 @@ namespace Astrolib
         bool AddLightToScene(Light2D *light);
 
         void OnNotify(const Signaler *signaler, std::string eventName) override;
-
+        
+        /// @brief Get the fraction of how far we are to the next physics step
+        /// @return The fraction (0,1) of how far we are towards the next physics step
+        virtual float GetPhysicsFraction() override final;
         
         //Entity management/access
 
@@ -136,6 +142,9 @@ namespace Astrolib
         CameraEntityBase *currentCamera = nullptr;
         RenderTexture2D screenSpaceLightMap;
         CollisionTracker colTracker;
+
+        // Only accessible directly by friends :)
+        float physicsStepFraction = 0;
     };
 }
 
