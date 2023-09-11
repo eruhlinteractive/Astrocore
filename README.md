@@ -24,4 +24,4 @@ Astrocore is a game-focused game library built on the [Raylib](https://www.rayli
 - [Raylib](https://www.raylib.com/) (base, rendering)
 - [Box2D](https://box2d.org/) (physics)
 - [tmxlite](https://github.com/fallahn/tmxlite) (tilemap parsing)
-- [nlohmann json](https://github.com/nlohmann/json)
+- [nlohmann json](https://github.com/nlohmann/json) (JSON parsing)
