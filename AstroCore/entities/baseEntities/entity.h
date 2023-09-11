@@ -11,6 +11,7 @@
 #include "../../engine/debug.h"
 #include "../../engine/input.h"
 #include "../../engine/entityScene.h"
+#include "../../external/json.hpp"
 
 /*
     Base class for every entity in the scene (except a few special cases like lights)

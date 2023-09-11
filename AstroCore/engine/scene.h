@@ -15,6 +15,7 @@
 #include <typeinfo>
 #include <raylib.h>
 #include "entityScene.h"
+#include "../external/json.hpp"
 
 
 #include "../entities/baseEntities/pixelPerfectCamera.h"
