@@ -31,8 +31,8 @@ void StackedSpriteEntity::Draw(float deltaTime, Camera2D *camera)
     float srcPosX, srcPosY;
 
     // Calculate and rotate normalized screen coords opposite of cameras rotation to maintain perspective
-    Vector2 nSC = currentScene->currentCamera->GetNormalizedScreenCoords(globalPos);
-    nSC = VectorHelper::RotateVector(nSC, -currentScene->currentCamera->GetGlobalRotation());
+    Vector2 nSC = currentScene->GetCurrentCamera()->GetNormalizedScreenCoords(globalPos);
+    nSC = VectorHelper::RotateVector(nSC, -currentScene->GetCurrentCamera()->GetGlobalRotation());
 
     //Debug::Log(std::to_string(nSC.y));
     // Calculate the layer offset we should use

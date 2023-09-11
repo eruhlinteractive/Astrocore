@@ -1,6 +1,6 @@
 #ifndef __CAMERAENTITYBASE_H__
 #define __CAMERAENTITYBASE_H__
-#include "raylib.h"
+#include <raylib.h>
 #include "entity.h"
 #
 // An interface to provide generalized properties for different types of cameras
@@ -13,7 +13,7 @@ enum VIEWPORT_SCALE_MODE {
 
 namespace Astrolib
 {
-    // TODO: Specalize a lot of this functionality out of the base class
+    // A base class containing all common camera entity functions and members
     class CameraEntityBase : public Entity2D
     {
     public:

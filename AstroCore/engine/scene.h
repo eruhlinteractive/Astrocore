@@ -13,8 +13,10 @@
 #include "../entities/baseEntities/tilemap.h"
 #include "../data/interfaces.h"
 #include <typeinfo>
-#include "raylib.h"
-#include "../entities/baseEntities/cameraEntityBase.h"
+#include <raylib.h>
+#include "entityScene.h"
+
+
 #include "../entities/baseEntities/pixelPerfectCamera.h"
 #include "../entities/baseEntities/cameraEntity.h"
 #include "../entities/baseEntities/spriteEntity.h"
@@ -28,17 +30,19 @@
 
 namespace Astrolib
 {
-    class Scene : public Observer, public Signaler
+    class Scene : public Observer, public Signaler, public EntityScene
     {
     public:
         Scene();
         ~Scene();
 
         // Scene(std::string name){};
-        Entity2D *FindEntityByName(std::string name);
-        Entity2D *GetEntity(std::string path);
-
-        virtual void LoadScene(){
+        virtual bool IsOnScreen(Rectangle entityRect) override final;
+        /*
+         
+        */
+        virtual void LoadScene()
+        {
             isSceneLoaded = true;
         };
         virtual void UnloadScene(){};
@@ -52,10 +56,26 @@ namespace Astrolib
 
         void OnNotify(const Signaler *signaler, std::string eventName) override;
 
-        bool RegisterEntity(Entity2D *entity);
-        bool UnRegisterEntity(std::string name);
+        
+        //Entity management/access
 
-        CameraEntityBase *currentCamera = nullptr;
+        /// @brief Register an entity to the scene
+        /// @param entity The entity to register
+        /// @return True if the entity was registered successfully
+        bool RegisterEntity(Entity2D *entity);
+
+        /// @brief Unregisters an entity from the scene
+        /// @param name The name of the entity to unregister
+        /// @return True if the entity was successfully unregistered
+        bool UnRegisterEntity(std::string name);
+        virtual Entity2D* GetEntity(std::string path) override final;
+        virtual Entity2D *FindEntityByName(std::string name) override final;
+
+
+        virtual void RegisterResource(string name, void* resource) override final;
+        virtual void* GetResource(string name) override final;
+        virtual bool HasResource(string name) override final;
+        
 
         Color ambientColor = WHITE;
         bool ySortEnabled = true;
@@ -64,6 +84,9 @@ namespace Astrolib
         {
             return root;
         }
+
+        virtual CameraEntityBase* GetCurrentCamera() override final;
+        virtual void SetCurrentCamera(CameraEntityBase* newCamera) override final;
 
         /// @brief Sorts two pairs in the map based on their draw index
         /// @param p1 The first pair
@@ -85,50 +108,12 @@ namespace Astrolib
             return p1->GetDrawLayer() < p2->GetDrawLayer();
         }
 
-        /// @brief Check if the entity at screenPosition is visible on screen
-        /// @param camera The camera that is currently rendering the screen
-        /// @param entityRect The rectangle of the entity
-        /// @return True if the AABB check passes and the object is visible on screen
-        bool IsOnScreen(Rectangle entityRect)
-        {
-            Vector2 renderSize = currentCamera->GetRenderResolution();
-            Vector2 screenSpaceCoords = GetWorldToScreen2D({entityRect.x, entityRect.y}, *(currentCamera->GetCamera()));
-            Rectangle tileRect = (Rectangle){
-                screenSpaceCoords.x,
-                screenSpaceCoords.y,
-                entityRect.width,
-                entityRect.height};
+        virtual Vector2 GetWorldRenderSize() override final;
 
-            //Debug::Log(std::to_string(tileRect.x));
-            // Vector2 ss = GetScreenToWorld2D({tileRect.x, tileRect.y}, *camera);
-            // Rectangle debugRect = (Rectangle){ss.x, ss.y, tileInfo->imageSize.x, tileInfo->imageSize.y};
-
-            bool isOnScreen =
-                tileRect.x + tileRect.width > 0 &&
-                tileRect.x < renderSize.x &&
-                tileRect.y + tileRect.height > 0 &&
-                tileRect.y < renderSize.y;
-
-            return isOnScreen;
-        }
-
-        Vector2 GetWorldRenderSize();
-
-        b2World *GetPhysicsWorld()
+        virtual b2World *GetPhysicsWorld() override final
         {
             return physicsWorld;
         }
-
-        /// @brief Register a resource with a given name (service locator pattern)
-        /// @param name The name of the resource to register
-        /// @param resource A pointer to the resource to register
-        void RegisterResource(string name, void* resource);
-
-        /// @brief Get a resource with a given name
-        /// @param name The name of the resource to get
-        /// @return A void pointer to the resource, or nullptr if the resource hasn't been registered yet
-        void* GetResource(string name);
-        bool HasResourve(string name);
 
     protected:
         b2World *physicsWorld;
@@ -137,17 +122,18 @@ namespace Astrolib
         // Has the scene already been loaded
         bool isSceneLoaded = false;
 
-
     private:
         Entity2D *root;
-        
+
         /// @brief Top level of the scene graph
         std::map<std::string, Entity2D *> entities;
         std::map<int, Entity2D *> entityIDMap;
         std::map<std::string, Entity2D *> drawableEntities;
         std::map<std::string, Light2D *> lights;
+        std::map<std::string, void*> sceneResources;
 
         std::string sceneName = "";
+        CameraEntityBase *currentCamera = nullptr;
         RenderTexture2D screenSpaceLightMap;
         CollisionTracker colTracker;
     };

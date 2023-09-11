@@ -10,6 +10,7 @@ Scene::Scene()
     colTracker = CollisionTracker();
     physicsWorld->SetContactListener(&colTracker);
     currentCamera = nullptr;
+    sceneResources = std::map<std::string, void *>();
 
     // screenSpaceLightMap = LoadRenderTexture();
     screenSpaceLightMap = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
@@ -17,6 +18,11 @@ Scene::Scene()
 
     root = new Entity2D(this->sceneName + "_root");
     // LoadScene();
+}
+
+CameraEntityBase *Scene::GetCurrentCamera()
+{
+    return currentCamera;
 }
 
 void Scene::OnNotify(const Signaler *signaler, std::string eventName)
@@ -45,7 +51,7 @@ bool Scene::RegisterEntity(Entity2D *entity)
     entity->OnRegister(&(*this));
 
     // Add as a child of the root
-    //root->AddChild(entity);
+    // root->AddChild(entity);
 
     if (entity->GetChildCount() > 0)
     {
@@ -209,6 +215,61 @@ Entity2D *Scene::FindEntityByName(std::string name)
         return entities[name];
     }
     return nullptr;
+}
+
+void Scene::RegisterResource(string name, void *resource)
+{
+    // Only register if it's not already registered
+    if (sceneResources.find(name) == sceneResources.end())
+    {
+        sceneResources.insert(std::pair{name, resource});
+    }
+    else
+    {
+        Debug::Assert(sceneResources.find(name) != sceneResources.end(), "Resource already exists in the scene!");
+    }
+}
+
+bool Scene::IsOnScreen(Rectangle entityRect)
+{
+    Vector2 renderSize = GetCurrentCamera()->GetRenderResolution();
+    Vector2 screenSpaceCoords = GetWorldToScreen2D({entityRect.x, entityRect.y}, *(currentCamera->GetCamera()));
+    Rectangle tileRect = (Rectangle){
+        screenSpaceCoords.x,
+        screenSpaceCoords.y,
+        entityRect.width,
+        entityRect.height};
+
+    // Debug::Log(std::to_string(tileRect.x));
+    //  Vector2 ss = GetScreenToWorld2D({tileRect.x, tileRect.y}, *camera);
+    //  Rectangle debugRect = (Rectangle){ss.x, ss.y, tileInfo->imageSize.x, tileInfo->imageSize.y};
+
+    bool isOnScreen =
+        tileRect.x + tileRect.width > 0 &&
+        tileRect.x < renderSize.x &&
+        tileRect.y + tileRect.height > 0 &&
+        tileRect.y < renderSize.y;
+
+    return isOnScreen;
+}
+
+void *Scene::GetResource(std::string name)
+{
+    if (HasResource(name))
+    {
+        return sceneResources[name];
+    }
+    return nullptr;
+}
+
+void Scene::SetCurrentCamera(CameraEntityBase *newCamera)
+{
+    currentCamera = newCamera;
+}
+
+bool Scene::HasResource(std::string name)
+{
+    return sceneResources.find(name) != sceneResources.end();
 }
 
 Vector2 Scene::GetWorldRenderSize()

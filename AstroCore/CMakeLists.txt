@@ -19,9 +19,11 @@ engine/collisionTracker.cpp
 target_include_directories(${PROJECT_NAME}
     PUBLIC engine
     PUBLIC entities
+    PRIVATE /home/ethan/vcpkg/installed/x64-linux/include
 )
 
 target_link_directories(${PROJECT_NAME}
     PRIVATE engine
     PRIVATE entities
+    PRIVATE /home/ethan/vcpkg/installed/x64-linux/lib/
 )
