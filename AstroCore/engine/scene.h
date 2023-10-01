@@ -25,9 +25,9 @@
 #include <box2d/box2d.h>
 
 // Custom Blend Modes
-#define RLGL_SRC_ALPHA 0x0302
-#define RLGL_MIN 0x8007
-#define RLGL_MAX 0x8008
+//#define RLGL_SRC_ALPHA 0x0302
+//#define RLGL_MIN 0x8007
+//#define RLGL_MAX 0x8008
 
 namespace Astrocore
 {

@@ -14,6 +14,7 @@ entities/physicsEntities/physicsEntity.cpp
 engine/physicsDebug.cpp
 entities/physicsEntities/trigger2D.cpp
 engine/collisionTracker.cpp
+entities/baseEntities/shapeEntity.cpp
 )
 
 target_include_directories(${PROJECT_NAME}

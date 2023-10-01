@@ -8,7 +8,9 @@
 #include "physicsDebug.h"
 
 #if(!DEBUG)
-    #define NDEBUG
+    #ifndef NDEBUG
+        #define NDEBUG
+    #endif // !NDEBUG 
 #endif
 
 #include <cassert>
