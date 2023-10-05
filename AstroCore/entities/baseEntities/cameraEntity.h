@@ -21,7 +21,7 @@ namespace Astrocore
                 SetRenderDimensions(GetRenderWidth(), GetRenderHeight());
                 UpdateDestinationRectSize();
             }
-            return;
+
             UpdateDestinationRectSize();
         }
 
@@ -54,13 +54,18 @@ namespace Astrocore
         void SetRenderDimensions(float width, float height) override
         {
             renderResolution = (Vector2){width, height};
-            UnloadRenderTexture(rendText);
+
+            if(IsRenderTextureReady(rendText))
+            {
+                UnloadRenderTexture(rendText);
+            }
+            
             rendText = LoadRenderTexture(width, height);
             //SetTextureFilter(rendText.texture, TEXTURE_FILTER_ANISOTROPIC_16X);
             srcRect = (Rectangle){0, 0, width, -height};
         }
 
-        void UpdateDestinationRectSize() override
+        virtual void UpdateDestinationRectSize() override
         {
             if (currentScaleMode == KEEP_ASPECT)
             {
@@ -73,7 +78,7 @@ namespace Astrocore
             }
             else if( currentScaleMode == FILL_ASPECT)
             {
-                float scale = min(GetRenderWidth() / renderResolution.x, GetRenderHeight() / renderResolution.y);
+                //float scale = min(GetRenderWidth() / renderResolution.x, GetRenderHeight() / renderResolution.y);
             }
             else
             {
@@ -82,7 +87,7 @@ namespace Astrocore
         }
 
 
-        virtual void SetScaleMode(VIEWPORT_SCALE_MODE scaleMode) override
+        inline virtual void SetScaleMode(VIEWPORT_SCALE_MODE scaleMode) override
         {
             CameraEntityBase::SetScaleMode(scaleMode);
             UpdateDestinationRectSize();

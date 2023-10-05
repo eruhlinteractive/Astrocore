@@ -49,6 +49,8 @@ namespace Astrocore
         virtual void SetScaleMode(VIEWPORT_SCALE_MODE scaleMode)
         {
             maintainTargetAspectResolution = (scaleMode == KEEP_ASPECT);
+            currentScaleMode = scaleMode;
+            //UpdateDestinationRectSize();
         }
 
         virtual void OnWindowResized(){};
