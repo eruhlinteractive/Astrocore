@@ -78,7 +78,12 @@ namespace Astrocore
             }
             else if( currentScaleMode == FILL_ASPECT)
             {
-                //float scale = min(GetRenderWidth() / renderResolution.x, GetRenderHeight() / renderResolution.y);
+                float scale = max(GetRenderWidth() / renderResolution.x, GetRenderHeight() / renderResolution.y);
+                destRect = {
+                    (GetRenderWidth() - ((float)renderResolution.x * scale)) * 0.5f,
+                    (GetRenderHeight() - ((float)renderResolution.y * scale)) * 0.5f,
+                    (float)renderResolution.x * scale,
+                    (float)renderResolution.y * scale};
             }
             else
             {

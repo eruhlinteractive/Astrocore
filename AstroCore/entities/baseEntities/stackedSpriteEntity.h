@@ -56,7 +56,7 @@ namespace Astrocore
         static inline bool globalUsePerspectiveShift = false;
 
         // Static to help keep offset (i.e view angle) consistent across sprites
-        static inline float layerOffset = -0.02f;
+        static inline float layerOffset = -0.005f;
     };
 }
 #endif // __STACKEDSPRITEENTITY_H__

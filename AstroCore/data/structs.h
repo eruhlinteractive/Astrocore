@@ -219,9 +219,8 @@ namespace Astrocore
         }
 
         /// @brief Rotates a vector by a given rotation (radians)
-        /// @param x The x component of the vector to rotate
-        /// @param y The y component of the vector to rotate
-        /// @param rotationDegrees The delta rotation in radians
+        /// @param vector The vector to rotate
+        /// @param rotation The delta rotation in radians
         /// @returns The rotated vector
         static Vector2 RotateVector(Vector2 vector, float rotation)
         {
@@ -231,6 +230,17 @@ namespace Astrocore
             };
 
             return rotatedVector;
+        }
+
+        static Vector2 RotateVectorAroundPoint(Vector2 vector, Vector2 point, float rotation)
+        {
+            // Move the vector to the point (origin)
+            Vector2 vecPrime = SubtractVectors(vector, point);
+            // Rotate it
+            vecPrime = RotateVector(vecPrime, rotation);
+
+            // Move it back
+            return AddVectors(vecPrime, point);
         }
 
         /// @brief Adds two vectors

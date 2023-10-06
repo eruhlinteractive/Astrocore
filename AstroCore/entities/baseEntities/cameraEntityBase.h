@@ -80,7 +80,7 @@ namespace Astrocore
             Vector2 screenPos = GetWorldToScreen2D(worldPos, *GetCamera());
             //screenPos = VectorHelper::AddVectors(screenPos, {GetRenderWidth()/2.0f, GetRenderHeight()/2.0f});
             
-            Vector2 nSC = {screenPos.x / GetRenderWidth(), screenPos.y / GetRenderHeight()};
+            Vector2 nSC = {screenPos.x / renderResolution.x, screenPos.y /  renderResolution.y};
             nSC = {(nSC.x - 0.5f) * 2.0f, (nSC.y - 0.5f) * 2.0f};
             nSC = {clamp(nSC.x, -1.0f, 1.0f), clamp(nSC.y, -1.0f, 1.0f)};
             return nSC;

@@ -30,15 +30,17 @@ void StackedSpriteEntity::Draw(float deltaTime, Camera2D *camera)
     Vector2 globalPos = GetGlobalPosition();
     float srcPosX, srcPosY;
 
+    CameraEntityBase* cameraEntity = currentScene->GetCurrentCamera();
+
     // Calculate and rotate normalized screen coords opposite of cameras rotation to maintain perspective
-    Vector2 nSC = currentScene->GetCurrentCamera()->GetNormalizedScreenCoords(globalPos);
-    nSC = VectorHelper::RotateVector(nSC, -currentScene->GetCurrentCamera()->GetGlobalRotation());
+    Vector2 nSC = cameraEntity->GetNormalizedScreenCoords(globalPos);
+    nSC = VectorHelper::RotateVectorAroundPoint(nSC, (Vector2){0,0}, -cameraEntity->GetGlobalRotation());
 
     //Debug::Log(std::to_string(nSC.y));
     // Calculate the layer offset we should use
     float offset = isOverridingOffset ? layerOffsetOverride : layerOffset;
-    offset *= transform.scale.y;
-
+    offset *= transform.scale.y * cameraEntity->zoom;
+    
     bool shiftPerspective = isOverridingPerspective ? perspectiveShiftVal : globalUsePerspectiveShift;
 
     // Loop through each layer, offsetting and rendering above the bottom layer
