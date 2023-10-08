@@ -38,7 +38,7 @@ void SpriteEntity::Draw(float deltaTime, Camera2D *camera)
     destRect = (Rectangle){globalPos.x, globalPos.y, sprite->spriteSize.x * transform.scale.x / pixelsPerUnit, sprite->spriteSize.y * transform.scale.y / pixelsPerUnit};
     DrawTexturePro(*(sprite->spriteTexture), srcRect, destRect, {(sprite->center.x * transform.scale.x) / pixelsPerUnit, (sprite->center.y * transform.scale.y) / pixelsPerUnit}, GetGlobalRotationDeg(), WHITE);
 
-    if (Debug::instance()->IsDebugFlagSet(DRAW_SPRITE_BOUNDS))
+    if (Debug::IsDebugFlagSet(DRAW_SPRITE_BOUNDS))
     {
         Rectangle rect = (Rectangle){destRect.x - (sprite->center.x * transform.scale.x)/pixelsPerUnit,  destRect.y - (sprite->center.y * transform.scale.y)/pixelsPerUnit, destRect.width, destRect.height};
         DrawRectangleLinesEx(rect, 1.0f / pixelsPerUnit * 2, RED);

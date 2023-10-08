@@ -69,6 +69,8 @@ public:
         collisionFilter = collisionMask;
         
         results.clear();
+
+        // Run raycast query
         physicsWorld->RayCast(this, start, end);
         
         return results;

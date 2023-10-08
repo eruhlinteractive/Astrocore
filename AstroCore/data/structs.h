@@ -355,6 +355,24 @@ namespace Astrocore
         Vector2 imageSize;
         Vector2 imagePos;
     } StaticTileMin;
+
+    /// @brief A struct to hold the data describing a line
+    typedef struct LineData
+    {
+        LineData(Vector2 start, Vector2 end, float lineWidth = 1.0f, Color col = WHITE)
+        {
+            startPos = start;
+            endPos = end;
+            width = lineWidth;
+            color = col;
+        }
+
+        Vector2 startPos;
+        Vector2 endPos;
+        float width = 1.0f;
+        Color color = WHITE;
+
+    } LineData;
 };
 
 #endif

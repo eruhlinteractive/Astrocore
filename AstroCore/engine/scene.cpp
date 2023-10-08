@@ -382,6 +382,8 @@ void Scene::Draw(float deltaTime)
     {
         GetPhysicsWorld()->DebugDraw();
     }
+    
+    Debug::DrawDebugShapes();
     currentCamera->EndDrawing();
 
     BeginDrawing();
@@ -437,5 +439,6 @@ void Scene::Draw(float deltaTime)
     // DrawText(val.c_str(), 10, 30, 20, DARKGREEN);
     DrawFPS(10, 10);
 
+   
     EndDrawing();
 }

@@ -184,7 +184,7 @@ void AnimatedSpriteEntity::Draw(float deltaTime, Camera2D *camera)
     //               WHITE);
     //DrawRectangleLines(round(destRect.x), round(destRect.y), 1, 1, RED);
 
-    if (Debug::instance()->IsDebugFlagSet(DRAW_SPRITE_BOUNDS))
+    if (Debug::IsDebugFlagSet(DRAW_SPRITE_BOUNDS))
     {
         DrawRectangleLines(
             destRect.x - destRect.width / 2.0f,

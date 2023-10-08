@@ -6,6 +6,7 @@
 #include <fstream>
 #include <algorithm>
 #include "physicsDebug.h"
+#include "../data/structs.h"
 
 #if(!DEBUG)
     #ifndef NDEBUG
@@ -121,12 +122,29 @@ namespace Astrocore
             return pathToLog + fileName + fileExtension;
         }
 
+        /*
         /// @brief Get the debug instance (singleton)
         /// @return A pointer to the instance of the debug class
         inline static Debug *instance()
         {
             static Debug *instance = new Debug();
             return instance;
+        };
+        */
+
+        inline static void DrawLine(LineData line)
+        {
+            lines.push_back(line);
+        };
+        
+        inline static void DrawDebugShapes()
+        {
+            for(LineData line : lines)
+            {
+                DrawLineEx(line.startPos, line.endPos, line.width, line.color);
+
+            }
+            lines.clear();
         };
 
         ~Debug()
@@ -142,6 +160,7 @@ namespace Astrocore
         {
             outputFile.open(GetLogPath().c_str());
             std::string path = GetLogPath();
+            lines = std::vector<LineData>();
         };
 
         static inline std::string fileName = "debug_log";
@@ -149,6 +168,8 @@ namespace Astrocore
         static inline std::ofstream outputFile;
         static inline const std::string fileExtension = ".txt";
         static inline uint8_t debugFlags = 0;
+
+        static inline std::vector<LineData> lines;
     };
 
 };
