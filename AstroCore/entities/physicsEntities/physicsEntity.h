@@ -69,6 +69,8 @@ namespace Astrocore
         /// @param fixtureDefinition A pointer to the fixture definition (can also be the address of a stack variable)
         void AddFixtureToBody(b2FixtureDef* fixtureDefinition) override;
         
+        
+
         inline b2Body* GetPhysicsBody()
         {
             return physicsBody;
@@ -96,6 +98,9 @@ namespace Astrocore
 
         /// @brief Holds fixtures defined before the body has been added to the physics world
         std::vector<b2FixtureDef*> fixtureTemps;
+
+    private:
+        
     };
 
 };

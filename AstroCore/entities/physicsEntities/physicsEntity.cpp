@@ -34,6 +34,7 @@ void PhysicsEntity::OnRegister(Scene *scene)
     data.pointer = (uintptr_t)(new PhysicsEntityData(entityID, name));
     bodyDef->userData = data;
 
+    // Register physics body to the scene
     physicsBody = scene->GetPhysicsWorld()->CreateBody(bodyDef);
 
     addedToPhysicsWorld = true;
@@ -74,6 +75,8 @@ PhysicsEntity::~PhysicsEntity()
 
     fixtureTemps.clear();
 }
+
+#pragma region ColliderFunctions
 
 /// @brief Creates a rectangle collider with no rotation and a given size and center point, using
 /// default values for density, friction, and restitution
@@ -221,13 +224,16 @@ void PhysicsEntity::AddFixtureToBody(b2FixtureDef *fixtureDefinition)
     //  otherwise store it to be added when the physics body is created
     if (physicsBody != nullptr && physicsBody != 0)
     {
-        physicsBody->CreateFixture(fixtureDefinition);
+        b2Fixture* fix = physicsBody->CreateFixture(fixtureDefinition);
+        fix->SetFilterData(*colFilter);
     }
     else
     {
         fixtureTemps.push_back(fixtureDefinition);
     }
 }
+
+#pragma endregion
 
 #pragma region Manipulation Functions
 

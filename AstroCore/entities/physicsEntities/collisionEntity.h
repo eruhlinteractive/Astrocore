@@ -26,9 +26,26 @@ namespace Astrocore
 
         /// @brief Called when a contact ends with this body
         /// @param contact The contact information
-        void CollisionEnd(b2Contact *contact){
+        void CollisionEnd(b2Contact *contact)
+        {
             // This will be called on all derived classes
             EndContact(contact);
+        };
+
+        void SetCollisionLayers(uint16_t collisionLayerBits)
+        {
+            colFilter->categoryBits = collisionLayerBits;
+            UpdateCollisionFilters();
+        };
+        void SetCollisionMask(uint16_t collisionMaskLayers)
+        {
+            colFilter->maskBits = collisionMaskLayers;
+            UpdateCollisionFilters();
+        };
+        void SetCollisionGroupIndex(int16 groupIndex)
+        {
+            colFilter->groupIndex = groupIndex;
+            UpdateCollisionFilters();
         };
 
     protected:
@@ -36,11 +53,14 @@ namespace Astrocore
         {
             type = PHYSICAL;
             tempFixtures = std::vector<b2FixtureDef *>();
+            colFilter = new b2Filter();
         }
 
         ~CollisionEntity()
         {
             tempFixtures.clear();
+            delete colFilter;
+            colFilter = nullptr;
         }
 
         /// @brief Initializes the underlying physics body with a given body definition
@@ -59,6 +79,30 @@ namespace Astrocore
         /// @brief A cache of fixtures that were defined before the physics body was created
         std::vector<b2FixtureDef *> tempFixtures;
         bool addedToPhysicsWorld = false;
+
+        b2Filter *colFilter;
+        /// Iterates through the fixtures updating the filter layers
+        void UpdateCollisionFilters()
+        {
+            // We haven't registered with the physics world, don't update the collision layers yet
+            //  the colliders will be updated when the body is updated
+            if(!addedToPhysicsWorld)
+            {
+                return;
+            }
+
+            b2Fixture *fixtures = physicsBody->GetFixtureList();
+
+            // Double check that there are fixtures on the body at this point (should be after init)
+            Debug::Assert(fixtures != nullptr, "There are no fixtures on this body!");
+
+            // Iterate through the fixtures, updating the collision bits
+            while (fixtures != nullptr)
+            {
+                fixtures->SetFilterData(*colFilter);
+                fixtures++;
+            }
+        }
     };
 
 } // namespace Astrolib

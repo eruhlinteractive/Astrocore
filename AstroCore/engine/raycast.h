@@ -11,6 +11,7 @@ struct RaycastInfo
 {
     /// @brief The point of the collision
     Vector2 colPoint;
+    
     /// @brief The normal of the edge at the point of the collision
     Vector2 colNormal;
 
@@ -40,10 +41,18 @@ public:
     {
         b2Body* body = fixture->GetBody();
         PhysicsEntityData *bodyData = (PhysicsEntityData *)(body->GetUserData().pointer);
-        Debug::Log("AHHH");
+
         // Add to results array
         results.push_back(RaycastInfo(point, normal, *bodyData));
 
+        // If the raycast isn't checking this layer, return -1 to continue the ray 
+        //  Bitwise AND
+        if((collisionFilter & fixture->GetFilterData().categoryBits) == 0)
+        {
+            return -1;
+        }
+
+        // If we've exceeded our max size, return 0 to terminate the ray cast
         if(maxCollisions >= results.size())
         {
             return 0;
@@ -52,10 +61,12 @@ public:
         return fraction;
     }
 
-    std::vector<RaycastInfo> FireRayCast(b2World* physicsWorld, Vector2 startPoint, Vector2 endPoint)
+    std::vector<RaycastInfo> FireRayCast(b2World* physicsWorld, Vector2 startPoint, Vector2 endPoint, uint16_t collisionMask = 0x0000)
     {
         b2Vec2 start = b2Vec2(startPoint.x, -startPoint.y);
         b2Vec2 end = b2Vec2(endPoint.x, -endPoint.y);
+
+        collisionFilter = collisionMask;
         
         results.clear();
         physicsWorld->RayCast(this, start, end);
@@ -63,7 +74,7 @@ public:
         return results;
     };
  
-
+    uint16_t collisionFilter = 0x0000;
     int maxCollisions = 1;
     std::vector<RaycastInfo> results;
 };
