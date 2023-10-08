@@ -24,6 +24,7 @@ namespace Astrocore
         
         virtual Entity2D *FindEntityByName(std::string name) = 0;
         virtual Entity2D *GetEntity(std::string path)= 0;
+        virtual Entity2D* GetEntityById(int entityID) = 0;
 
         virtual Vector2 GetWorldRenderSize() = 0;
 

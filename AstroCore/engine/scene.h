@@ -76,6 +76,7 @@ namespace Astrocore
         /// @return True if the entity was successfully unregistered
         bool UnRegisterEntity(std::string name);
         virtual Entity2D* GetEntity(std::string path) override final;
+        virtual Entity2D* GetEntityById(int entityID) override final;
         virtual Entity2D *FindEntityByName(std::string name) override final;
 
 

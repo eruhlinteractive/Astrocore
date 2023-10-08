@@ -66,7 +66,9 @@ bool Scene::RegisterEntity(Entity2D *entity)
     // Insert new reference
     if (entities.find(name) == entities.end())
     {
+        // Add to maps
         entities.insert(std::pair{name, entity});
+        entityIDMap.insert(std::pair(entity->GetEntityID(), entity));
 
         // Add to specialized lists
         if (entity->GetType() == SPRITE || entity->GetType() == TILEMAP)
@@ -143,15 +145,16 @@ bool Scene::UnRegisterEntity(std::string name)
 
     if (entities.find(name) != entities.end())
     {
+        Entity2D* entity = entities[name];
+
         // Remove from render queue
         if (drawableEntities.find(name) != drawableEntities.end())
         {
             drawableEntities.erase(name);
         }
 
-        // delete entities[name];
-        // entities[name] = nullptr;
-
+        // Remove from scene maps
+        entityIDMap.erase(entity->GetEntityID());
         entities.erase(name);
         return true;
     }
@@ -206,6 +209,17 @@ Entity2D *Scene::GetEntity(std::string path)
     }
     // Navigate through children
     return current;
+}
+
+Entity2D* Scene::GetEntityById(int entityID)
+{
+    if(entityIDMap.find(entityID) != entityIDMap.end())
+    {
+        return entityIDMap[entityID];
+    }
+
+    // Something has gone terribly wrong
+    return nullptr;
 }
 
 Entity2D *Scene::FindEntityByName(std::string name)
