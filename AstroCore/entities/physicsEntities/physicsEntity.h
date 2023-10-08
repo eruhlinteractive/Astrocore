@@ -48,6 +48,23 @@ namespace Astrocore
             
         void CreateCircleCollider(Vector2 center, float radius);
 
+        /// @brief Create a convex polygon collider from a list of points (local space, CCW winding order). This will always be a convex hull
+        /// @param points The points to add
+        void CreateConvexPolyCollider(std::vector<Vector2> points);
+
+        
+        void CreateConvexPolyCollider(std::vector<Vector2> points, float rotRads,
+            float density,
+            float friction,
+            float restitution);
+
+        /// @brief Create a convex OR concave polygon collider from a list of points (local space, CCW winding order)
+        /// @param points 
+        void CreateConcavePolyCollider(std::vector<Vector2> points)
+        {
+            Debug::Assert(false, "ERROR: Not yet implemented");
+        }
+
         /// @brief Add a new fixture (collider) to this body
         /// @param fixtureDefinition A pointer to the fixture definition (can also be the address of a stack variable)
         void AddFixtureToBody(b2FixtureDef* fixtureDefinition) override;

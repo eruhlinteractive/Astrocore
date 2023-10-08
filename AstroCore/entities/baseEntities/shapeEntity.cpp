@@ -40,7 +40,7 @@ int ShapeEntity::AddLine(Vector2 startPos, Vector2 endPos, float width, Color co
     };
     
     data.push_back(shapeData);
-    Debug::Log("Added a new line");
+    //Debug::Log("Added a new line");
     return id;
     
 }

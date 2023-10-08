@@ -23,11 +23,11 @@ PhysicsEntity::PhysicsEntity(PHYSICS_TYPE bodyType, Vector2 startPos)
 
     // TODO: Move this to when the entity gets added to the tree
     // Register physics body with world
-    //physicsBody;
+    // physicsBody;
     transform.position = startPos;
 }
 
-void PhysicsEntity::OnRegister(Scene* scene)
+void PhysicsEntity::OnRegister(Scene *scene)
 {
     // Create and assign custom data to the physics body
     b2BodyUserData data = b2BodyUserData();
@@ -35,12 +35,12 @@ void PhysicsEntity::OnRegister(Scene* scene)
     bodyDef->userData = data;
 
     physicsBody = scene->GetPhysicsWorld()->CreateBody(bodyDef);
-    
+
     addedToPhysicsWorld = true;
     currentScene = scene;
 
     // Add all cached fixtures to the body
-    for(b2FixtureDef *fixDef : fixtureTemps)
+    for (b2FixtureDef *fixDef : fixtureTemps)
     {
         AddFixtureToBody(fixDef);
 
@@ -67,7 +67,7 @@ PhysicsEntity::PhysicsEntity(std::string name, PHYSICS_TYPE bodyType, Vector2 po
 
 PhysicsEntity::~PhysicsEntity()
 {
-    if(addedToPhysicsWorld)
+    if (addedToPhysicsWorld)
     {
         currentScene->GetPhysicsWorld()->DestroyBody(physicsBody);
     }
@@ -115,7 +115,7 @@ void PhysicsEntity::FixedUpdate(float deltaTime)
 }
 
 /// @brief Creates a rectangle body and associated fixture
-/// @param center The center of the collider relative to the body 
+/// @param center The center of the collider relative to the body
 /// @param size The length/width of the body
 /// @param rotRads The local rotation of the collider in radians
 /// @param density The density of the fixture
@@ -172,7 +172,7 @@ void PhysicsEntity::CreateCircleCollider(
     circle->m_radius = radius;
 
     // Define the fixture and add it to the body
-    b2FixtureDef *fix;
+    b2FixtureDef *fix = new b2FixtureDef();
     fix->shape = circle;
     fix->density = density;
     fix->friction = friction;
@@ -185,19 +185,48 @@ void PhysicsEntity::CreateCircleCollider(Vector2 center, float radius)
     CreateCircleCollider(center, radius, 1.0f, 0.2f, 0.0f);
 }
 
+void PhysicsEntity::CreateConvexPolyCollider(std::vector<Vector2> points)
+{
+    CreateConvexPolyCollider(points, 0.0f, 1.0f, 0.2f, 0.0f);
+}
+
+void PhysicsEntity::CreateConvexPolyCollider(std::vector<Vector2> points, float rotRads = 0.0f,
+                                             float density = 1.0f,
+                                             float friction = 0.2f,
+                                             float restitution = 0.0f)
+{
+    std::vector<b2Vec2> b2Points = std::vector<b2Vec2>();
+    for (Vector2 point : points)
+    {
+        // Convert to b2d coordinates
+        point.y *= -1;
+        b2Points.push_back(b2Vec2(point.x, point.y));
+    }
+
+    b2PolygonShape* newShape = new b2PolygonShape();
+    newShape->Set(b2Points.data(), b2Points.size());
+
+    // Define the fixture and add it to the body
+    b2FixtureDef *fix = new b2FixtureDef();
+    fix->shape = newShape;
+    fix->density = density;
+    fix->friction = friction;
+    fix->restitution = restitution;
+    AddFixtureToBody(fix);
+}
+
 void PhysicsEntity::AddFixtureToBody(b2FixtureDef *fixtureDefinition)
 {
     // Add the fixture directly if it has already been added to the physics world,
     //  otherwise store it to be added when the physics body is created
-    if(physicsBody != nullptr && physicsBody != 0)
+    if (physicsBody != nullptr && physicsBody != 0)
     {
         physicsBody->CreateFixture(fixtureDefinition);
-    }   
+    }
     else
     {
         fixtureTemps.push_back(fixtureDefinition);
     }
-    
 }
 
 #pragma region Manipulation Functions
@@ -219,7 +248,6 @@ void PhysicsEntity::ApplyTorque(float torque)
     physicsBody->ApplyTorque(-torque, true);
 }
 
-
 void PhysicsEntity::AddLocalForce(Vector2 force)
 {
     float globalRot = physicsBody->GetAngle();
@@ -230,7 +258,6 @@ void PhysicsEntity::AddLocalForce(Vector2 force)
     };
     physicsBody->ApplyForceToCenter(b2Vec2(-localForce.x, -localForce.y), true);
 }
-
 
 void PhysicsEntity::ApplyImpulse(Vector2 force)
 {

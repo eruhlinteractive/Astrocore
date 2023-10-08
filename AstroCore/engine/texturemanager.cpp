@@ -53,7 +53,7 @@ Texture2D* TextureManager::GetTexture(std::string path)
     if(textures->find(path) == textures->end())
     {
         //std::string fullPath = std::string(GetWorkingDirectory()) + "/" + path;
-        textures->insert(std::pair{path, RLAPI::LoadTexture(path.c_str())});
+        textures->insert(std::pair{path, RLAPI::LoadTexture((rootLoadFolder + path).c_str())});
         textureReferences->insert(std::pair{path, 1});
         return &(*textures)[path];
     }
@@ -86,6 +86,13 @@ std::string TextureManager::GetTexturePath(Texture2D* texture)
 
 }
 
+void TextureManager::SetBaseAssetDir(std::string baseDirPath)
+{
+    // Append root folder trailing slash
+    baseDirPath += baseDirPath.at(baseDirPath.length() -1) != '/' ? "/" : "";
+
+    rootLoadFolder = baseDirPath;
+}
 
 void TextureManager::UnloadTexture(std::string path)
 {

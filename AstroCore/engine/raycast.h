@@ -1,0 +1,71 @@
+#ifndef __RAYCAST_H__
+#define __RAYCAST_H__
+
+#include <box2d/box2d.h>
+#include "../data/structs.h"
+
+namespace Astrocore
+{
+
+struct RaycastInfo
+{
+    /// @brief The point of the collision
+    Vector2 colPoint;
+    /// @brief The normal of the edge at the point of the collision
+    Vector2 colNormal;
+
+    int collidedEntityID;
+    std::string entityName;
+
+    RaycastInfo(b2Vec2 point, b2Vec2 normal, PhysicsEntityData data)
+    {
+        colPoint = (Vector2){point.x, -point.y};
+        colNormal = (Vector2){normal.x, -normal.y};
+        collidedEntityID = data.entityID;
+        entityName = data.entityName;
+    }
+};
+
+class Raycast : public b2RayCastCallback
+{
+    
+public:
+    Raycast()
+    {
+        results = std::vector<RaycastInfo>();
+    }
+ 
+    float ReportFixture(b2Fixture* fixture, const b2Vec2& point,
+                        const b2Vec2& normal, float fraction)
+    {
+        b2Body* body = fixture->GetBody();
+        PhysicsEntityData *bodyData = (PhysicsEntityData *)(body->GetUserData().pointer);
+        Debug::Log("AHHH");
+        // Add to results array
+        results.push_back(RaycastInfo(point, normal, *bodyData));
+
+        if(maxCollisions >= results.size())
+        {
+            return 0;
+        }
+
+        return fraction;
+    }
+
+    std::vector<RaycastInfo> FireRayCast(b2World* physicsWorld, Vector2 startPoint, Vector2 endPoint)
+    {
+        b2Vec2 start = b2Vec2(startPoint.x, -startPoint.y);
+        b2Vec2 end = b2Vec2(endPoint.x, -endPoint.y);
+        
+        results.clear();
+        physicsWorld->RayCast(this, start, end);
+        
+        return results;
+    };
+ 
+
+    int maxCollisions = 1;
+    std::vector<RaycastInfo> results;
+};
+}
+#endif // __RAYCAST_H__

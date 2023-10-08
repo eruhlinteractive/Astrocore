@@ -33,6 +33,14 @@ namespace Astrocore
         Texture2D* GetTextureAbsolute(std::string absolutePath);
         std::string GetTexturePath(Texture2D* texture);
 
+        /// @brief Set the base asset directory (relative to the compiled executable)
+        /// @param baseDirPath The starting path to load assets from
+        void SetBaseAssetDir(std::string baseDirPath);
+
+        /// @brief Get the base path for loading assets 
+        /// @return The path used as the starting point for loading assets
+        inline std::string GetBaseAssetDir() { return rootLoadFolder; }
+
         void UnloadAllTextures();
         /// @brief Remove a reference to a texture, unloading it if it is no longer referenced
         /// @param path The path to the texture
@@ -43,6 +51,9 @@ namespace Astrocore
         static inline bool isInitialized = false;
 
         inline static TextureManager* INSTANCE;
+
+        /// @brief The root folder we're loading assets from
+        std::string rootLoadFolder = GetWorkingDirectory();
 
         /// @brief The currently loaded textures
         std::map<std::string, Texture2D> *textures;
