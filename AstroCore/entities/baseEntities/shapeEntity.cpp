@@ -46,8 +46,26 @@ int ShapeEntity::AddLine(Vector2 startPos, Vector2 endPos, float width, Color co
 }
 
 
+void ShapeEntity::SetFloat(int shapeId, std::string key, float value)
+{
+    for(JSON shape : data)
+    {
+        if(shape["id"] == shapeId)
+        {
+            JSON j = { {key, value}};
+            shape.update(j.begin(), j.end());
+
+            Debug::Log(std::to_string(value));
+        }
+    }
+}
+
+
 void ShapeEntity::Draw(float deltaTime, Camera2D* camera)
 {
+    std::string js = data[0].dump();
+    Debug::Log(js);
+
     for(JSON shapeData : data)
     {
         if(shapeData["type"] == "LINE")

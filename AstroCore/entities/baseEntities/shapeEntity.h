@@ -17,6 +17,8 @@ namespace Astrocore
         int AddRect();
         int AddLine(Vector2 startPos, Vector2 endPos, float width, Color color);
 
+        void SetFloat(int shapeId, std::string key, float value);
+
         virtual void Draw(float deltaTime, Camera2D* camera) override;
 
     private:
