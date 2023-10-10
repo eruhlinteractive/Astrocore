@@ -23,67 +23,17 @@ int ShapeEntity::AddLine(Vector2 startPos, Vector2 endPos, float width, Color co
 {
     int id = shapeCount;
     shapeCount++;
-
-    JSON shapeData = 
-    {
-        {"id", id},
-        {"type", "LINE"},
-        {"startX", startPos.x},
-        {"startY", startPos.y},
-        {"endX", endPos.x},
-        {"endY", endPos.y},
-        {"width", width},
-        {"colorR", color.r},
-        {"colorG", color.g},
-        {"colorB", color.b},
-        {"colorA", color.a},
-    };
-    
-    data.push_back(shapeData);
-    //Debug::Log("Added a new line");
-    return id;
-    
 }
 
-
-void ShapeEntity::SetFloat(int shapeId, std::string key, float value)
-{
-    for(JSON shape : data)
-    {
-        if(shape["id"] == shapeId)
-        {
-            JSON j = { {key, value}};
-            shape.update(j.begin(), j.end());
-
-            Debug::Log(std::to_string(value));
-        }
-    }
-}
 
 
 void ShapeEntity::Draw(float deltaTime, Camera2D* camera)
 {
-    std::string js = data[0].dump();
-    Debug::Log(js);
-
-    for(JSON shapeData : data)
+    for(std::pair<int, SHAPE_TYPE> p : shapeIdMap)
     {
-        if(shapeData["type"] == "LINE")
-        {
-            //Debug::Log("There's a snake in my boot");
-            Vector2 globalPos = GetGlobalPosition();
-            Vector2 start = {shapeData["startX"], shapeData["startY"]};
-            Vector2 end = {shapeData["endX"], shapeData["endY"]};
+        SHAPE_TYPE type = p.second;
 
-            float globalRot = GetGlobalRotation();
-            start = VectorHelper::RotateVector(start, globalRot);
-            end = VectorHelper::RotateVector(end, globalRot);
-
-            end = VectorHelper::AddVectors(end, globalPos);            
-            start = VectorHelper::AddVectors(start, globalPos);
-
-            DrawLineEx(start, end, shapeData["width"], WHITE);
-        }
     }
-
+   
+    
 }

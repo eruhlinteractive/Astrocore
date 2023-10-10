@@ -10,6 +10,7 @@ namespace Astrocore
     
     public:
         ShapeEntity();
+        ~ShapeEntity();
         int AddCircle();
         int AddRoundedRectOutline();
         int AddRoundedRect();
@@ -17,13 +18,23 @@ namespace Astrocore
         int AddRect();
         int AddLine(Vector2 startPos, Vector2 endPos, float width, Color color);
 
-        void SetFloat(int shapeId, std::string key, float value);
+        SHAPE_TYPE TypeOfShape(int id);
+        void* GetShape(int id);
+        void DeleteShape(int id);
+
+        /// @brief Directly set the data for a shape
+        /// @param id 
+        /// @param data 
+        void SetShape(int id, void* data);
 
         virtual void Draw(float deltaTime, Camera2D* camera) override;
 
     private:
         JSON Vector2ToJSON(Vector2 vector);
-        std::vector<JSON> data;
+        std::map<int, void*> data;
+
+        /// @brief A primary map to identify which shape type an ID is
+        std::map<int, SHAPE_TYPE> shapeIdMap;
         int shapeCount = 0;
 
     };
