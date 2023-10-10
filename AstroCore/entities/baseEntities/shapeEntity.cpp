@@ -4,12 +4,17 @@ using namespace Astrocore;
 
 ShapeEntity::ShapeEntity()
 {
-    data = std::vector<JSON>();
-    type = SPRITE;
+    //data = std::vector<JSON>();
+    //type = SPRITE;
+}
+ShapeEntity::~ShapeEntity()
+{
+
 }
 
 int ShapeEntity::AddRoundedRectOutline()
 {
+    Debug::Assert(false, "Not yet Implemented");
     return 0;
 }
 
@@ -23,16 +28,28 @@ int ShapeEntity::AddLine(Vector2 startPos, Vector2 endPos, float width, Color co
 {
     int id = shapeCount;
     shapeCount++;
+
+    data.insert({id, LineData(startPos, endPos, width, color)});
+
+    return id;
 }
 
 
 
 void ShapeEntity::Draw(float deltaTime, Camera2D* camera)
 {
-    for(std::pair<int, SHAPE_TYPE> p : shapeIdMap)
+    for(auto p : shapeIdMap)
     {
         SHAPE_TYPE type = p.second;
 
+        switch (type)
+        {
+            case LINE:
+                LineData l = std::get<LineData>(data[p.first]);
+                DrawLineEx(l.startPos, l.endPos, l.width, l.color);
+            break;
+    
+        };
     }
    
     

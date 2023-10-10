@@ -1,6 +1,7 @@
 #ifndef __SHAPEENTITY_H__
 #define __SHAPEENTITY_H__
 #include "entity.h"
+#include <variant>
 
 namespace Astrocore
 {
@@ -23,15 +24,14 @@ namespace Astrocore
         void DeleteShape(int id);
 
         /// @brief Directly set the data for a shape
-        /// @param id 
-        /// @param data 
+        /// @param id The id of the data to set
+        /// @param data The data to set for the shape
         void SetShape(int id, void* data);
 
         virtual void Draw(float deltaTime, Camera2D* camera) override;
 
     private:
-        JSON Vector2ToJSON(Vector2 vector);
-        std::map<int, void*> data;
+        std::map<int, std::variant<LineData, Rectangle> > data;
 
         /// @brief A primary map to identify which shape type an ID is
         std::map<int, SHAPE_TYPE> shapeIdMap;
