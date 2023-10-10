@@ -359,6 +359,13 @@ namespace Astrocore
     /// @brief A struct to hold the data describing a line
     typedef struct LineData
     {
+        LineData(){
+            startPos = {0,0};
+            endPos = startPos;
+            width = 1.0f;
+            color = WHITE;
+        }
+        
         LineData(Vector2 start, Vector2 end, float lineWidth = 1.0f, Color col = WHITE)
         {
             startPos = start;
@@ -371,8 +378,32 @@ namespace Astrocore
         Vector2 endPos;
         float width = 1.0f;
         Color color = WHITE;
+        
 
     } LineData;
+
+    ///@brief A struct containing data describing a circle
+    typedef struct CircleData
+    {
+        float radius;
+        Vector2 center;
+        Color color;
+
+        CircleData()
+        {
+            radius = 1.0f;
+            center = (Vector2){0,0};
+            color = WHITE;
+        }
+
+        CircleData(Vector2 center, float radius, Color color)
+        {
+            this->color = color;
+            this->center = center;
+            this->radius = radius;
+        }
+
+    }CircleData;
 };
 
 #endif

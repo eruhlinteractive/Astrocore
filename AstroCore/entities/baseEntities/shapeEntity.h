@@ -11,8 +11,8 @@ namespace Astrocore
     
     public:
         ShapeEntity();
-        ~ShapeEntity();
-        int AddCircle();
+        //~ShapeEntity();
+        int AddCircle(Vector2 center, float radius, Color color);
         int AddRoundedRectOutline();
         int AddRoundedRect();
         int AddRectOutline();
@@ -20,7 +20,16 @@ namespace Astrocore
         int AddLine(Vector2 startPos, Vector2 endPos, float width, Color color);
 
         SHAPE_TYPE TypeOfShape(int id);
-        void* GetShape(int id);
+        std::variant<LineData,CircleData> GetShape(int id);
+
+        LineData* GetLine(int id);
+        CircleData* GetCircle(int id);
+        void SetShapeVisibility(int id, bool isVisible);
+        bool IsShapeVisible(int id);
+        
+        
+        /// @brief Delete a shape from the entity
+        /// @param id The ID of the shape to delete
         void DeleteShape(int id);
 
         /// @brief Directly set the data for a shape
@@ -31,10 +40,12 @@ namespace Astrocore
         virtual void Draw(float deltaTime, Camera2D* camera) override;
 
     private:
-        std::map<int, std::variant<LineData, Rectangle> > data;
+        std::map<int, std::variant<LineData, CircleData> > data;
 
         /// @brief A primary map to identify which shape type an ID is
         std::map<int, SHAPE_TYPE> shapeIdMap;
+        std::map<int, bool> visibilityFlags;
+
         int shapeCount = 0;
 
     };
