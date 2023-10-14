@@ -11,10 +11,17 @@ SpriteEntity::SpriteEntity(Sprite *sprite)
 
 SpriteEntity::SpriteEntity(Texture2D *spriteTexture, Vector2 spriteSize, Vector2 center)
 {
-    this->sprite = new Sprite(spriteTexture, center, {0,0},spriteSize);
+    this->sprite = new Sprite(spriteTexture, center, {0,0} ,spriteSize);
     name = "SpriteEntity_" + std::to_string(entityID);
     type = SPRITE;
 }
+
+
+SpriteEntity::SpriteEntity(Texture2D* spriteTexture, Vector2 spriteSize, Vector2 center, Vector2 spriteOffset) : SpriteEntity(spriteTexture, spriteSize, center)
+{
+    this->sprite->startPoint = spriteOffset;
+}
+
 
 SpriteEntity::~SpriteEntity()
 {

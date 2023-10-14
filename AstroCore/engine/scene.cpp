@@ -44,7 +44,17 @@ void Scene::OnNotify(const Signaler *signaler, std::string eventName)
 
 bool Scene::RegisterEntity(Entity2D *entity)
 {
-    std::string name = entity->GetName();
+
+    // Check if we already have the entity registered
+    int entityID = entity->GetEntityID();
+    bool hasEntity = entityIDMap.find(entityID) != entityIDMap.end();
+
+    // Already registered, back out
+    if(hasEntity)
+    {
+        return false;
+    }
+
     // int id = entity->GetEntityId();
 
     // Tell entity that it was registered
@@ -64,8 +74,10 @@ bool Scene::RegisterEntity(Entity2D *entity)
     }
 
     // Insert new reference
-    if (entities.find(name) == entities.end())
+    if (entityIDMap.find(entityID) == entityIDMap.end())
     {
+        std::string name = entity->GetName();
+
         // Add to maps
         entities.insert(std::pair{name, entity});
         entityIDMap.insert(std::pair(entity->GetEntityID(), entity));
@@ -94,12 +106,6 @@ bool Scene::RegisterEntity(Entity2D *entity)
         return true;
     }
 
-    // The entity is not the same as the already registered entity
-    else if (entities[name]->GetEntityID() != entity->GetEntityID())
-    {
-        throw std::runtime_error("Failed to register entity: Name " + name + " already exists in scene!");
-        return false;
-    }
 
     return false;
 }
@@ -278,6 +284,9 @@ void *Scene::GetResource(std::string name)
 
 void Scene::SetCurrentCamera(CameraEntityBase *newCamera)
 {
+    // Attempt to register
+    RegisterEntity(newCamera);
+
     currentCamera = newCamera;
 }
 

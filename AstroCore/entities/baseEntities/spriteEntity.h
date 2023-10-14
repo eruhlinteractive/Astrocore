@@ -24,6 +24,13 @@ namespace Astrocore
         /// @param spriteSize The original size of the sprite 
         /// @param center The center (rotation point) of the sprite
         SpriteEntity(Texture2D* spriteTexture, Vector2 spriteSize, Vector2 center);
+
+        // @brief Creates a new sprite entity
+        /// @param spriteTexture The texture to use for the sprite
+        /// @param spriteSize The original size of the sprite 
+        /// @param center The center (rotation point) of the sprite
+        /// @param spriteOffset The offset of the (top left) rendered portion of the source texture 
+        SpriteEntity(Texture2D* spriteTexture, Vector2 spriteSize, Vector2 center, Vector2 spriteOffset);
         ~SpriteEntity();
 
         void Draw(float deltaTime, Camera2D *camera) override;
@@ -48,6 +55,7 @@ namespace Astrocore
     protected:
         Vector2 spriteFlip = {1, 1};
         Sprite *sprite;
+        Vector2 spriteSrcOffset = {0,0};
     };
 }
 #endif // SPRITE_ENTITY_H
